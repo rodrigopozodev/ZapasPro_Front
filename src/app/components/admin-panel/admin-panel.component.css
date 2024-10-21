@@ -1,0 +1,76 @@
+/* Estilos para el Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2c3e50; /* Color de fondo del navbar */
+  padding: 10px 20px; /* Espaciado del navbar */
+}
+
+.logo-image {
+  height: 50px; /* Altura del logo */
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn, .store-btn {
+  background: none; /* Sin fondo para el botón */
+  border: none; /* Sin borde para el botón */
+  color: white; /* Color del icono */
+  font-size: 22px; /* Tamaño del icono */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  padding: 10px; /* Espaciado interno */
+}
+
+.logout-btn:hover, .store-btn:hover { /* Cambiando color al pasar el cursor */
+  color: #2ecc71; /* Color al pasar el cursor */
+}
+
+/* Estilos para el título del navbar */
+.navbar-title {
+  flex-grow: 1; /* Permite que el título ocupe el espacio disponible */
+  text-align: center; /* Centra el texto */
+  font-size: 24px; /* Tamaño del texto más grande */
+  color: white; /* Color del texto blanco */
+  margin: 0; /* Elimina márgenes */
+}
+
+/* Estilos para el panel de administrador */
+.admin-panel {
+  padding: 20px;
+  background-color: #f9f9f9; /* Fondo gris claro */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #555; /* Gris medio */
+}
+
+.table-container {
+  margin: 20px 0;
+  background: white; /* Fondo blanco */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #2c3e50; /* Color de fondo para el encabezado de la tabla */
+  color: white; /* Texto blanco */
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}

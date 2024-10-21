@@ -1,0 +1,64 @@
+<nav class="navbar">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2MorgaYLPdKElWQANicIsfX-l1WHZAzpIYZXuOgAP1OFysdB5eRzQbSv41jvZ1i7d10d0zo5vQ_XZVSFkHr09SGe1NYw9n5AROmx6KpXFY5wTbCJF1oR0I_pm3S7Rk46cBehaZTICEcp3SwfK4Qdeq6wknFFs5WCtBO6DAk70wZuaM65oY1Nt9-5rZtZQ/s1600/13v5ux09.png" alt="Logo" class="logo-image">
+  <h1 class="navbar-title">Panel de Administrador</h1>
+  
+  <div class="nav-buttons"> <!-- Agrupamos los botones aquí -->
+    <button class="store-btn" (click)="goToStore()" title="Ir a la tienda">
+      <i class="bi bi-shop fs-4"></i> <!-- Icono para ir a la tienda -->
+    </button>
+    <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
+      <i class="bi bi-box-arrow-right fs-4"></i> <!-- Icono para cerrar sesión -->
+    </button>
+  </div>
+</nav>
+
+
+<div class="admin-panel">
+  <div class="table-container">
+    <h2>Usuarios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Rol</th>
+          <th>Fecha de Creación</th>
+          <th>Última Actualización</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.createdAt | date:'short' }}</td>
+          <td>{{ user.updatedAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="table-container">
+    <h2>Productos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre del Producto</th>
+          <th>Precio</th>
+          <th>Fecha de Creación</th>
+          <th>Última Actualización</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}€</td>
+          <td>{{ product.createdAt | date:'short' }}</td>
+          <td>{{ product.updatedAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
