@@ -22,13 +22,18 @@ export class CartService {
 
   // Guardar el carrito en el almacenamiento local
   private saveCart() {
-    localStorage.setItem('cart', JSON.stringify(this.cart)); // Convierte el carrito a JSON y lo guarda en el almacenamiento local
+    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
+      localStorage.setItem('cart', JSON.stringify(this.cart)); // Convierte el carrito a JSON y lo guarda en el almacenamiento local
+    }
   }
 
   // Cargar el carrito desde el almacenamiento local
   private loadCart(): Product[] {
-    const cartData = localStorage.getItem('cart'); // Intenta obtener los datos del carrito del almacenamiento local
-    return cartData ? JSON.parse(cartData) : []; // Si hay datos, los parsea y devuelve; si no, devuelve un array vacío
+    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
+      const cartData = localStorage.getItem('cart'); // Intenta obtener los datos del carrito del almacenamiento local
+      return cartData ? JSON.parse(cartData) : []; // Si hay datos, los parsea y devuelve; si no, devuelve un array vacío
+    }
+    return []; // Devuelve un array vacío si no está en un entorno de navegador
   }
 
   // Vaciar el carrito

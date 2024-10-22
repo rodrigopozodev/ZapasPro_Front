@@ -15,9 +15,36 @@ export class NavComponent {
 
   constructor(public router: Router, public authService: AuthService) {} // Inyecta AuthService
 
+  ngOnInit() {
+    // Verifica si estás en un entorno de navegador
+    if (typeof window !== 'undefined') {
+      try {
+        const user = localStorage.getItem('user'); // Intenta obtener el usuario de localStorage
+  
+        if (user) {
+          // Si el usuario existe, puedes establecer el estado de autenticación o cargar datos adicionales
+          const parsedUser = JSON.parse(user); // Parsea el usuario
+          console.log('Usuario actual:', parsedUser); // Muestra el usuario en la consola
+        } else {
+          console.log('No hay usuario logueado.'); // Si no hay usuario logueado
+        }
+      } catch (error) {
+        console.error('Error accediendo a localStorage:', error); // Maneja el error si ocurre
+      }
+  
+      // Verifica si el usuario está logueado
+      if (!this.authService.getCurrentUser()) {
+        // Lógica para manejar usuarios no logueados
+        console.log('El usuario no está logueado.'); // Para depuración
+      }
+    } else {
+      console.log('No se está en un entorno de navegador.'); // Para depuración
+    }
+  }
+  
   toggleDropdown() {
     this.dropdownVisible = !this.dropdownVisible;
-  
+
     // Si se muestra el dropdown, añade un timeout para quitar la clase
     if (this.dropdownVisible) {
       setTimeout(() => {
@@ -25,7 +52,6 @@ export class NavComponent {
       }, 0);
     }
   }
-  
 
   goToStore() {
     this.router.navigate(['/store']);
@@ -40,65 +66,22 @@ export class NavComponent {
     this.router.navigate(['/cart']); // Navegar a la ruta del carrito
   }
 
-  goToPurchaseHistory() {
-    // Navegar a historial de compras
-  }
-
-  writeReview() {
-    // Navegar a escribir una reseña
-  }
-
-  goToFavorites() {
-    // Navegar a favoritos
-  }
-
-  goToAccountSettings() {
-    // Navegar a configuración de cuenta
-  }
-
-  goToCustomerService() {
-    // Navegar a atención al cliente
-  }
-
-  goToOrders() {
-    // Navegar a mis pedidos
-  }
-
-  goToReturns() {
-    // Navegar a mis devoluciones
-  }
-
-  goToPersonalInfo() {
-    // Navegar a información personal
-  }
-
-  goToContactPreferences() {
-    // Navegar a preferencias de contacto
-  }
-
-  goToRewards() {
-    // Navegar a mis recompensas
-  }
-
-  returnItem() {
-    // Navegar a devolver un artículo
-  }
-
-  goToGiftCards() {
-    // Navegar a tarjetas regalo
-  }
-
-  goToSizes() {
-    // Navegar a mis tallas
-  }
-
-  goToBrands() {
-    // Navegar a mis marcas
-  }
-
-  goToRecommendationPreferences() {
-    // Navegar a preferencias de recomendación
-  }
+  // Métodos adicionales para navegación
+  goToPurchaseHistory() {}
+  writeReview() {}
+  goToFavorites() {}
+  goToAccountSettings() {}
+  goToCustomerService() {}
+  goToOrders() {}
+  goToReturns() {}
+  goToPersonalInfo() {}
+  goToContactPreferences() {}
+  goToRewards() {}
+  returnItem() {}
+  goToGiftCards() {}
+  goToSizes() {}
+  goToBrands() {}
+  goToRecommendationPreferences() {}
 
   // Nueva función para verificar si el usuario es admin
   isAdmin(): boolean {
@@ -126,12 +109,7 @@ export class NavComponent {
     }
   }
 
-  getCurrentUserName(): string | null {
-    const user = localStorage.getItem('user');
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      return parsedUser.username;
-    }
-    return null;
+  getCurrentUserName(): string {
+    return this.authService.getCurrentUserName() || 'Invitado'; // Usa getCurrentUserName del servicio
   }
 }
