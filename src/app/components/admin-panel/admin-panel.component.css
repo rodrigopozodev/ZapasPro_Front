@@ -1,10 +1,10 @@
 /* Estilos para el Navbar */
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; /* Utiliza flexbox para alinear elementos en fila */
+  align-items: center; /* Centra verticalmente los elementos */
+  justify-content: space-between; /* Espacia los elementos a los extremos del navbar */
   background-color: #2c3e50; /* Color de fondo del navbar */
-  padding: 10px 20px; /* Espaciado del navbar */
+  padding: 10px 20px; /* Espaciado interno del navbar */
 }
 
 .logo-image {
@@ -12,65 +12,65 @@
 }
 
 .nav-buttons {
-  display: flex;
-  align-items: center;
+  display: flex; /* Utiliza flexbox para alinear los botones en fila */
+  align-items: center; /* Centra verticalmente los botones */
 }
 
 .logout-btn, .store-btn {
-  background: none; /* Sin fondo para el botón */
+  background: none; /* Sin fondo para el botón, lo hace transparente */
   border: none; /* Sin borde para el botón */
-  color: white; /* Color del icono */
-  font-size: 22px; /* Tamaño del icono */
+  color: white; /* Color del texto del botón */
+  font-size: 22px; /* Tamaño del texto del botón */
   cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-  padding: 10px; /* Espaciado interno */
+  padding: 10px; /* Espaciado interno del botón */
 }
 
-.logout-btn:hover, .store-btn:hover { /* Cambiando color al pasar el cursor */
-  color: #2ecc71; /* Color al pasar el cursor */
+.logout-btn:hover, .store-btn:hover { /* Cambia el color al pasar el cursor */
+  color: #2ecc71; /* Color del texto cuando el cursor está sobre el botón */
 }
 
 /* Estilos para el título del navbar */
 .navbar-title {
-  flex-grow: 1; /* Permite que el título ocupe el espacio disponible */
-  text-align: center; /* Centra el texto */
-  font-size: 24px; /* Tamaño del texto más grande */
-  color: white; /* Color del texto blanco */
-  margin: 0; /* Elimina márgenes */
+  flex-grow: 1; /* Permite que el título ocupe todo el espacio disponible */
+  text-align: center; /* Centra el texto del título */
+  font-size: 24px; /* Tamaño del texto del título */
+  color: white; /* Color del texto del título */
+  margin: 0; /* Elimina márgenes alrededor del título */
 }
 
 /* Estilos para el panel de administrador */
 .admin-panel {
-  padding: 20px;
-  background-color: #f9f9f9; /* Fondo gris claro */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Espaciado interno del panel */
+  background-color: #f9f9f9; /* Color de fondo gris claro para el panel */
+  border-radius: 8px; /* Bordes redondeados para el panel */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
 }
 
 h2 {
-  margin-bottom: 15px;
-  color: #555; /* Gris medio */
+  margin-bottom: 15px; /* Margen inferior para separar el título de los elementos siguientes */
+  color: #555; /* Color gris medio para el texto del título */
 }
 
 .table-container {
-  margin: 20px 0;
-  background: white; /* Fondo blanco */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  margin: 20px 0; /* Margen vertical para separar del contenido adyacente */
+  background: white; /* Color de fondo blanco para el contenedor de la tabla */
+  border-radius: 8px; /* Bordes redondeados para el contenedor de la tabla */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+  padding: 20px; /* Espaciado interno para el contenido del contenedor */
 }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+  width: 100%; /* La tabla ocupa el 100% del ancho de su contenedor */
+  border-collapse: collapse; /* Colapsa los bordes para evitar espacios entre celdas */
 }
 
 thead {
   background-color: #2c3e50; /* Color de fondo para el encabezado de la tabla */
-  color: white; /* Texto blanco */
+  color: white; /* Color del texto en el encabezado de la tabla */
 }
 
 th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  padding: 10px; /* Espaciado interno de las celdas */
+  text-align: left; /* Alinea el texto a la izquierda */
+  border-bottom: 1px solid #ddd; /* Línea inferior para separar las filas */
 }

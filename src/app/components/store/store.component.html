@@ -1,32 +1,46 @@
+<!-- Barra de navegación -->
 <nav class="navbar">
   <div class="logo">
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2MorgaYLPdKElWQANicIsfX-l1WHZAzpIYZXuOgAP1OFysdB5eRzQbSv41jvZ1i7d10d0zo5vQ_XZVSFkHr09SGe1NYw9n5AROmx6KpXFY5wTbCJF1oR0I_pm3S7Rk46cBehaZTICEcp3SwfK4Qdeq6wknFFs5WCtBO6DAk70wZuaM65oY1Nt9-5rZtZQ/s1600/13v5ux09.png" alt="Logo de la tienda" class="logo-image" />
+    <!-- Logo de la tienda -->
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2MorgaYLPdKElWQANicIsfX-l1WHZAzpIYZXuOgAP1OFysdB5eRzQbSv41jvZ1i7d10d0zo5vQ_XZVSFkHr09SGe1NYw9n5AROmx6KpXFY5wTbCJF1oR0I_pm3S7Rk46cBehaZTICEcp3SwfK4Qdeq6wknFFs5WCtBO6DAk70wZuaM65oY1Nt9-5rZtZQ/s1600/13v5ux09.png" 
+         alt="Logo de la tienda" class="logo-image" />
   </div>
   
   <div class="nav-buttons">
+    <!-- Botón de carrito -->
     <button class="cart-btn" (click)="goToCart()" title="Carrito">
-      <i class="bi bi-cart fs-4"></i>
+      <i class="bi bi-cart fs-4"></i> <!-- Icono del carrito de compras -->
     </button>
+    <!-- Botón de cerrar sesión -->
     <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
-      <i class="bi bi-box-arrow-right fs-4"></i>
+      <i class="bi bi-box-arrow-right fs-4"></i> <!-- Icono de cerrar sesión -->
     </button>
   </div>
 </nav>
 
+<!-- Contenedor principal de la tienda -->
 <div class="store">
+  <!-- Disposición de los productos en cuadrícula -->
   <div class="product-grid">
+    <!-- Itera sobre la lista de productos -->
     <div *ngFor="let product of products" class="product-card">
+      <!-- Imagen del producto -->
       <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
       <div class="product-info">
+        <!-- Nombre del producto -->
         <h2 class="product-name">{{ product.name }}</h2>
+        <!-- Descripción del producto -->
         <p class="product-description">{{ product.description }}</p>
+        <!-- Precio del producto -->
         <p class="product-price">{{ product.price.toFixed(2) }}€</p>
       </div>
+      <!-- Botón para agregar el producto al carrito -->
       <button class="add-to-cart-btn" (click)="addToCart(product)">Agregar al carrito</button>
     </div>
   </div>
 </div>
 
+<!-- Pie de página -->
 <footer class="footer">
   <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
 </footer>

@@ -1,11 +1,38 @@
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="container mx-auto max-w-md bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-2xl font-bold text-center">Iniciar Sesión</h1>
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="mt-4">
-      <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Nombre de usuario" class="border p-2 w-full mb-2" required />
-      <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Contraseña" class="border p-2 w-full mb-4" required />
-      <button type="submit" class="bg-blue-500 text-white p-2 w-full">Iniciar Sesión</button>
+<div class="flex items-center justify-center min-h-screen bg-gray-100"> <!-- Centra el contenido vertical y horizontalmente -->
+  <div class="container mx-auto max-w-md bg-white p-6 rounded-lg shadow-md"> <!-- Contenedor principal del formulario -->
+    <h1 class="text-2xl font-bold text-center">Iniciar Sesión</h1> <!-- Título del formulario -->
+    
+    <!-- Formulario para iniciar sesión -->
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="mt-4"> 
+      <input 
+        type="text" 
+        id="username" 
+        [(ngModel)]="username" 
+        name="username" 
+        placeholder="Nombre de usuario" 
+        class="border p-2 w-full mb-2" 
+        required 
+      /> <!-- Campo de entrada para el nombre de usuario -->
+
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="password" 
+        name="password" 
+        placeholder="Contraseña" 
+        class="border p-2 w-full mb-4" 
+        required 
+      /> <!-- Campo de entrada para la contraseña -->
+      
+      <button 
+        type="submit" 
+        class="bg-blue-500 text-white p-2 w-full"
+      >Iniciar Sesión</button> <!-- Botón para enviar el formulario -->
     </form>
-    <p class="text-center">¿No tienes cuenta? <a (click)="goToHome()" class="text-blue-500 cursor-pointer">Regístrate aquí</a></p>
+    
+    <!-- Enlace para redirigir al usuario a la página de registro -->
+    <p class="text-center">¿No tienes cuenta? 
+      <a (click)="goToHome()" class="text-blue-500 cursor-pointer">Regístrate aquí</a>
+    </p>
   </div>
 </div>
