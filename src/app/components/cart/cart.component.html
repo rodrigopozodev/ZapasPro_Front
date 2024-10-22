@@ -1,17 +1,4 @@
 <div class="cart-container mx-auto p-4 max-w-3xl"> <!-- Contenedor principal del carrito -->
-  <nav class="navbar flex justify-between items-center mb-4 bg-gray-200 p-3 rounded"> <!-- Navbar del carrito -->
-    <h1 class="navbar-title text-2xl font-bold">Carrito de Compras</h1> <!-- Título del carrito -->
-    <div class="flex items-center space-x-2"> <!-- Contenedor para los botones de navegación -->
-      <!-- Botón para volver a la tienda -->
-      <button class="back-store-btn p-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200" (click)="goToStore()">
-        <i class="bi bi-shop fs-4"></i> <!-- Icono de volver a la tienda -->
-      </button>
-      <!-- Botón para cerrar sesión -->
-      <button class="logout-btn p-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200" (click)="logout()">
-        <i class="bi bi-box-arrow-right fs-4"></i> <!-- Icono de logout -->
-      </button>
-    </div>
-  </nav>
 
   <div class="cart border border-gray-300 rounded-lg p-4"> <!-- Contenedor principal del carrito -->
     <!-- Mensaje cuando el carrito está vacío -->
@@ -35,9 +22,4 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="footer mt-4 text-center">
-    <p class="text-gray-500">&copy; 2024 ZapasPro. Todos los derechos reservados.</p> <!-- Mensaje de derechos de autor -->
-  </footer>
 </div>

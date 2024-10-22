@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators'; // Importa 'tap' para manipular la respues
 import { environment } from '../../environments/environment'; // Importa las variables de entorno
 import { User } from '../interfaces/user.interface'; // Importa la interfaz User para definir la estructura del usuario
 
+
 @Injectable({
   providedIn: 'root' // Hace que el servicio esté disponible en toda la aplicación
 })

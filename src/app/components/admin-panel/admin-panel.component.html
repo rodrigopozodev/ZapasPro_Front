@@ -1,46 +1,30 @@
+<!-- C:\Users\p-rpozo\ZapasPro\ZapasPro_Frontend\src\app/components/admin-panel/admin-panel.component.html -->
+<!-- Elimina este bloque de código que tiene el antiguo navbar -->
 <!-- Navbar del panel de administrador -->
-<nav class="navbar">
-  <!-- Logo de la aplicación -->
-  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2MorgaYLPdKElWQANicIsfX-l1WHZAzpIYZXuOgAP1OFysdB5eRzQbSv41jvZ1i7d10d0zo5vQ_XZVSFkHr09SGe1NYw9n5AROmx6KpXFY5wTbCJF1oR0I_pm3S7Rk46cBehaZTICEcp3SwfK4Qdeq6wknFFs5WCtBO6DAk70wZuaM65oY1Nt9-5rZtZQ/s1600/13v5ux09.png" alt="Logo" class="logo-image">
-  
-  <!-- Título del panel de administrador -->
-  <h1 class="navbar-title">Panel de Administrador</h1>
-  
-  <div class="nav-buttons"> <!-- Agrupamos los botones de navegación aquí -->
-    <!-- Botón para ir a la tienda -->
-    <button class="store-btn" (click)="goToStore()" title="Ir a la tienda">
-      <i class="bi bi-shop fs-4"></i> <!-- Icono para ir a la tienda -->
-    </button>
-    <!-- Botón para cerrar sesión -->
-    <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
-      <i class="bi bi-box-arrow-right fs-4"></i> <!-- Icono para cerrar sesión -->
-    </button>
-  </div>
-</nav>
+<!-- <nav class="navbar"> ... </nav> -->
 
-<!-- Panel principal del administrador -->
+<!-- Mantén el resto del contenido del componente -->
 <div class="admin-panel">
   <!-- Contenedor para la tabla de usuarios -->
   <div class="table-container">
-    <h2>Usuarios</h2> <!-- Título de la tabla de usuarios -->
+    <h2>Usuarios</h2>
     <table>
       <thead>
         <tr>
-          <th>ID</th> <!-- Encabezado para el ID del usuario -->
-          <th>Nombre de Usuario</th> <!-- Encabezado para el nombre del usuario -->
-          <th>Rol</th> <!-- Encabezado para el rol del usuario -->
-          <th>Fecha de Creación</th> <!-- Encabezado para la fecha de creación del usuario -->
-          <th>Última Actualización</th> <!-- Encabezado para la última actualización del usuario -->
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Rol</th>
+          <th>Fecha de Creación</th>
+          <th>Última Actualización</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Repite una fila por cada usuario en la lista -->
         <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td> <!-- Muestra el ID del usuario -->
-          <td>{{ user.username }}</td> <!-- Muestra el nombre del usuario -->
-          <td>{{ user.role }}</td> <!-- Muestra el rol del usuario -->
-          <td>{{ user.createdAt | date:'short' }}</td> <!-- Muestra la fecha de creación formateada -->
-          <td>{{ user.updatedAt | date:'short' }}</td> <!-- Muestra la última actualización formateada -->
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.createdAt | date:'short' }}</td>
+          <td>{{ user.updatedAt | date:'short' }}</td>
         </tr>
       </tbody>
     </table>
@@ -48,25 +32,24 @@
   
   <!-- Contenedor para la tabla de productos -->
   <div class="table-container">
-    <h2>Productos</h2> <!-- Título de la tabla de productos -->
+    <h2>Productos</h2>
     <table>
       <thead>
         <tr>
-          <th>ID</th> <!-- Encabezado para el ID del producto -->
-          <th>Nombre del Producto</th> <!-- Encabezado para el nombre del producto -->
-          <th>Precio</th> <!-- Encabezado para el precio del producto -->
-          <th>Fecha de Creación</th> <!-- Encabezado para la fecha de creación del producto -->
-          <th>Última Actualización</th> <!-- Encabezado para la última actualización del producto -->
+          <th>ID</th>
+          <th>Nombre del Producto</th>
+          <th>Precio</th>
+          <th>Fecha de Creación</th>
+          <th>Última Actualización</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Repite una fila por cada producto en la lista -->
         <tr *ngFor="let product of products">
-          <td>{{ product.id }}</td> <!-- Muestra el ID del producto -->
-          <td>{{ product.name }}</td> <!-- Muestra el nombre del producto -->
-          <td>{{ product.price }}€</td> <!-- Muestra el precio del producto -->
-          <td>{{ product.createdAt | date:'short' }}</td> <!-- Muestra la fecha de creación formateada -->
-          <td>{{ product.updatedAt | date:'short' }}</td> <!-- Muestra la última actualización formateada -->
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}€</td>
+          <td>{{ product.createdAt | date:'short' }}</td>
+          <td>{{ product.updatedAt | date:'short' }}</td>
         </tr>
       </tbody>
     </table>
