@@ -3,30 +3,45 @@
   <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2MorgaYLPdKElWQANicIsfX-l1WHZAzpIYZXuOgAP1OFysdB5eRzQbSv41jvZ1i7d10d0zo5vQ_XZVSFkHr09SGe1NYw9n5AROmx6KpXFY5wTbCJF1oR0I_pm3S7Rk46cBehaZTICEcp3SwfK4Qdeq6wknFFs5WCtBO6DAk70wZuaM65oY1Nt9-5rZtZQ/s1600/13v5ux09.png" alt="Logo" class="logo-image">
 
   <div class="nav-buttons">
-    <!-- Mostrar el botón de admin solo si el usuario es admin -->
     <button *ngIf="isAdmin()" class="admin-btn" (click)="goToAdmin()" title="Admin">
       <i class="bi bi-shield-lock fs-4"></i>
     </button>
-    <!-- Botón para ir a la tienda -->
     <button class="store-btn" (click)="goToStore()" title="Tienda">
       <i class="bi bi-shop fs-4"></i>
     </button>
-    <!-- Botón para ir al carrito -->
     <button class="cart-btn" (click)="goToCart()" title="Carrito">
       <i class="bi bi-cart fs-4"></i>
     </button>
-    <!-- Botón para cerrar sesión -->
     <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
       <i class="bi bi-box-arrow-right fs-4"></i>
     </button>
-    <!-- Icono de perfil -->
-    <button class="profile-btn" (click)="toggleDropdown()" title="Perfil">
-      <i class="bi bi-person fs-4"></i>
+    
+    <button class="perfil-btn" (click)="toggleDropdown()" title="Perfil">
+      <i class="bi bi-person-circle fs-2"></i>
+      <span class="user-greeting">Hola, {{ getCurrentUserName() }}!</span>
     </button>
-    <div *ngIf="dropdownVisible" class="dropdown">
-      <ul>
-        <!-- Aquí van los demás elementos del menú desplegable -->
-      </ul>
+  
+    <div *ngIf="dropdownVisible" class="dropdown" [ngClass]="{'show': dropdownVisible}" (click)="closeDropdown($event)">
+      <div class="dropdown-content">
+          <button class="close-btn" (click)="toggleDropdown()">✖</button>
+          <ul>
+              <li (click)="goToPurchaseHistory()">Mi historial de compras</li>
+              <li (click)="writeReview()">Escribir una reseña</li>
+              <li (click)="goToFavorites()">Favoritos</li>
+              <li (click)="goToAccountSettings()">Configuración de cuenta</li>
+              <li (click)="goToCustomerService()">Atención al cliente</li>
+              <li (click)="goToOrders()">Mis pedidos</li>
+              <li (click)="goToReturns()">Mis devoluciones</li>
+              <li (click)="goToPersonalInfo()">Información personal</li>
+              <li (click)="goToContactPreferences()">Preferencias de contacto</li>
+              <li (click)="goToRewards()">Mis recompensas</li>
+              <li (click)="returnItem()">Devolver un artículo</li>
+              <li (click)="goToGiftCards()">Tarjetas regalo</li>
+              <li (click)="goToSizes()">Mis tallas</li>
+              <li (click)="goToBrands()">Mis marcas</li>
+              <li (click)="goToRecommendationPreferences()">Preferencias de recomendación</li>
+          </ul>
+      </div>
     </div>
   </div>
 </nav>

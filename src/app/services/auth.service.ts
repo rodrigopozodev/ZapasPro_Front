@@ -12,6 +12,7 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`; // Define la URL base para las peticiones de autenticación
   private authenticated = false; // Propiedad para rastrear si el usuario está autenticado
   public userRole: string | null = null; // Almacena el rol del usuario autenticado
+  private userName: string | null = null; // Almacena el nombre del usuario autenticado
 
   constructor(private http: HttpClient) {} // Inyecta HttpClient en el constructor
 
@@ -28,12 +29,13 @@ export class AuthService {
 
   // Método para iniciar sesión
   login(username: string, password: string): Observable<any> {
-    return this.http.post<{ success: boolean, role: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
+    return this.http.post<{ success: boolean, role: string, name: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap(response => { 
         if (response.success) { // Verifica si la respuesta indica éxito
           this.setAuthenticated(true); // Establece el estado de autenticación en verdadero
           this.setUserRole(response.role); // Guarda el rol del usuario en la propiedad
-          this.saveUserToLocalStorage(response.role); // Guarda el rol en localStorage
+          this.setUserName(response.name); // Guarda el nombre del usuario en la propiedad
+          this.saveUserToLocalStorage(response.role, response.name); // Guarda el rol y nombre en localStorage
         }
       })
     );
@@ -54,6 +56,7 @@ export class AuthService {
   logout() {
     this.authenticated = false; // Cambia el estado de autenticación a falso
     this.userRole = null; // Reinicia el rol del usuario al cerrar sesión
+    this.userName = null; // Reinicia el nombre del usuario al cerrar sesión
     localStorage.removeItem('user'); // Remueve el usuario del localStorage
   }
 
@@ -63,6 +66,16 @@ export class AuthService {
     if (user) {
       const parsedUser = JSON.parse(user); // Parsea los datos del usuario
       return parsedUser.role; // Retorna el rol almacenado
+    }
+    return null; // Retorna null si no hay usuario en localStorage
+  }
+
+  // Método para obtener el nombre del usuario actual desde el localStorage
+  getCurrentUserName(): string | null {
+    const user = localStorage.getItem('user'); // Obtiene los datos del usuario almacenados
+    if (user) {
+      const parsedUser = JSON.parse(user); // Parsea los datos del usuario
+      return parsedUser.name; // Retorna el nombre almacenado
     }
     return null; // Retorna null si no hay usuario en localStorage
   }
@@ -77,9 +90,14 @@ export class AuthService {
     this.userRole = role; // Actualiza el rol del usuario en la aplicación
   }
 
-  // Guarda el rol del usuario en el localStorage
-  private saveUserToLocalStorage(role: string) {
-    const user = { role }; // Crea un objeto con la propiedad 'role'
+  // Método para establecer el nombre del usuario
+  setUserName(name: string) {
+    this.userName = name; // Actualiza el nombre del usuario en la aplicación
+  }
+
+  // Guarda el rol y nombre del usuario en el localStorage
+  private saveUserToLocalStorage(role: string, name: string) {
+    const user = { role, name }; // Crea un objeto con las propiedades 'role' y 'name'
     localStorage.setItem('user', JSON.stringify(user)); // Guarda el usuario en el localStorage
   }
 }

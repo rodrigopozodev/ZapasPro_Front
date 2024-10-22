@@ -1,37 +1,28 @@
-.dropdown {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+@keyframes dropBounce {
+  0% {
+    transform: translateY(-100%); /* Comienza fuera de la vista (arriba) */
+    opacity: 0; /* Oculto al inicio */
   }
-  
-  .dropdown ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  50% {
+    transform: translateY(10px); /* Rebote hacia abajo */
+    opacity: 1; /* Visibilidad completa */
   }
-  
-  .dropdown li {
-    padding: 10px;
+  70% {
+    transform: translateY(-5px); /* Rebote hacia arriba */
   }
-  
-  .dropdown li a {
-    text-decoration: none;
-    color: black;
+  100% {
+    transform: translateY(0); /* Finaliza en su posición */
   }
-  
-  .dropdown li:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Estilos para el Navbar */
+}
+
+/* Estilos para el Navbar */
 .navbar {
   display: flex; /* Utiliza flexbox para alinear elementos en fila */
   align-items: center; /* Centra verticalmente los elementos */
   justify-content: space-between; /* Espacia los elementos a los extremos del navbar */
   background-color: #2c3e50; /* Color de fondo del navbar */
   padding: 10px 20px; /* Espaciado interno del navbar */
+  position: relative; /* Necesario para que el dropdown se posicione correctamente */
 }
 
 .logo-image {
@@ -43,7 +34,7 @@
   align-items: center; /* Centra verticalmente los botones */
 }
 
-.logout-btn, .store-btn, .profile-btn, .cart-btn, .admin-btn {
+.logout-btn, .store-btn, .admin-btn, .perfil-btn, .cart-btn {
   background: none; /* Sin fondo para el botón, lo hace transparente */
   border: none; /* Sin borde para el botón */
   color: white; /* Color del texto del botón */
@@ -52,15 +43,80 @@
   padding: 10px; /* Espaciado interno del botón */
 }
 
-.logout-btn:hover, .store-btn:hover, .profile-btn:hover, .cart-btn:hover, .admin-btn:hover { /* Cambia el color al pasar el cursor */
+.logout-btn:hover, .store-btn:hover, .admin-btn:hover, .perfil-btn:hover, .cart-btn:hover { 
   color: #2ecc71; /* Color del texto cuando el cursor está sobre el botón */
 }
 
-/* Estilos para el título del navbar */
-.navbar-title {
-  flex-grow: 1; /* Permite que el título ocupe todo el espacio disponible */
-  text-align: center; /* Centra el texto del título */
-  font-size: 24px; /* Tamaño del texto del título */
-  color: white; /* Color del texto del título */
-  margin: 0; /* Elimina márgenes alrededor del título */
+/* Estilos para el dropdown */
+.dropdown {
+  position: absolute; /* Mantiene el dropdown en relación a su contenedor */
+  top: 100%; /* Alineado justo debajo del navbar */
+  right: 0; /* Alineado a la derecha */
+  width: 250px; /* Ancho del dropdown */
+  background-color: white; /* Fondo blanco */
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 10px 0 0 10px; /* Esquinas redondeadas a la izquierda */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
+  z-index: 1000; /* Asegura que el dropdown esté por encima de otros elementos */
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en columna */
+  padding: 10px; /* Espaciado interno */
+  transform: translateY(-20px); /* Inicia con un ligero desplazamiento hacia arriba */
+  opacity: 0; /* Oculto por defecto */
+  visibility: hidden; /* Oculto por defecto */
 }
+
+/* Muestra el dropdown */
+.dropdown.show {
+  animation: dropBounce 0.5s ease forwards; /* Aplica la animación al mostrar el dropdown */
+  opacity: 1; /* Visibilidad completa */
+  visibility: visible; /* Se vuelve visible */
+}
+
+/* Para el contenido del dropdown */
+.dropdown-content {
+  position: relative; /* Para que el botón de cerrar se posicione correctamente */
+}
+
+.dropdown ul {
+  list-style: none; /* Sin viñetas para la lista */
+  padding: 0; /* Sin padding */
+  margin: 0; /* Sin margen */
+  flex-grow: 1; /* Permite que la lista ocupe el espacio disponible */
+}
+
+.dropdown li {
+  padding: 10px; /* Espaciado interno de los elementos de la lista */
+}
+
+.dropdown li a {
+  text-decoration: none; /* Sin subrayado */
+  color: black; /* Color del texto */
+}
+
+.dropdown li:hover {
+  background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilo para el botón de cerrar */
+.close-btn {
+  position: absolute; /* Posiciona el botón de cerrar en la parte superior derecha */
+  top: 10px; /* Distancia desde la parte superior */
+  right: 10px; /* Distancia desde la derecha */
+  background: none; /* Sin fondo */
+  border: none; /* Sin borde */
+  font-size: 18px; /* Tamaño de fuente para la X */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
+/* Estilos para el icono de perfil */
+.profile-icon {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el icono de perfil */
+  margin-bottom: 20px; /* Espacio inferior */
+}
+
+.user-greeting {
+  margin-left: 8px; /* Espacio entre el icono y el saludo */
+}
+
