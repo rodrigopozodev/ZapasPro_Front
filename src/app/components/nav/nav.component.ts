@@ -91,4 +91,14 @@ export class NavComponent {
   goToRecommendationPreferences() {
     // Navegar a preferencias de recomendación
   }
+
+  // Nueva función para verificar si el usuario es admin
+  isAdmin(): boolean {
+    const userRole = this.authService.getCurrentUserRole(); // Debe devolver el rol del usuario actual
+    return userRole === 'admin'; // Solo devuelve true si el rol es 'admin'
+  }
+
+  goToAdmin() {
+    this.router.navigate(['/admin']);
+  }
 }

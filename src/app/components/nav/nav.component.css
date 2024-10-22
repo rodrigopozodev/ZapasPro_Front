@@ -43,7 +43,7 @@
   align-items: center; /* Centra verticalmente los botones */
 }
 
-.logout-btn, .store-btn, .profile-btn, .cart-btn {
+.logout-btn, .store-btn, .profile-btn, .cart-btn, .admin-btn {
   background: none; /* Sin fondo para el botón, lo hace transparente */
   border: none; /* Sin borde para el botón */
   color: white; /* Color del texto del botón */
@@ -52,7 +52,7 @@
   padding: 10px; /* Espaciado interno del botón */
 }
 
-.logout-btn:hover, .store-btn:hover, .profile-btn:hover, .cart-btn:hover { /* Cambia el color al pasar el cursor */
+.logout-btn:hover, .store-btn:hover, .profile-btn:hover, .cart-btn:hover, .admin-btn:hover { /* Cambia el color al pasar el cursor */
   color: #2ecc71; /* Color del texto cuando el cursor está sobre el botón */
 }
 
