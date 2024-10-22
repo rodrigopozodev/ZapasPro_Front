@@ -13,6 +13,13 @@ import { AuthService } from '../../services/auth.service';
 export class NavComponent {
   dropdownVisible = false;
 
+  // Añadimos la propiedad submenusVisible para gestionar la visibilidad de los submenús
+  submenusVisible: { [key: string]: boolean } = {
+    compras: false,
+    cuenta: false,
+    soporte: false,
+  };
+
   constructor(public router: Router, public authService: AuthService) {} // Inyecta AuthService
 
   ngOnInit() {
@@ -111,5 +118,25 @@ export class NavComponent {
 
   getCurrentUserName(): string {
     return this.authService.getCurrentUserName() || 'Invitado'; // Usa getCurrentUserName del servicio
+  }
+
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
+
+  // Agrega este método o modifica el existente
+  toggleSubmenu(section: string): void {
+    // Si la sección que se está abriendo ya está visible, cerrarla
+    if (this.currentSubmenu === section) {
+      this.currentSubmenu = '';
+    } else {
+      // Cerrar cualquier sección abierta antes de abrir una nueva
+      this.currentSubmenu = section;
+    }
+  }
+
+currentSubmenu: string = '';
+  isSubmenuVisible(section: string): boolean {
+    return this.submenusVisible[section]; // Devuelve la visibilidad del submenú
   }
 }

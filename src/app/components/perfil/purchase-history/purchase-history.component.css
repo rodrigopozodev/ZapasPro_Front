@@ -1,0 +1,102 @@
+/* Centrar los bloques de pedido en la página */
+.container {
+    max-width: 800px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrar horizontalmente */
+    padding: 20px;
+  }
+  
+  /* Estilo general para los bloques de pedido */
+  .order-block {
+    background-color: #f8f9fa; /* Color de fondo claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px;
+    margin-bottom: 20px; /* Separación entre bloques */
+    transition: transform 0.3s ease; /* Transición al hacer hover */
+  }
+  
+  /* Cambiar el tamaño y la animación al hacer hover sobre los bloques */
+  .order-block:hover {
+    transform: scale(1.02); /* Aumentar ligeramente el tamaño */
+  }
+  
+  /* Estilo para la fila de número de pedido y estado */
+  .order-header {
+    display: flex;
+    justify-content: space-between; /* Espacia los elementos a los extremos */
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-bottom: 10px; /* Separación entre la fila y el contenido de las columnas */
+  }
+  
+  .order-header h5 {
+    margin: 0; /* Quitar margen del número de pedido */
+    font-size: 1.25rem; /* Tamaño del texto */
+  }
+  
+  .order-status {
+    display: flex;
+    align-items: center; /* Alinea icono y texto verticalmente */
+    font-size: 1rem;
+  }
+  
+  .order-status i {
+    margin-right: 5px; /* Espacio entre el icono y el texto */
+    font-size: 1.5rem; /* Tamaño del icono */
+  }
+  
+  /* Estilos para las columnas dentro del bloque */
+  .order-columns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .order-column {
+    width: 48%; /* Cada columna ocupa aproximadamente la mitad del ancho */
+  }
+  
+  .order-column p {
+    margin: 5px 0; /* Espaciado interno entre los párrafos */
+  }
+  
+  /* Botones personalizados */
+  button {
+    width: 100%; /* Asegurar que los botones ocupen el ancho completo de su contenedor */
+    margin-top: 0.3rem;
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
+  
+  button.btn-primary {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button.btn-secondary {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  /* Responsividad para dispositivos más pequeños */
+  @media (max-width: 576px) {
+    .order-columns {
+      flex-direction: column;
+    }
+  
+    .order-column {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  
