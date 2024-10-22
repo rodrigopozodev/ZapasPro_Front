@@ -23,7 +23,7 @@ export class LoginComponent {
 
   // Método para redirigir al usuario a la página principal
   goToHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   // Método que se llama al enviar el formulario

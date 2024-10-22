@@ -8,8 +8,9 @@ import { CartComponent } from './components/cart/cart.component'; // Importa el 
 
 // Define las rutas de la aplicación
 export const routes: Routes = [
-  { path: '', component: HomeComponent }, // Ruta inicial que carga el componente HomeComponent
+  { path: '', component: LoginComponent }, // Ruta inicial que carga el componente LoginComponent
   { path: 'login', component: LoginComponent }, // Ruta para el componente de inicio de sesión
+  { path: 'home', component: HomeComponent },// Ruta para el formulario de registro
   { path: 'store', component: StoreComponent }, // Ruta para acceder a la tienda
   { path: 'admin', component: AdminPanelComponent }, // Ruta para acceder al panel de administración
   { path: 'cart', component: CartComponent }, // Ruta para acceder al carrito
