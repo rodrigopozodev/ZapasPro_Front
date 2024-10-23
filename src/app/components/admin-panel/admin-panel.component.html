@@ -12,7 +12,8 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombre de Usuario</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
           <th>Rol</th>
           <th>Fecha de Creación</th>
           <th>Última Actualización</th>
@@ -21,7 +22,8 @@
       <tbody>
         <tr *ngFor="let user of users">
           <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
           <td>{{ user.role }}</td>
           <td>{{ user.createdAt | date:'short' }}</td>
           <td>{{ user.updatedAt | date:'short' }}</td>

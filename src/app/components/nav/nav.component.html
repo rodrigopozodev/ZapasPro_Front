@@ -18,7 +18,7 @@
 
     <button class="perfil-btn" (click)="toggleDropdown()" title="Perfil">
       <i class="bi bi-person-circle fs-2"></i>
-      <span class="user-greeting"> Hola, {{ getCurrentUserName() }}!</span>
+      <span class="user-greeting"> Hola, {{ getCurrentUserFirstName() }}!</span>
     </button>
 
     <div *ngIf="dropdownVisible" class="dropdown-content" class="dropdown" [ngClass]="{'show': dropdownVisible}" (click)="closeDropdown($event)">

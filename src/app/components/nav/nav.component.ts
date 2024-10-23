@@ -116,8 +116,8 @@ export class NavComponent {
     }
   }
 
-  getCurrentUserName(): string {
-    return this.authService.getCurrentUserName() || 'Invitado'; // Usa getCurrentUserName del servicio
+  getCurrentUserFirstName(): string {
+    return this.authService.getCurrentUserFirstName() || 'Invitado'; // Usa getCurrentUserFirstName del servicio
   }
 
   navigateTo(route: string) {
@@ -135,7 +135,7 @@ export class NavComponent {
     }
   }
 
-currentSubmenu: string = '';
+  currentSubmenu: string = '';
   isSubmenuVisible(section: string): boolean {
     return this.submenusVisible[section]; // Devuelve la visibilidad del submenú
   }

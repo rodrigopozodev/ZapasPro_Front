@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service'; // Asegúrate de que 
   imports: [FormsModule] // Importa FormsModule para usar ngModel en el formulario
 })
 export class LoginComponent {
-  username: string = ''; // Almacena el nombre de usuario
+  email: string = ''; // Almacena el correo electrónico
   password: string = ''; // Almacena la contraseña
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -28,7 +28,7 @@ export class LoginComponent {
 
   // Método que se llama al enviar el formulario
   onSubmit(): void {
-    this.authService.login(this.username, this.password).subscribe(
+    this.authService.login(this.email, this.password).subscribe(
       response => {
         if (response.success) {
           // Redirigir al usuario según su rol

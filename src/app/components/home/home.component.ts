@@ -11,16 +11,18 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule para maneja
   imports: [FormsModule] // Importa el módulo de formularios
 })
 export class HomeComponent {
-  username: string = ''; // Propiedad para almacenar el nombre de usuario
+  firstName: string = ''; // Propiedad para almacenar el nombre
+  lastName: string = ''; // Propiedad para almacenar los apellidos
+  email: string = ''; // Propiedad para almacenar el correo electrónico
   password: string = ''; // Propiedad para almacenar la contraseña
-  role: string = 'client'; // Valor predeterminado del rol del usuario (cliente)
+  role: 'client' | 'admin' = 'client'; // Cambia el tipo a 'client' | 'admin'
 
   constructor(private authService: AuthService, private router: Router) { } // Inyección de servicios
 
   // Método para registrar un nuevo usuario
   register() {
     // Llama al método register del AuthService y pasa los datos del usuario
-    this.authService.register(this.username, this.password, this.role).subscribe(
+    this.authService.register(this.firstName, this.lastName, this.email, this.password, this.role).subscribe(
       response => {
         alert('Usuario registrado con éxito'); // Mensaje de éxito
         this.router.navigate(['/login']); // Navega a la página de login después del registro

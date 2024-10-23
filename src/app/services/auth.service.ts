@@ -21,9 +21,21 @@ export class AuthService {
   } // Inyecta HttpClient en el constructor
 
   // Método para registrar un nuevo usuario
-  register(username: string, password: string, role: string): Observable<any> {
-    const user: User = { username, password, role }; // Crea un objeto usuario
+  register(firstName: string, lastName: string, email: string, password: string, role: 'client' | 'admin'): Observable<any> {
+    const user: User = { 
+      id: this.generateId(), // Genera un ID único para el nuevo usuario
+      firstName, 
+      lastName, 
+      email, 
+      password, 
+      role 
+    }; // Asegúrate de que 'role' sea de tipo 'client' | 'admin'
     return this.http.post(`${this.apiUrl}/register`, user); // Envía una solicitud POST para registrar al usuario
+  }
+
+  // Método para generar un ID único
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 15); // Genera un ID simple; ajusta según tus necesidades
   }
 
   // Método para obtener la lista de usuarios
@@ -32,14 +44,14 @@ export class AuthService {
   }
 
   // Método para iniciar sesión
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<{ success: boolean, role: string, name: string }>(`${this.apiUrl}/login`, { username, password }).pipe(
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<{ success: boolean, role: string, firstName: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {
         if (response.success) { // Verifica si la respuesta indica éxito
           this.setAuthenticated(true); // Establece el estado de autenticación en verdadero
           this.setUserRole(response.role); // Guarda el rol del usuario en la propiedad
-          this.setUserName(response.name); // Guarda el nombre del usuario en la propiedad
-          this.saveUserToLocalStorage(response.role, response.name); // Guarda el rol y nombre en localStorage
+          this.setUserFirstName(response.firstName); // Guarda el nombre del usuario en la propiedad
+          this.saveUserToLocalStorage(response.role, response.firstName); // Guarda el rol y nombre en localStorage
         }
       })
     );
@@ -77,9 +89,9 @@ export class AuthService {
   }
 
   // Método para obtener el nombre del usuario actual desde el localStorage
-  getCurrentUserName(): string | null {
+  getCurrentUserFirstName(): string | null {
     const user = this.getStoredUser(); // Obtiene los datos del usuario almacenados
-    return user ? user.name : null; // Retorna el nombre almacenado
+    return user ? user.firstName : null; // Retorna el nombre almacenado
   }
 
   // Método para establecer el estado de autenticación
@@ -93,14 +105,14 @@ export class AuthService {
   }
 
   // Método para establecer el nombre del usuario
-  setUserName(name: string) {
-    this.currentUser = { ...this.currentUser, name }; // Actualiza currentUser con el nuevo nombre
+  setUserFirstName(firstName: string) {
+    this.currentUser = { ...this.currentUser, firstName }; // Actualiza currentUser con el nuevo nombre
   }
 
   // Guarda el rol y nombre del usuario en el localStorage
-  private saveUserToLocalStorage(role: string, name: string) {
+  private saveUserToLocalStorage(role: string, firstName: string) {
     if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
-      const user = { role, name }; // Crea un objeto con las propiedades 'role' y 'name'
+      const user = { role, firstName }; // Crea un objeto con las propiedades 'role' y 'firstName'
       localStorage.setItem('user', JSON.stringify(user)); // Guarda el usuario en el localStorage
     }
   }
