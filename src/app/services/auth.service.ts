@@ -12,12 +12,11 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`; // Define la URL base para las peticiones de autenticación
   private authenticated = false; // Propiedad para rastrear si el usuario está autenticado
   public userRole: string | null = null; // Almacena el rol del usuario autenticado
-  private currentUser: any; // Asegúrate de inicializarlo correctamente
+  private currentUser: User | null = null; // Asegúrate de inicializarlo correctamente
 
   constructor(private http: HttpClient) {
     // Inicializa currentUser desde localStorage
-    const storedUser = this.getStoredUser();
-    this.currentUser = storedUser; // Inicializa currentUser
+    this.currentUser = this.getStoredUser(); // Inicializa currentUser
   } // Inyecta HttpClient en el constructor
 
   // Método para registrar un nuevo usuario
@@ -39,8 +38,8 @@ export class AuthService {
   }
 
   // Método para obtener la lista de usuarios
-  getUsers(): Observable<any[]> { // Cambia el tipo según tu modelo de usuario
-    return this.http.get<any[]>(this.apiUrl); // Envía una solicitud GET para obtener los usuarios
+  getUsers(): Observable<User[]> { // Cambia el tipo según tu modelo de usuario
+    return this.http.get<User[]>(this.apiUrl); // Envía una solicitud GET para obtener los usuarios
   }
 
   // Método para iniciar sesión
@@ -72,10 +71,8 @@ export class AuthService {
   logout() {
     this.authenticated = false; // Cambia el estado de autenticación a falso
     this.userRole = null; // Reinicia el rol del usuario al cerrar sesión
-    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
-      localStorage.removeItem('user'); // Remueve el usuario del localStorage
-    }
     this.currentUser = null; // Reinicia currentUser al cerrar sesión
+    localStorage.removeItem('user'); // Remueve el usuario del localStorage
   }
 
   // Método para obtener el rol del usuario actual desde el localStorage
@@ -84,45 +81,42 @@ export class AuthService {
     return user ? user.role : null; // Retorna el rol almacenado
   }
 
-  getCurrentUser() {
-    return this.getStoredUser(); // Retorna el usuario actual
-  }
-
-  // Método para obtener el nombre del usuario actual desde el localStorage
-  getCurrentUserFirstName(): string | null {
-    const user = this.getStoredUser(); // Obtiene los datos del usuario almacenados
-    return user ? user.firstName : null; // Retorna el nombre almacenado
+  getCurrentUser(): User | null { // Método para obtener el usuario actual
+    return this.currentUser; // Retorna el usuario actual
   }
 
   // Método para establecer el estado de autenticación
-  setAuthenticated(status: boolean) {
-    this.authenticated = status; // Actualiza el estado de autenticación
+  private setAuthenticated(value: boolean) {
+    this.authenticated = value; // Establece el valor del estado de autenticación
   }
 
-  // Método para establecer el rol del usuario
-  setUserRole(role: string) {
-    this.userRole = role; // Actualiza el rol del usuario en la aplicación
+  // Método para guardar el rol del usuario en el servicio
+  private setUserRole(role: string) {
+    this.userRole = role; // Guarda el rol en la propiedad
   }
-
-  // Método para establecer el nombre del usuario
-  setUserFirstName(firstName: string) {
-    this.currentUser = { ...this.currentUser, firstName }; // Actualiza currentUser con el nuevo nombre
+// Método para guardar el nombre del usuario en el servicio
+private setUserFirstName(firstName: string) {
+  if (this.currentUser) { // Asegúrate de que currentUser no sea null
+    this.currentUser.firstName = firstName; // Guarda el nombre del usuario en la propiedad
   }
+}
 
-  // Guarda el rol y nombre del usuario en el localStorage
+
+  // Método para guardar el usuario en localStorage
   private saveUserToLocalStorage(role: string, firstName: string) {
-    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
-      const user = { role, firstName }; // Crea un objeto con las propiedades 'role' y 'firstName'
-      localStorage.setItem('user', JSON.stringify(user)); // Guarda el usuario en el localStorage
-    }
+    const user = { role, firstName }; // Crea un objeto de usuario con rol y nombre
+    localStorage.setItem('user', JSON.stringify(user)); // Almacena el objeto en localStorage
   }
 
-  // Método privado para obtener el usuario almacenado con seguridad
-  private getStoredUser() {
-    if (typeof window !== 'undefined') { // Verifica si estás en el navegador
-      const user = localStorage.getItem('user'); // Intenta obtener los datos del usuario almacenados
-      return user ? JSON.parse(user) : null; // Parsea los datos del usuario o retorna null
-    }
-    return null; // Retorna null si no se está en un entorno de navegador
+  // Método para recuperar el usuario del localStorage
+  private getStoredUser(): User | null {
+    const user = localStorage.getItem('user'); // Intenta obtener el usuario almacenado
+    return user ? JSON.parse(user) : null; // Si no hay usuario, retorna null
   }
+
+  // Agregar este método en tu AuthService
+getCurrentUserFirstName(): string | null {
+  return this.currentUser ? this.currentUser.firstName : null; // Retorna el nombre o null
+}
+
 }

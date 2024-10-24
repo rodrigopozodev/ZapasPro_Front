@@ -5,9 +5,11 @@ import { Product } from '../interfaces/product.interface'; // Importa la interfa
   providedIn: 'root', // Hace que el servicio esté disponible en toda la aplicación
 })
 export class CartService {
-  private cart: Product[] = []; // Inicializa el carrito como un array vacío de productos
+  private cart: Product[]; // Declara el carrito como un array de productos
 
-  constructor() {} // Constructor del servicio
+  constructor() {
+    this.cart = this.loadCart(); // Carga el carrito desde el almacenamiento local al inicializar el servicio
+  } // Constructor del servicio
 
   // Método para agregar un producto al carrito
   addToCart(product: Product) {
@@ -17,7 +19,7 @@ export class CartService {
 
   // Obtener todos los productos del carrito
   getCart(): Product[] {
-    return this.loadCart(); // Carga y devuelve los productos del carrito desde el almacenamiento local
+    return this.cart; // Devuelve el carrito actual
   }
 
   // Guardar el carrito en el almacenamiento local

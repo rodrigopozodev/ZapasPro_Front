@@ -20,9 +20,15 @@ export class NavComponent {
     soporte: false,
   };
 
+  currentSubmenu: string = '';
+
   constructor(public router: Router, public authService: AuthService) {} // Inyecta AuthService
 
   ngOnInit() {
+    this.checkUser();
+  }
+
+  private checkUser() {
     // Verifica si estás en un entorno de navegador
     if (typeof window !== 'undefined') {
       try {
@@ -135,7 +141,6 @@ export class NavComponent {
     }
   }
 
-  currentSubmenu: string = '';
   isSubmenuVisible(section: string): boolean {
     return this.submenusVisible[section]; // Devuelve la visibilidad del submenú
   }
