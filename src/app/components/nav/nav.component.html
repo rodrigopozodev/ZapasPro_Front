@@ -1,78 +1,88 @@
-<nav class="navbar">
-  <!-- Logo de la aplicación -->
-  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="logo-image">
+<nav class="bg-gradient-to-r from-orange-500 to-white shadow-lg">
+  <div class="container mx-auto flex justify-between items-center p-4">
+    <!-- Logo de la aplicación -->
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="h-12">
 
-  <div class="nav-buttons">
-    <button *ngIf="isAdmin()" class="admin-btn" (click)="goToAdmin()" title="Admin">
-      <i class="bi bi-shield-lock fs-4"></i>
-    </button>
-    <button class="store-btn" (click)="goToStore()" title="Tienda">
-      <i class="bi bi-shop fs-4"></i>
-    </button>
-    <button class="cart-btn" (click)="goToCart()" title="Carrito">
-      <i class="bi bi-cart fs-4"></i>
-    </button>
-    <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
-      <i class="bi bi-box-arrow-right fs-4"></i>
-    </button>
+    <div class="flex items-center space-x-4 relative">
+      <button *ngIf="isAdmin()" class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToAdmin()" title="Admin">
+        <i class="bi bi-shield-lock fs-4"></i>
+      </button>
+      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToStore()" title="Tienda">
+        <i class="bi bi-shop fs-4"></i>
+      </button>
+      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToCart()" title="Carrito">
+        <i class="bi bi-cart fs-4"></i>
+      </button>
+      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="logout()" title="Cerrar sesión">
+        <i class="bi bi-box-arrow-right fs-4"></i>
+      </button>
 
-    <button class="perfil-btn" (click)="toggleDropdown()" title="Perfil">
-      <i class="bi bi-person-circle fs-2"></i>
-      <span class="user-greeting"> Hola, {{ getCurrentUserName() }}!</span>
-    </button>
+      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="toggleDropdown()" title="Perfil">
+        <i class="bi bi-person-circle fs-2"></i>
+        <span class="user-greeting text-sm">Hola, {{ getCurrentUserName() }}!</span>
+      </button>
 
-    <div *ngIf="dropdownVisible" class="dropdown-content" class="dropdown" [ngClass]="{'show': dropdownVisible}" (click)="closeDropdown($event)">
-        <button class="close-btn" (click)="toggleDropdown()">✖</button>
-        <!-- Menú de Compras -->
-        <div class="section-dropdown">
-          <h5 class="section-title" (click)="toggleSubmenu('compras')">Compras</h5>
-          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
-            <li (click)="navigateTo('/perfil/purchase-history')">Mi historial de compras</li>
-            <li (click)="navigateTo('/perfil/orders')">Mis pedidos</li>
-            <li (click)="navigateTo('/perfil/returns')">Mis devoluciones</li>
-            <li (click)="navigateTo('/perfil/return-item')">Devolver un artículo</li>
-            <li (click)="navigateTo('/perfil/favorites')">Favoritos</li>
-          </ul>
+      <!-- Dropdown -->
+      <div *ngIf="dropdownVisible" class="dropdown" [ngClass]="{'show': dropdownVisible}">
+        <div class="flex justify-between items-center p-2">
+          <button class="close-btn p-2 text-orange-500 hover:text-orange-700" (click)="toggleDropdown()">
+            <i class="bi bi-x fs-4"></i>
+          </button>
         </div>
+        
+        <div class="p-2">
+          <!-- Menú de Compras -->
+          <div class="section-dropdown">
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('compras')">Compras</h5>
+            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/purchase-history')">Mi historial de compras</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/orders')">Mis pedidos</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/returns')">Mis devoluciones</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/return-item')">Devolver un artículo</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/favorites')">Favoritos</li>
+            </ul>
+          </div>
 
-        <!-- Menú de Cuenta -->
-        <div class="section-dropdown">
-          <h5 class="section-title" (click)="toggleSubmenu('cuenta')">Cuenta</h5>
-          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'cuenta'}" *ngIf="currentSubmenu === 'cuenta'">
-            <li (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>
-            <li (click)="navigateTo('/perfil/personal-info')">Información personal</li>
-            <li (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
-            <li (click)="navigateTo('/perfil/brands')">Mis marcas</li>
-            <li (click)="navigateTo('/perfil/gift-cards')">Tarjetas regalo</li>
-            <li (click)="navigateTo('/perfil/contact-preferences')">Preferencias de contacto</li>
-            <li (click)="navigateTo('/perfil/recommendation-preferences')">Preferencias de recomendación</li>
-          </ul>
-        </div>
+          <!-- Menú de Cuenta -->
+          <div class="section-dropdown">
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('cuenta')">Cuenta</h5>
+            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'cuenta'}" *ngIf="currentSubmenu === 'cuenta'">
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/personal-info')">Información personal</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/brands')">Mis marcas</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/gift-cards')">Tarjetas regalo</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/contact-preferences')">Preferencias de contacto</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/recommendation-preferences')">Preferencias de recomendación</li>
+            </ul>
+          </div>
 
-        <!-- Menú de Calificaciones y Opiniones -->
-        <div class="section-dropdown">
-          <h5 class="section-title" (click)="toggleSubmenu('calificaciones')">Calificaciones y Opiniones</h5>
-          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'calificaciones'}" *ngIf="currentSubmenu === 'calificaciones'">
-            <li (click)="navigateTo('/perfil/write-review')">Escribir una opinión</li>
-          </ul>
-        </div>
+          <!-- Menú de Calificaciones y Opiniones -->
+          <div class="section-dropdown">
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('calificaciones')">Calificaciones y Opiniones</h5>
+            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'calificaciones'}" *ngIf="currentSubmenu === 'calificaciones'">
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/write-review')">Escribir una opinión</li>
+            </ul>
+          </div>
 
-        <!-- Menú de Recompensas -->
-        <div class="section-dropdown">
-          <h5 class="section-title" (click)="toggleSubmenu('recompensas')">Recompensas</h5>
-          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'recompensas'}" *ngIf="currentSubmenu === 'recompensas'">
-            <li (click)="navigateTo('/perfil/my-rewards')">Mis recompensas</li>
-          </ul>
-        </div>
+          <!-- Menú de Recompensas -->
+          <div class="section-dropdown">
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('recompensas')">Recompensas</h5>
+            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'recompensas'}" *ngIf="currentSubmenu === 'recompensas'">
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/my-rewards')">Mis recompensas</li>
+            </ul>
+          </div>
 
-        <!-- Menú de Soporte -->
-        <div class="section-dropdown">
-          <h5 class="section-title" (click)="toggleSubmenu('soporte')">Soporte</h5>
-          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'soporte'}" *ngIf="currentSubmenu === 'soporte'">
-            <li (click)="navigateTo('/perfil/contact-us')">Contáctanos</li>
-            <li (click)="navigateTo('/perfil/faq')">Preguntas frecuentes</li>
-          </ul>
+          <!-- Menú de Soporte -->
+          <div class="section-dropdown">
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('soporte')">Soporte</h5>
+            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'soporte'}" *ngIf="currentSubmenu === 'soporte'">
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/contact-us')">Contáctanos</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/faq')">Preguntas frecuentes</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 </nav>
