@@ -1,0 +1,78 @@
+<nav class="navbar">
+  <!-- Logo de la aplicación -->
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="logo-image">
+
+  <div class="nav-buttons">
+    <button *ngIf="isAdmin()" class="admin-btn" (click)="goToAdmin()" title="Admin">
+      <i class="bi bi-shield-lock fs-4"></i>
+    </button>
+    <button class="store-btn" (click)="goToStore()" title="Tienda">
+      <i class="bi bi-shop fs-4"></i>
+    </button>
+    <button class="cart-btn" (click)="goToCart()" title="Carrito">
+      <i class="bi bi-cart fs-4"></i>
+    </button>
+    <button class="logout-btn" (click)="logout()" title="Cerrar sesión">
+      <i class="bi bi-box-arrow-right fs-4"></i>
+    </button>
+
+    <button class="perfil-btn" (click)="toggleDropdown()" title="Perfil">
+      <i class="bi bi-person-circle fs-2"></i>
+      <span class="user-greeting"> Hola, {{ getCurrentUserName() }}!</span>
+    </button>
+
+    <div *ngIf="dropdownVisible" class="dropdown-content" class="dropdown" [ngClass]="{'show': dropdownVisible}" (click)="closeDropdown($event)">
+        <button class="close-btn" (click)="toggleDropdown()">✖</button>
+        <!-- Menú de Compras -->
+        <div class="section-dropdown">
+          <h5 class="section-title" (click)="toggleSubmenu('compras')">Compras</h5>
+          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
+            <li (click)="navigateTo('/perfil/purchase-history')">Mi historial de compras</li>
+            <li (click)="navigateTo('/perfil/orders')">Mis pedidos</li>
+            <li (click)="navigateTo('/perfil/returns')">Mis devoluciones</li>
+            <li (click)="navigateTo('/perfil/return-item')">Devolver un artículo</li>
+            <li (click)="navigateTo('/perfil/favorites')">Favoritos</li>
+          </ul>
+        </div>
+
+        <!-- Menú de Cuenta -->
+        <div class="section-dropdown">
+          <h5 class="section-title" (click)="toggleSubmenu('cuenta')">Cuenta</h5>
+          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'cuenta'}" *ngIf="currentSubmenu === 'cuenta'">
+            <li (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>
+            <li (click)="navigateTo('/perfil/personal-info')">Información personal</li>
+            <li (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
+            <li (click)="navigateTo('/perfil/brands')">Mis marcas</li>
+            <li (click)="navigateTo('/perfil/gift-cards')">Tarjetas regalo</li>
+            <li (click)="navigateTo('/perfil/contact-preferences')">Preferencias de contacto</li>
+            <li (click)="navigateTo('/perfil/recommendation-preferences')">Preferencias de recomendación</li>
+          </ul>
+        </div>
+
+        <!-- Menú de Calificaciones y Opiniones -->
+        <div class="section-dropdown">
+          <h5 class="section-title" (click)="toggleSubmenu('calificaciones')">Calificaciones y Opiniones</h5>
+          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'calificaciones'}" *ngIf="currentSubmenu === 'calificaciones'">
+            <li (click)="navigateTo('/perfil/write-review')">Escribir una opinión</li>
+          </ul>
+        </div>
+
+        <!-- Menú de Recompensas -->
+        <div class="section-dropdown">
+          <h5 class="section-title" (click)="toggleSubmenu('recompensas')">Recompensas</h5>
+          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'recompensas'}" *ngIf="currentSubmenu === 'recompensas'">
+            <li (click)="navigateTo('/perfil/my-rewards')">Mis recompensas</li>
+          </ul>
+        </div>
+
+        <!-- Menú de Soporte -->
+        <div class="section-dropdown">
+          <h5 class="section-title" (click)="toggleSubmenu('soporte')">Soporte</h5>
+          <ul class="submenu" [ngClass]="{'show': currentSubmenu === 'soporte'}" *ngIf="currentSubmenu === 'soporte'">
+            <li (click)="navigateTo('/perfil/contact-us')">Contáctanos</li>
+            <li (click)="navigateTo('/perfil/faq')">Preguntas frecuentes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</nav>

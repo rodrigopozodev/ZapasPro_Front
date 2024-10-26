@@ -1,0 +1,26 @@
+<!-- Contenedor principal de la tienda -->
+<div class="store">
+  <!-- Disposición de los productos en cuadrícula -->
+  <div class="product-grid">
+    <!-- Itera sobre la lista de productos -->
+    <div *ngFor="let product of products" class="product-card">
+      <!-- Imagen del producto -->
+      <img [src]="product.image" alt="{{ product.name }}" class="product-image" />
+      <div class="product-info">
+        <!-- Nombre del producto -->
+        <h2 class="product-name">{{ product.name }}</h2>
+        <!-- Descripción del producto -->
+        <p class="product-description">{{ product.description }}</p>
+        <!-- Precio del producto -->
+        <p class="product-price">{{ product?.price?.toFixed(2) }}€</p>
+      </div>
+      <!-- Botón para agregar el producto al carrito -->
+      <button class="add-to-cart-btn" (click)="addToCart(product)">Agregar al carrito</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pie de página -->
+<footer class="footer">
+  <p>&copy; 2024 Tu Tienda. Todos los derechos reservados.</p>
+</footer>
