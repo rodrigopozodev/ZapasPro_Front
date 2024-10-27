@@ -7,19 +7,16 @@
     </div>
 
     <!-- Sección que muestra los productos en el carrito -->
-    <div *ngIf="cartProducts.length > 0">
-      <!-- Itera sobre los productos del carrito -->
-      <div *ngFor="let product of cartProducts" class="cart-item flex items-center border-b border-gray-200 py-4">
-        <img [src]="product.image" alt="{{ product.name }}" class="cart-image w-24 h-24 object-cover mr-4 rounded" /> <!-- Imagen del producto -->
-        <div class="cart-info flex-1"> <!-- Contenedor de información del producto -->
-          <h2 class="text-lg font-semibold">{{ product.name }}</h2> <!-- Nombre del producto -->
-          <p class="product-price">{{ product?.price?.toFixed(2) }}€</p> <!-- Precio del producto -->
-        </div>
-      </div>
+    <div *ngFor="let cartProduct of cartProducts">
+      <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24" />
+      <h2 class="text-lg font-semibold">{{ cartProduct.product.name }}</h2>
+      <p class="product-price">{{ cartProduct.product.price.toFixed(2) }}€</p>
+      <p class="quantity">Cantidad: {{ cartProduct.quantity }}</p>
+    </div>
+    
       <div class="mt-4 flex justify-between"> <!-- Contenedor para los botones de compra y vaciar carrito -->
         <button (click)="buy()" class="buy-btn px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200">Comprar</button> <!-- Botón para comprar -->
         <button (click)="clearCart()" class="clear-cart-btn px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400 transition duration-200">Vaciar Carrito</button> <!-- Botón para vaciar el carrito -->
       </div>
     </div>
   </div>
-</div>

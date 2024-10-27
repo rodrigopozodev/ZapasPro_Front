@@ -1,44 +1,95 @@
-import { Injectable } from '@angular/core'; // Importa el decorador Injectable para definir un servicio
-import { Product } from '../interfaces/product.interface'; // Importa la interfaz Product para definir la estructura de los productos
+import { Injectable } from '@angular/core';
+import { Product } from '../interfaces/product.interface';
 
 @Injectable({
-  providedIn: 'root', // Hace que el servicio esté disponible en toda la aplicación
+  providedIn: 'root',
 })
 export class CartService {
-  private cart: Product[] = []; // Inicializa el carrito como un array vacío de productos
+  private cart: { product: Product; quantity: number }[] = [];
 
-  constructor() {} // Constructor del servicio
+  constructor() {
+    this.cart = this.loadCart();
+  }
 
   // Método para agregar un producto al carrito
   addToCart(product: Product) {
-    this.cart.push(product); // Añade el producto al carrito
-    this.saveCart(); // Guarda el estado del carrito en el almacenamiento local
+    const existingProduct = this.cart.find(item => item.product.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      this.cart.push({ product, quantity: 1 });
+    }
+    this.saveCart();
   }
 
-  // Obtener todos los productos del carrito
-  getCart(): Product[] {
-    return this.loadCart(); // Carga y devuelve los productos del carrito desde el almacenamiento local
+  // Método para agregar un producto al carrito (alias para addToCart)
+  addItem(product: Product) {
+    this.addToCart(product);
   }
 
-  // Guardar el carrito en el almacenamiento local
-  private saveCart() {
-    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
-      localStorage.setItem('cart', JSON.stringify(this.cart)); // Convierte el carrito a JSON y lo guarda en el almacenamiento local
+  // Método para eliminar un producto del carrito
+  removeItem(productId: number) {
+    this.cart = this.cart.filter(item => item.product.id !== productId);
+    this.saveCart();
+  }
+
+  // Aumentar la cantidad de un producto en el carrito
+  increaseQuantity(productId: number) {
+    const existingProduct = this.cart.find(item => item.product.id === productId);
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+      this.saveCart();
     }
   }
 
-  // Cargar el carrito desde el almacenamiento local
-  private loadCart(): Product[] {
-    if (typeof window !== 'undefined') { // Verifica si estás en un entorno de navegador
-      const cartData = localStorage.getItem('cart'); // Intenta obtener los datos del carrito del almacenamiento local
-      return cartData ? JSON.parse(cartData) : []; // Si hay datos, los parsea y devuelve; si no, devuelve un array vacío
+  // Disminuir la cantidad de un producto en el carrito
+  decreaseQuantity(productId: number) {
+    const existingProduct = this.cart.find(item => item.product.id === productId);
+    if (existingProduct) {
+      if (existingProduct.quantity > 1) {
+        existingProduct.quantity -= 1;
+      } else {
+        this.removeItem(productId); // Elimina el producto si la cantidad es 0
+      }
+      this.saveCart();
     }
-    return []; // Devuelve un array vacío si no está en un entorno de navegador
   }
 
-  // Vaciar el carrito
+  // Limpiar el carrito
   clearCart() {
-    this.cart = []; // Reinicia el carrito a un array vacío
-    this.saveCart(); // Guarda el estado del carrito vacío en el almacenamiento local
+    this.cart = [];
+    this.saveCart();
+  }
+
+  // Obtener todos los productos en el carrito
+  getCart(): { product: Product; quantity: number }[] {
+    return this.cart;
+  }
+
+  // Obtener el total de ítems en el carrito
+  getTotalItems(): number {
+    return this.cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  // Obtener la cantidad de un producto específico en el carrito
+  getItemCount(productId: number): number {
+    const existingProduct = this.cart.find(item => item.product.id === productId);
+    return existingProduct ? existingProduct.quantity : 0;
+  }
+
+  // Guardar el carrito en el localStorage
+  private saveCart() {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    }
+  }
+
+  // Cargar el carrito desde el localStorage
+  private loadCart(): { product: Product; quantity: number }[] {
+    if (typeof window !== 'undefined') {
+      const cartData = localStorage.getItem('cart');
+      return cartData ? JSON.parse(cartData) : [];
+    }
+    return [];
   }
 }

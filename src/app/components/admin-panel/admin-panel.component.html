@@ -96,6 +96,9 @@
             <th class="border border-yellow-300 p-2">Precio</th>
             <th class="border border-yellow-300 p-2">Descripción</th>
             <th class="border border-yellow-300 p-2">Imagen</th>
+            <th class="border border-yellow-300 p-2">Stock</th>
+            <th class="border border-yellow-300 p-2">Tallas</th>
+            <th class="border border-yellow-300 p-2">Género</th>
             <th class="border border-yellow-300 p-2">Acciones</th>
           </tr>
         </thead>
@@ -103,9 +106,12 @@
           <tr *ngFor="let product of products" class="hover:bg-yellow-100 transition duration-300">
             <td class="border border-yellow-300 p-2">{{ product.id }}</td>
             <td class="border border-yellow-300 p-2">{{ product.name }}</td>
-            <td class="border border-yellow-300 p-2">{{ product.price | currency }}</td>
+            <td class="border border-yellow-300 p-2">{{ product.price }} €</td>
             <td class="border border-yellow-300 p-2">{{ product.description }}</td>
-            <td class="border border-yellow-300 p-2"><img [src]="product.image" alt="{{ product.name }}" class="h-16 w-16 object-cover" /></td>
+            <td class="border border-yellow-300 p-2"><img [src]="product.imageUrl" alt="{{ product.name }}" class="h-16 w-16 object-cover" /></td>
+            <td class="border border-yellow-300 p-2">{{ product.stock }}</td>
+            <td class="border border-yellow-300 p-2">{{ product.sizes.join(', ') }}</td>
+            <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
             <td class="border border-yellow-300 p-2">
               <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
             </td>

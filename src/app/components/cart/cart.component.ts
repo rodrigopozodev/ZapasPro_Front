@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common'; // Importa el módulo común de Angular
 import { Component, OnInit } from '@angular/core'; // Importa los decoradores de componente y ciclo de vida
 import { CartService } from '../../services/cart.service'; // Importa el servicio del carrito
-import { Product } from '../../interfaces/product.interface'; // Importa la interfaz del producto
+import { CartItem } from '../../interfaces/cart.interface'; // Importa la interfaz del carrito
 import { UserService } from '../../services/user.service'; // Cambia userService por UserService
 import { Router } from '@angular/router'; // Importa el enrutador de Angular
 
@@ -13,14 +13,14 @@ import { Router } from '@angular/router'; // Importa el enrutador de Angular
   imports: [CommonModule] // Importa el CommonModule para utilizar directivas comunes
 })
 export class CartComponent implements OnInit { // Define el componente
-  cartProducts: Product[] = []; // Array para almacenar los productos del carrito
+  cartProducts: CartItem[] = []; // Array para almacenar los productos del carrito
 
   // Constructor para inyectar servicios
   constructor(private cartService: CartService, private userService: UserService, private router: Router) {} // Cambia userService por UserService
 
   // Método de ciclo de vida que se ejecuta al inicializar el componente
   ngOnInit(): void {
-    this.cartProducts = this.cartService.getCart(); // Obtiene los productos del carrito desde el servicio
+    this.cartProducts = this.cartService.getCart(); // Esto ahora debe coincidir con el tipo correcto
   }
 
   // Método para navegar a la tienda

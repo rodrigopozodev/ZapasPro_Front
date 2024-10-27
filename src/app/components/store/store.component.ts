@@ -1,53 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service'; // Asegúrate de que la ruta sea correcta
-import { Product } from '../../interfaces/product.interface'; // Asegúrate de importar tu interfaz
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../services/user.service'; // Servicio de autenticación para manejar el login y logout
-import { Router } from '@angular/router'; // Importar Router para la navegación
-import { CartService } from '../../services/cart.service'; // Importa CartService para manejar el carrito de compras
+import { CartService } from '../../services/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-store', // Selector del componente, se usa en el HTML
-  templateUrl: './store.component.html', // Plantilla HTML del componente
-  styleUrls: ['./store.component.css'], // Estilos del componente
-  standalone: true, // Permite usar este componente sin necesidad de un módulo de Angular
-  imports: [CommonModule] // Asegúrate de incluir CommonModule para directivas como *ngFor
+  selector: 'app-store',
+  templateUrl: './store.component.html',
+  styleUrls: ['./store.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
 export class StoreComponent implements OnInit {
-  products: Product[] = []; // Define tu propiedad 'products' para almacenar la lista de productos
+  products: Product[] = []; // Lista de todos los productos
+  filteredProducts: Product[] = []; // Lista de productos filtrados
+  selectedColor: string = '';
+  selectedSize: { [key: number]: string } = {}; // Cambiado a objeto para manejar tamaños por producto
+  selectedGender: string = '';
+  selectedBrand: string = '';
 
-  constructor(
-    private productService: ProductService, // Inyección del servicio de productos
-    private userService: UserService, // Inyección del servicio de autenticación
-    private router: Router, // Inyección del servicio Router para navegación
-    private cartService: CartService // Inyecta el CartService para manejar operaciones del carrito
-  ) { }
+  uniqueColors: string[] = []; // Lista única de colores
+  uniqueSizes: string[] = []; // Lista única de tallas
+  uniqueGenders: string[] = []; // Lista única de géneros
+  uniqueBrands: string[] = []; // Lista única de marcas
+
+  constructor(public cartService: CartService, private productService: ProductService) {}
 
   ngOnInit() {
-    this.loadProducts(); // Carga los productos al inicializar el componente
+    this.loadProducts();
   }
 
-  // Método para cargar productos desde el servicio
   loadProducts() {
-    this.productService.getProducts().subscribe((data: Product[]) => { // Especifica el tipo aquí
-      this.products = data; // Asigna los productos recibidos a la propiedad 'products'
+    // Cargar productos y obtener listas únicas para filtros
+    this.productService.getProducts().subscribe((products: Product[]) => {
+      this.products = products; // Asignar productos obtenidos
+      this.filteredProducts = this.products;
+      this.uniqueColors = this.getUniqueColors(this.products);
+      this.uniqueSizes = this.getUniqueSizes(this.products);
+      this.uniqueGenders = this.getUniqueGenders(this.products);
+      this.uniqueBrands = this.getUniqueBrands(this.products);
     });
   }
 
-  // Método para agregar un producto al carrito
   addToCart(product: Product): void {
-    this.cartService.addToCart(product); // Llama al método de CartService para agregar el producto
-    alert('Producto agregado al carrito'); // Alerta para el usuario
+    const size = this.selectedSize[product.id]; // Obtener el tamaño seleccionado para este producto
+    if (size) {
+      const productWithSize = { ...product, selectedSize: size };
+      this.cartService.addToCart(productWithSize);
+    } else {
+      console.warn('Por favor selecciona un tamaño.'); // Mensaje de advertencia si no hay tamaño seleccionado
+    }
   }
 
-  // Método para navegar al carrito
-  goToCart() {
-    this.router.navigate(['/cart']); // Navegar a la ruta del carrito
+  applyFilters() {
+    // Filtrar productos según las selecciones
+    this.filteredProducts = this.products.filter(product => {
+      return (
+        (this.selectedColor ? product.color === this.selectedColor : true) &&
+        (this.selectedSize[product.id] ? product.sizes.includes(this.selectedSize[product.id]) : true) &&
+        (this.selectedGender ? product.gender === this.selectedGender : true) &&
+        (this.selectedBrand ? product.brand === this.selectedBrand : true)
+      );
+    });
   }
 
-  // Método para cerrar sesión
-  logout() {
-    this.userService.logout(); // Llama al método logout en userService
-    this.router.navigate(['/login']); // Navegar a la página de login al cerrar sesión
+  getUniqueColors(products: Product[]): string[] {
+    // Obtener colores únicos
+    const colors = new Set(products.map(product => product.color));
+    return Array.from(colors);
+  }
+
+  getUniqueSizes(products: Product[]): string[] {
+    // Obtener tallas únicas
+    const sizes = new Set(products.flatMap(product => product.sizes));
+    return Array.from(sizes);
+  }
+
+  getUniqueGenders(products: Product[]): string[] {
+    // Obtener géneros únicos
+    const genders = new Set(products.map(product => product.gender));
+    return Array.from(genders);
+  }
+
+  getUniqueBrands(products: Product[]): string[] {
+    // Obtener marcas únicas
+    const brands = new Set(products.map(product => product.brand));
+    return Array.from(brands);
   }
 }
