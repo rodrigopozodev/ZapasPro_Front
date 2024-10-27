@@ -19,35 +19,28 @@
     <h1 class="text-3xl font-extrabold text-yellow-600 mb-6 animate-fadeIn text-center">Administración</h1>
 
     <!-- Sección de usuarios -->
-    <div *ngIf="showUsers" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300">
+    <div *ngIf="showUsers" [ngClass]="{'animate-fadeIn': showUsers, 'animate-fadeOut': !showUsers}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
       <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Usuarios</h2>
-      <table class="min-w-full border-collapse text-center">
-        <thead class="bg-yellow-200">
-          <tr>
-            <th class="border border-yellow-300 p-2">ID</th>
-            <th class="border border-yellow-300 p-2">Nombre de Usuario</th>
-            <th class="border border-yellow-300 p-2">Rol</th>
-            <th class="border border-yellow-300 p-2">Fecha de Creación</th>
-            <th class="border border-yellow-300 p-2">Última Actualización</th>
-            <th class="border border-yellow-300 p-2">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of users" class="hover:bg-yellow-100 transition duration-300">
-            <td class="border border-yellow-300 p-2">{{ user.id }}</td>
-            <td class="border border-yellow-300 p-2">{{ user.username }}</td>
-            <td class="border border-yellow-300 p-2">{{ user.role }}</td>
-            <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.createdAt | date:'short' }}</td>
-            <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.updatedAt | date:'short' }}</td>
-            <td class="border border-yellow-300 p-2">
-              <button (click)="editUser(user)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
 
-      <!-- Formulario de edición de usuario -->
-      <div *ngIf="currentUser" class="mt-6 p-4 border border-yellow-300 rounded-lg bg-yellow-50">
+      <!-- Paginación -->
+      <div class="mt-4 flex justify-center mb-6"> <!-- Agregando margen inferior aquí -->
+        <button (click)="previousPage()" 
+                [disabled]="currentPage === 1" 
+                class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+                [ngClass]="{'cursor-not-allowed opacity-50': currentPage === 1}">
+          Anterior
+        </button>
+        <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" 
+                [disabled]="currentPage === totalPages" 
+                class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+                [ngClass]="{'cursor-not-allowed opacity-50': currentPage === totalPages}">
+          Siguiente
+        </button>
+      </div>
+
+      <!-- Formulario de edición de usuario al principio de la tabla -->
+      <div *ngIf="currentUser" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
         <h3 class="text-xl font-bold text-yellow-600 mb-2">Editar Usuario</h3>
         <form (ngSubmit)="updateUser()">
           <label for="username" class="block mb-2">Nombre de Usuario:</label>
@@ -61,12 +54,39 @@
 
           <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
           <button type="button" (click)="cancelEdit()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+          <button type="button" (click)="deleteUser(currentUser.id)" class="bg-red-700 text-white hover:bg-red-800 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
         </form>
       </div>
+
+      <!-- Tabla de usuarios -->
+      <table class="min-w-full border-collapse text-center">
+        <thead class="bg-yellow-200">
+          <tr>
+            <th class="border border-yellow-300 p-2">ID</th>
+            <th class="border border-yellow-300 p-2">Nombre de Usuario</th>
+            <th class="border border-yellow-300 p-2">Rol</th>
+            <th class="border border-yellow-300 p-2">Fecha de Creación</th>
+            <th class="border border-yellow-300 p-2">Última Actualización</th>
+            <th class="border border-yellow-300 p-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers" class="hover:bg-yellow-100 transition duration-300">
+            <td class="border border-yellow-300 p-2">{{ user.id }}</td>
+            <td class="border border-yellow-300 p-2">{{ user.username }}</td>
+            <td class="border border-yellow-300 p-2">{{ user.role }}</td>
+            <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.createdAt | date:'short' }}</td>
+            <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.updatedAt | date:'short' }}</td>
+            <td class="border border-yellow-300 p-2">
+              <button (click)="editUser(user)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Contenedor para la tabla de productos -->
-    <div *ngIf="showProducts" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300">
+    <div *ngIf="showProducts" [ngClass]="{'animate-fadeIn': showProducts, 'animate-fadeOut': !showProducts}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
       <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Productos</h2>
       <table class="min-w-full border-collapse text-center">
         <thead class="bg-yellow-200">
@@ -85,7 +105,7 @@
             <td class="border border-yellow-300 p-2">{{ product.name }}</td>
             <td class="border border-yellow-300 p-2">{{ product.price | currency }}</td>
             <td class="border border-yellow-300 p-2">{{ product.description }}</td>
-            <td class="border border-yellow-300 p-2"><img [src]="product.image" alt="{{ product.name }}" class="h-16 w-16 object-cover"/></td>
+            <td class="border border-yellow-300 p-2"><img [src]="product.image" alt="{{ product.name }}" class="h-16 w-16 object-cover" /></td>
             <td class="border border-yellow-300 p-2">
               <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
             </td>
@@ -95,7 +115,7 @@
     </div>
 
     <!-- Contenedor para la tabla de recibos -->
-    <div *ngIf="showReceipts" class="table-container w-full bg-white p-6 rounded-lg shadow-lg border border-yellow-300">
+    <div *ngIf="showReceipts" [ngClass]="{'animate-fadeIn': showReceipts, 'animate-fadeOut': !showReceipts}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg border border-yellow-300 transition-all duration-500 ease-out transform">
       <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Recibos</h2>
       <p class="text-yellow-600 text-center">Aquí irán los recibos...</p>
       <!-- Implementa la lógica para mostrar los recibos -->

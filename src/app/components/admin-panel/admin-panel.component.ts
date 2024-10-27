@@ -21,11 +21,15 @@ export class AdminPanelComponent implements OnInit {
 
   users: User[] = [];
   products: Product[] = [];
+  paginatedUsers: User[] = [];
   showUsers: boolean = true;
   showProducts: boolean = false;
   showReceipts: boolean = false;
   currentUser: User | null = null;
   currentProduct: Product | null = null;
+  currentPage: number = 1;
+  itemsPerPage: number = 20;
+  totalPages: number = 1;
 
   constructor(private http: HttpClient, private userService: UserService, private router: Router) {}
 
@@ -38,6 +42,7 @@ export class AdminPanelComponent implements OnInit {
       (response) => {
         if (response.success) {
           this.users = response.users;
+          this.updatePagination();
         } else {
           console.error('Error al obtener usuarios');
         }
@@ -88,25 +93,22 @@ export class AdminPanelComponent implements OnInit {
     return this.http.get<any>(this.apiUrlProducts);
   }
 
-  // Método para editar un usuario
   public editUser(user: User): void {
-    this.currentUser = { ...user }; // Clona el usuario para editar
+    this.currentUser = { ...user };
   }
 
   public editProduct(product: Product): void {
-    // Lógica para editar el producto
+    this.currentProduct = { ...product }; // Cambiado para almacenar el producto actual a editar
     console.log('Editando producto:', product);
-    // Aquí podrías abrir un modal o cambiar el estado para mostrar un formulario de edición
   }
 
-  // Método para actualizar el usuario
   public updateUser(): void {
     if (this.currentUser) {
       this.http.put(`${this.apiUrlUsers}/${this.currentUser.id}`, this.currentUser).subscribe(
         (response) => {
           console.log('Usuario actualizado:', response);
-          this.loadUsers(); // Recarga la lista de usuarios
-          this.currentUser = null; // Limpia el usuario actual
+          this.loadUsers();
+          this.currentUser = null;
         },
         (error) => {
           console.error('Error al actualizar el usuario:', error);
@@ -115,8 +117,52 @@ export class AdminPanelComponent implements OnInit {
     }
   }
 
-  // Método para cancelar la edición
+  // Método para eliminar usuario
+  public deleteUser(id: number | undefined): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+      this.http.delete(`${this.apiUrlUsers}/${id}`).subscribe(
+        (response: any) => {
+          alert(response.message); // Mensaje de éxito
+          this.loadUsers(); // Volver a obtener la lista de usuarios después de eliminar
+          this.currentUser = null; // Limpiar el usuario actual después de eliminar
+        },
+        (error) => {
+          alert('Error al eliminar el usuario'); // Manejo de errores
+        }
+      );
+    }
+  }
+
   public cancelEdit(): void {
-    this.currentUser = null; // Limpia el usuario actual
+    this.currentUser = null;
+    this.currentProduct = null; // Limpia el producto actual al cancelar la edición
+  }
+
+  public updatePagination(): void {
+    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  public goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  public nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  public previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 }
