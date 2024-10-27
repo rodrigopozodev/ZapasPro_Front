@@ -1,47 +1,45 @@
 /* Navbar Styles */
 nav {
-    position: relative; /* Permite que el dropdown se posicione relativo a este contenedor */
-  }
-  
-  /* Dropdown Styles */
-  .dropdown {
-    position: absolute; /* Hace que el dropdown esté fuera del flujo normal del documento */
-    right: 0; /* Alinea el dropdown al borde derecho del contenedor */
-    top: 100%; /* Posiciona el dropdown justo debajo del navbar */
-    margin-top: 0.5rem; /* Espacio entre el navbar y el dropdown */
-    width: 250px; /* Ancho del dropdown */
-    background-color: white; /* Fondo blanco para el dropdown */
-    border-radius: 0.5rem; /* Bordes redondeados */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-    z-index: 10; /* Asegura que el dropdown esté encima de otros elementos */
-    display: none; /* Inicialmente oculto */
-  }
-  
-  /* Mostrar el dropdown cuando está activo */
-  .dropdown.show {
-    display: block; /* Muestra el dropdown cuando se añade la clase "show" */
-  }
-  
-  /* Estilo de las secciones dentro del dropdown */
-  .section-dropdown {
-    padding: 0.5rem; /* Espaciado interior */
-  }
-  
-  /* Estilo de los títulos de sección */
-  .section-title {
-    cursor: pointer; /* Cambia el cursor al pasar sobre los títulos */
-    color: #4B5563; /* Color del texto */
-    font-weight: bold; /* Negrita para destacar los títulos */
-  }
-  
-  /* Estilo de los elementos del menú */
-  .submenu li {
-    padding: 0.25rem 0; /* Espaciado entre los elementos del menú */
-    cursor: pointer; /* Cambia el cursor al pasar sobre los elementos */
-  }
-  
-  /* Efecto hover para los elementos del menú */
-  .submenu li:hover {
-    color: #F97316; /* Color al pasar el ratón sobre los elementos */
-  }
-  
+  position: relative;
+}
+
+/* Dropdown Styles */
+.dropdown {
+  position: absolute;
+  left: 9.5rem; /* Ajusta el dropdown para pegarlo más al borde derecho */
+  top: calc(100% + 1.35rem); /* Baja el dropdown un poco más para dejar más espacio */
+  width: 250px;
+  background-color: white;
+  border: 2px solid #F97316; /* Borde naranja */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar el dropdown cuando está activo */
+.dropdown.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Estilos para sección y elementos del menú */
+.section-dropdown {
+  padding: 0.5rem;
+}
+
+.section-title {
+  cursor: pointer;
+  color: #4B5563;
+  font-weight: bold;
+}
+
+.submenu li {
+  padding: 0.25rem 0;
+  cursor: pointer;
+}
+
+.submenu li:hover {
+  color: #F97316;
+}
