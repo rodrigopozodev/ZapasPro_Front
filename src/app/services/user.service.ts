@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router'; // Importa Router
+import { Router } from '@angular/router';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users'; // Cambiar aquí para usar la nueva ruta
+  private apiUrl = 'http://localhost:3000/api/users';
   private authenticated = false;
   public userRole: string | null = null;
   private currentUser: any;
 
-  constructor(private http: HttpClient, private router: Router) { // Inyecta Router
+  constructor(private http: HttpClient, private router: Router) {
     const storedUser = this.getStoredUser();
     this.currentUser = storedUser;
   }
@@ -22,7 +22,7 @@ export class UserService {
   // Método para registrar un nuevo usuario
   register(username: string, email: string, password: string, role: string): Observable<any> {
     const user: User = { username, email, password, role };
-    return this.http.post(this.apiUrl, user); // Cambiar aquí para usar la nueva ruta
+    return this.http.post(this.apiUrl, user);
   }
 
   // Método para obtener la lista de usuarios
@@ -32,23 +32,25 @@ export class UserService {
 
   // Método para iniciar sesión
   login(email: string, password: string): Observable<any> {
-    return this.http.post<{ success: boolean, user: { role: string, username: string } }>(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post<{ success: boolean, user: { role: string, username: string } }>(
+      `${this.apiUrl}/login`, { email, password }
+    ).pipe(
       tap(response => {
         if (response.success) {
-          console.log("Login exitoso:", response); // Mensaje de depuración
+          console.log("Login exitoso:", response);
           this.setAuthenticated(true);
           const user = response.user;
-          console.log("Rol del usuario:", user.role); // Verifica el rol
+          console.log("Rol del usuario:", user.role);
           this.setUserRole(user.role);
           this.setUserName(user.username);
           this.saveUserToLocalStorage(user.role, user.username);
           
           // Redirigir según el rol
           if (this.userRole === 'admin') {
-            console.log("Redirigiendo a /admin"); // Mensaje de depuración
+            console.log("Redirigiendo a /admin");
             this.router.navigate(['/admin']);
           } else {
-            console.log("Redirigiendo a /"); // Mensaje de depuración
+            console.log("Redirigiendo a /");
             this.router.navigate(['/']);
           }
         }
@@ -72,6 +74,7 @@ export class UserService {
     this.userRole = null;
     this.currentUser = null;
     this.removeUserFromLocalStorage();
+    this.router.navigate(['/login']);
   }
 
   // Método para obtener el rol del usuario actual desde el localStorage
@@ -120,5 +123,32 @@ export class UserService {
   private getStoredUser(): any {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  }
+
+  // Método para actualizar la configuración del usuario
+  updateUserSettings(
+    username: string,
+    email: string,
+    password?: string, // El password es opcional
+    surname?: string,
+    phoneNumber?: string,
+    birthDay?: number | null,
+    birthMonth?: number | null,
+    birthYear?: number | null,
+    shoppingPreference?: string
+  ): Observable<any> {
+    const userUpdate = {
+      username,
+      email,
+      ...(password ? { password } : {}), // Solo agregar password si se proporciona
+      surname,
+      phoneNumber,
+      birthDay,
+      birthMonth,
+      birthYear,
+      shoppingPreference
+    };
+
+    return this.http.put(`${this.apiUrl}/update`, userUpdate); // Asegúrate de que la URL sea correcta
   }
 }
