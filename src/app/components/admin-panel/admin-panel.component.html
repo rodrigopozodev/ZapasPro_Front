@@ -22,6 +22,38 @@
     <div *ngIf="showUsers" [ngClass]="{'animate-fadeIn': showUsers, 'animate-fadeOut': !showUsers}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
       <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Usuarios</h2>
 
+      <!-- Botón para mostrar el formulario de registro -->
+      <div class="flex justify-center">
+        <button (click)="showRegisterForm = !showRegisterForm" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200 mb-4">
+          Registrar Nuevo Usuario
+        </button>
+      </div>
+      
+
+      <!-- Formulario de registro de usuario -->
+      <div *ngIf="showRegisterForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+        <h3 class="text-xl font-bold text-yellow-600 mb-2">Registrar Nuevo Usuario</h3>
+        <form (ngSubmit)="register()">
+          <label for="username" class="block mb-2">Nombre de Usuario:</label>
+          <input type="text" id="username" [(ngModel)]="username" name="username" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+          <label for="email" class="block mb-2">Correo Electrónico:</label>
+          <input type="email" id="email" [(ngModel)]="email" name="email" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+          <label for="password" class="block mb-2">Contraseña:</label>
+          <input type="password" id="password" [(ngModel)]="password" name="password" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+          <label for="role" class="block mb-2">Rol:</label>
+          <select id="role" [(ngModel)]="role" name="role" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+            <option value="admin">Admin</option>
+            <option value="client">Cliente</option>
+          </select>
+
+          <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Usuario</button>
+          <button type="button" (click)="cancelRegister()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+        </form>
+      </div>
+
       <!-- Paginación -->
       <div class="mt-4 flex justify-center mb-6"> <!-- Agregando margen inferior aquí -->
         <button (click)="previousPage()" 
@@ -45,7 +77,10 @@
         <form (ngSubmit)="updateUser()">
           <label for="username" class="block mb-2">Nombre de Usuario:</label>
           <input type="text" id="username" [(ngModel)]="currentUser.username" name="username" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
-
+      
+          <label for="email" class="block mb-2">Email:</label> <!-- Nuevo campo para Email -->
+          <input type="email" id="email" [(ngModel)]="currentUser.email" name="email" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required /> <!-- Campo de Email -->
+      
           <label for="role" class="block mb-2">Rol:</label>
           <select id="role" [(ngModel)]="currentUser.role" name="role" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
             <option value="admin">Admin</option>
@@ -58,12 +93,35 @@
         </form>
       </div>
 
+      <!-- Barra de búsqueda y filtros -->
+<div class="flex items-center mb-4">
+  <input 
+    type="text" 
+    [(ngModel)]="searchTerm" 
+    (input)="filterUsers()" 
+    placeholder="Buscar usuario..." 
+    class="border border-yellow-300 p-2 rounded-lg w-full mr-2" 
+  />
+
+  <select [(ngModel)]="searchBy" (change)="filterUsers()" class="border border-yellow-300 p-2 rounded-lg mr-2">
+    <option value="username">Nombre de Usuario</option>
+    <option value="email">Email</option>
+  </select>
+
+  <select [(ngModel)]="roleFilter" (change)="filterUsers()" class="border border-yellow-300 p-2 rounded-lg">
+    <option value="">Todos los Roles</option>
+    <option value="admin">Admin</option>
+    <option value="client">Cliente</option>
+  </select>
+</div>
+
       <!-- Tabla de usuarios -->
       <table class="min-w-full border-collapse text-center">
         <thead class="bg-yellow-200">
           <tr>
             <th class="border border-yellow-300 p-2">ID</th>
             <th class="border border-yellow-300 p-2">Nombre de Usuario</th>
+            <th class="border border-yellow-300 p-2">Email</th> <!-- Nueva columna para Email -->
             <th class="border border-yellow-300 p-2">Rol</th>
             <th class="border border-yellow-300 p-2">Fecha de Creación</th>
             <th class="border border-yellow-300 p-2">Última Actualización</th>
@@ -74,6 +132,7 @@
           <tr *ngFor="let user of paginatedUsers" class="hover:bg-yellow-100 transition duration-300">
             <td class="border border-yellow-300 p-2">{{ user.id }}</td>
             <td class="border border-yellow-300 p-2">{{ user.username }}</td>
+            <td class="border border-yellow-300 p-2">{{ user.email }}</td> <!-- Nueva celda para Email -->
             <td class="border border-yellow-300 p-2">{{ user.role }}</td>
             <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.createdAt | date:'short' }}</td>
             <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ user.updatedAt | date:'short' }}</td>
@@ -95,10 +154,6 @@
             <th class="border border-yellow-300 p-2">Nombre</th>
             <th class="border border-yellow-300 p-2">Precio</th>
             <th class="border border-yellow-300 p-2">Descripción</th>
-            <th class="border border-yellow-300 p-2">Imagen</th>
-            <th class="border border-yellow-300 p-2">Stock</th>
-            <th class="border border-yellow-300 p-2">Tallas</th>
-            <th class="border border-yellow-300 p-2">Género</th>
             <th class="border border-yellow-300 p-2">Acciones</th>
           </tr>
         </thead>
@@ -106,14 +161,11 @@
           <tr *ngFor="let product of products" class="hover:bg-yellow-100 transition duration-300">
             <td class="border border-yellow-300 p-2">{{ product.id }}</td>
             <td class="border border-yellow-300 p-2">{{ product.name }}</td>
-            <td class="border border-yellow-300 p-2">{{ product.price }} €</td>
+            <td class="border border-yellow-300 p-2">{{ product.price | currency }}</td>
             <td class="border border-yellow-300 p-2">{{ product.description }}</td>
-            <td class="border border-yellow-300 p-2"><img [src]="product.imageUrl" alt="{{ product.name }}" class="h-16 w-16 object-cover" /></td>
-            <td class="border border-yellow-300 p-2">{{ product.stock }}</td>
-            <td class="border border-yellow-300 p-2">{{ product.sizes.join(', ') }}</td>
-            <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
             <td class="border border-yellow-300 p-2">
               <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
+              <button (click)="deleteProduct(product.id)" class="bg-red-700 text-white hover:bg-red-800 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
             </td>
           </tr>
         </tbody>
@@ -121,10 +173,28 @@
     </div>
 
     <!-- Contenedor para la tabla de recibos -->
-    <div *ngIf="showReceipts" [ngClass]="{'animate-fadeIn': showReceipts, 'animate-fadeOut': !showReceipts}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg border border-yellow-300 transition-all duration-500 ease-out transform">
+    <div *ngIf="showReceipts" [ngClass]="{'animate-fadeIn': showReceipts, 'animate-fadeOut': !showReceipts}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
       <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Recibos</h2>
-      <p class="text-yellow-600 text-center">Aquí irán los recibos...</p>
-      <!-- Implementa la lógica para mostrar los recibos -->
+      <table class="min-w-full border-collapse text-center">
+        <thead class="bg-yellow-200">
+          <tr>
+            <th class="border border-yellow-300 p-2">ID</th>
+            <th class="border border-yellow-300 p-2">Usuario</th>
+            <th class="border border-yellow-300 p-2">Producto</th>
+            <th class="border border-yellow-300 p-2">Cantidad</th>
+            <th class="border border-yellow-300 p-2">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let receipt of receipts" class="hover:bg-yellow-100 transition duration-300">
+            <td class="border border-yellow-300 p-2">{{ receipt.id }}</td>
+            <td class="border border-yellow-300 p-2">{{ receipt.username }}</td>
+            <td class="border border-yellow-300 p-2">{{ receipt.productName }}</td>
+            <td class="border border-yellow-300 p-2">{{ receipt.quantity }}</td>
+            <td class="border border-yellow-300 p-2 whitespace-nowrap">{{ receipt.date | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
