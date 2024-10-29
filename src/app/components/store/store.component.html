@@ -1,81 +1,114 @@
 <!-- Contenedor principal de la tienda -->
 <div class="store bg-[#f3e8d5] py-10 min-h-screen">
-  <div class="container mx-auto px-4 flex">
-    <!-- Sidebar de filtros -->
-    <aside class="filters bg-white rounded-3xl shadow-lg p-4 w-64 mr-8">
-      <h2 class="text-lg font-bold text-yellow-600">Filtros</h2>
+  
+  <!-- Fila superior con botones -->
+  <div class="flex justify-between mb-4 mx-8">
+   <div class="flex flex-grow justify-end space-x-1"> <!-- Espacio reducido entre los botones -->
+     <!-- Botones para cambiar el número de productos por fila -->
+     <button (click)="setProductsPerRow(2)" class="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold py-2 px-3 rounded-xl">
+       <!-- Ícono para 2 columnas -->
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-8" fill="currentColor" viewBox="0 0 24 20">
+         <rect x="6" y="4" width="4" height="14" />
+         <rect x="14" y="4" width="4" height="14" />
+       </svg>
+     </button>
+     <button (click)="setProductsPerRow(4)" class="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold py-2 px-3 rounded-xl">
+       <!-- Ícono para 4 columnas -->
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-10" fill="currentColor" viewBox="0 0 30 20">
+         <rect x="2" y="4" width="4" height="14" />
+         <rect x="9" y="4" width="4" height="14" />
+         <rect x="16" y="4" width="4" height="14" />
+         <rect x="23" y="4" width="4" height="14" />
+       </svg>
+     </button>
+     <button (click)="setProductsPerRow(6)" class="bg-yellow-300 hover:bg-yellow-400 text-white font-semibold py-2 px-3 rounded-xl">
+       <!-- Ícono para 6 columnas -->
+       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-10" fill="currentColor" viewBox="0 0 36 20">
+         <rect x="0" y="4" width="4" height="16" />
+         <rect x="6" y="4" width="4" height="16" />
+         <rect x="12" y="4" width="4" height="16" />
+         <rect x="18" y="4" width="4" height="16" />
+         <rect x="24" y="4" width="4" height="16" />
+         <rect x="30" y="4" width="4" height="16" />
+       </svg>
+     </button>
+   </div>
+   <button (click)="toggleFilters()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl ml-2"> <!-- Margen a la izquierda agregado -->
+     {{ showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros' }}
+   </button>
+ </div>
 
-      <!-- Filtro por Color -->
-      <div class="filter-section mt-4">
-        <h3 class="text-md font-semibold text-gray-700">Color</h3>
-        <select [(ngModel)]="selectedColor" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Todos</option>
-          <option *ngFor="let color of uniqueColors" [value]="color">{{ color }}</option>
-        </select>
-      </div>
+ <!-- Fila de columnas: Filtros y Productos -->
+ <div class="flex mx-4"> <!-- Margen izquierdo añadido -->
+   <!-- Columna de filtros -->
+   <aside *ngIf="showFilters" class="filters bg-white rounded-3xl shadow-lg p-4 w-64 mr-8">
+     <h2 class="text-lg font-bold text-yellow-600">Filtros</h2>
 
-      <!-- Filtro por Talla -->
-      <div class="filter-section mt-4">
-        <h3 class="text-md font-semibold text-gray-700">Talla</h3>
-        <select [(ngModel)]="selectedSize" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Todas</option>
-          <option *ngFor="let size of uniqueSizes" [value]="size">{{ size }}</option>
-        </select>
-      </div>
+     <!-- Filtro por Color -->
+     <div class="filter-section mt-4">
+       <h3 class="text-md font-semibold text-gray-700">Color</h3>
+       <select [(ngModel)]="selectedColor" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+         <option value="">Todos</option>
+         <option *ngFor="let color of uniqueColors" [value]="color">{{ color }}</option>
+       </select>
+     </div>
 
-      <!-- Filtro por Género -->
-      <div class="filter-section mt-4">
-        <h3 class="text-md font-semibold text-gray-700">Género</h3>
-        <select [(ngModel)]="selectedGender" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Todos</option>
-          <option *ngFor="let gender of uniqueGenders" [value]="gender">{{ gender }}</option>
-        </select>
-      </div>
+     <!-- Filtro por Género -->
+     <div class="filter-section mt-4">
+       <h3 class="text-md font-semibold text-gray-700">Género</h3>
+       <select [(ngModel)]="selectedGender" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+         <option value="">Todos</option>
+         <option *ngFor="let gender of uniqueGenders" [value]="gender">{{ gender }}</option>
+       </select>
+     </div>
 
-      <!-- Filtro por Marca -->
-      <div class="filter-section mt-4">
-        <h3 class="text-md font-semibold text-gray-700">Marca</h3>
-        <select [(ngModel)]="selectedBrand" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Todas</option>
-          <option *ngFor="let brand of uniqueBrands" [value]="brand">{{ brand }}</option>
-        </select>
-      </div>
+     <!-- Filtro por Marca -->
+     <div class="filter-section mt-4">
+       <h3 class="text-md font-semibold text-gray-700">Marca</h3>
+       <select [(ngModel)]="selectedBrand" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+         <option value="">Todas</option>
+         <option *ngFor="let brand of uniqueBrands" [value]="brand">{{ brand }}</option>
+       </select>
+     </div>
 
-      <!-- Botón para aplicar filtros -->
-      <button (click)="applyFilters()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl mt-4 w-full transition duration-200 ease-in-out">
-        Aplicar Filtros
-      </button>
-    </aside>
+     <!-- Botón para aplicar filtros -->
+     <button (click)="applyFilters()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl mt-4 w-full transition duration-200 ease-in-out">
+       Aplicar Filtros
+     </button>
+   </aside>
 
-    <!-- Disposición de los productos en cuadrícula -->
-    <div class="product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 flex-grow">
-      <!-- Itera sobre la lista de productos filtrados -->
-      <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl">
-        <!-- Imagen del producto -->
-        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full h-64 object-cover rounded-t-3xl" /> <!-- Aumentar la altura de la imagen -->
-        <div class="product-info mt-4">
-          <!-- Nombre del producto -->
-          <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
-          <!-- Descripción del producto -->
-          <p class="product-description text-gray-700 mt-2">{{ product.description }}</p>
-          <!-- Precio del producto -->
-          <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
+   <!-- Columna de productos -->
+   <div class="product-grid flex-grow grid gap-8" 
+        [ngClass]="{
+          'grid-cols-2': productsPerRow === 2,
+          'grid-cols-4': productsPerRow === 4,
+          'grid-cols-6': productsPerRow === 6
+        }">
+     <!-- Itera sobre la lista de productos filtrados -->
+     <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl">
+       <!-- Imagen del producto -->
+       <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" /> <!-- Ajuste de imagen -->
+       <div class="product-info mt-4">
+         <!-- Nombre del producto -->
+         <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
+         <!-- Descripción del producto -->
+         <p class="product-description text-gray-700 mt-2">{{ product.description }}</p>
+         <!-- Precio del producto -->
+         <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
 
-        
+         <!-- Botón para agregar al carrito -->
+         <button (click)="addToCart(product)" class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
+           Agregar al Carrito
+         </button>
 
-          <!-- Botón para agregar al carrito -->
-          <button (click)="addToCart(product)" class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
-            Agregar al Carrito
-          </button>
-
-          <!-- Mensaje de cantidad en el carrito -->
-          <div *ngIf="cartService.getItemCount(product.id) > 0" class="cart-count mt-2">
-            <span class="text-sm font-medium bg-yellow-200 text-yellow-800 py-1 px-2 rounded-full">
-              En el carrito: {{ cartService.getItemCount(product.id) }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+         <!-- Mensaje de cantidad en el carrito -->
+         <div *ngIf="cartService.getItemCount(product.id) > 0" class="cart-count mt-2">
+           <span class="text-sm font-medium bg-yellow-200 text-yellow-800 py-1 px-2 rounded-full">
+             En el carrito: {{ cartService.getItemCount(product.id) }}
+           </span>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
 </div>

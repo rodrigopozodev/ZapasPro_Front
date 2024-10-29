@@ -16,14 +16,15 @@ export class StoreComponent implements OnInit {
   products: Product[] = []; // Lista de todos los productos
   filteredProducts: Product[] = []; // Lista de productos filtrados
   selectedColor: string = '';
-  selectedSize: { [key: number]: string } = {}; // Cambiado a objeto para manejar tamaños por producto
+  selectedSize: string = ''; // Cambiado a string para manejar el tamaño seleccionado
   selectedGender: string = '';
   selectedBrand: string = '';
+  showFilters: boolean = true; // Inicialmente mostrar filtros
 
   uniqueColors: string[] = []; // Lista única de colores
-  uniqueSizes: string[] = []; // Lista única de tallas
   uniqueGenders: string[] = []; // Lista única de géneros
   uniqueBrands: string[] = []; // Lista única de marcas
+  productsPerRow: number = 4; // Valor por defecto
 
   constructor(public cartService: CartService, private productService: ProductService) {}
 
@@ -37,16 +38,14 @@ export class StoreComponent implements OnInit {
       this.products = products; // Asignar productos obtenidos
       this.filteredProducts = this.products;
       this.uniqueColors = this.getUniqueColors(this.products);
-      
       this.uniqueGenders = this.getUniqueGenders(this.products);
       this.uniqueBrands = this.getUniqueBrands(this.products);
     });
   }
 
   addToCart(product: Product): void {
-    const size = this.selectedSize[product.id]; // Obtener el tamaño seleccionado para este producto
-    if (size) {
-      const productWithSize = { ...product, selectedSize: size };
+    if (this.selectedSize) {
+      const productWithSize = { ...product, selectedSize: this.selectedSize };
       this.cartService.addToCart(productWithSize);
     } else {
       console.warn('Por favor selecciona un tamaño.'); // Mensaje de advertencia si no hay tamaño seleccionado
@@ -70,8 +69,6 @@ export class StoreComponent implements OnInit {
     return Array.from(colors);
   }
 
-  
-
   getUniqueGenders(products: Product[]): string[] {
     // Obtener géneros únicos
     const genders = new Set(products.map(product => product.gender));
@@ -83,4 +80,13 @@ export class StoreComponent implements OnInit {
     const brands = new Set(products.map(product => product.brand));
     return Array.from(brands);
   }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters; // Alternar visibilidad
+  }
+
+  setProductsPerRow(n: number) {
+    this.productsPerRow = n; // Establecer el número de productos por fila
+    this.applyFilters(); // Aplicar filtros si es necesario
+  }  
 }
