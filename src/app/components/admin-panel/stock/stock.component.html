@@ -1,0 +1,84 @@
+<!-- Sección de stock -->
+<div *ngIf="showStock" [ngClass]="{'animate-fadeIn': showStock, 'animate-fadeOut': !showStock}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
+  <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Stock</h2>
+
+  <!-- Paginación para stock -->
+  <div class="mt-4 flex justify-center">
+    <button (click)="previousStockPage()" 
+            [disabled]="currentStockPage === 1" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === 1}">
+      Anterior
+    </button>
+    <span class="mx-2">Página {{ currentStockPage }} de {{ totalStockPages }}</span>
+    <button (click)="nextStockPage()" 
+            [disabled]="currentStockPage === totalStockPages" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === totalStockPages}">
+      Siguiente
+    </button>
+  </div>
+
+  <!-- Tabla de stock -->
+  <table class="min-w-full border-collapse text-center mt-4">
+    <thead class="bg-yellow-200">
+      <tr>
+        <th class="border border-yellow-300 p-2">ID</th>
+        <th class="border border-yellow-300 p-2">Fecha</th>
+        <th class="border border-yellow-300 p-2">Producto</th>
+        <th class="border border-yellow-300 p-2">Talla</th>
+        <th class="border border-yellow-300 p-2">Cantidad</th>
+        <th class="border border-yellow-300 p-2">Movimiento</th>
+        <th class="border border-yellow-300 p-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stock of paginatedStock" class="hover:bg-yellow-100 transition duration-300">
+        <td class="border border-yellow-300 p-2">{{ stock.id }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.fecha | date:'shortDate' }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.producto }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.talla }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.cantidad }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.movimiento }}</td>
+        <td class="border border-yellow-300 p-2">
+          <button (click)="editStock(stock)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
+          <button (click)="deleteStock(stock.id)" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Formulario de edición de stock -->
+  <div *ngIf="isEditing && selectedStock" class="mt-4 bg-gray-100 p-4 rounded-lg">
+    <h3 class="text-xl font-semibold text-yellow-800 mb-2">Editar Stock</h3>
+    <form (ngSubmit)="updateStock(selectedStock.id)">
+      <input type="hidden" [(ngModel)]="selectedStock.id" name="id" />
+      <div class="mb-2">
+        <label class="block mb-1" for="fecha">Fecha</label>
+        <input id="fecha" type="date" [(ngModel)]="selectedStock.fecha" name="fecha" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="producto">Producto</label>
+        <input id="producto" type="text" [(ngModel)]="selectedStock.producto" name="producto" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="talla">Talla</label>
+        <input id="talla" type="text" [(ngModel)]="selectedStock.talla" name="talla" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="cantidad">Cantidad</label>
+        <input id="cantidad" type="number" [(ngModel)]="selectedStock.cantidad" name="cantidad" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="movimiento">Movimiento</label>
+        <select id="movimiento" [(ngModel)]="selectedStock.movimiento" name="movimiento" class="border border-yellow-300 p-2 rounded-lg w-full" required>
+          <option value="compra">Compra</option>
+          <option value="venta">Venta</option>
+          <option value="ajuste">Ajuste</option>
+        </select>
+      </div>
+      <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+      <button (click)="cancelStock()" type="button" class="bg-gray-400 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+    </form>
+  </div>
+</div>

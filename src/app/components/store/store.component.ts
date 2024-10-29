@@ -37,7 +37,7 @@ export class StoreComponent implements OnInit {
       this.products = products; // Asignar productos obtenidos
       this.filteredProducts = this.products;
       this.uniqueColors = this.getUniqueColors(this.products);
-      this.uniqueSizes = this.getUniqueSizes(this.products);
+      
       this.uniqueGenders = this.getUniqueGenders(this.products);
       this.uniqueBrands = this.getUniqueBrands(this.products);
     });
@@ -58,7 +58,6 @@ export class StoreComponent implements OnInit {
     this.filteredProducts = this.products.filter(product => {
       return (
         (this.selectedColor ? product.color === this.selectedColor : true) &&
-        (this.selectedSize[product.id] ? product.sizes.includes(this.selectedSize[product.id]) : true) &&
         (this.selectedGender ? product.gender === this.selectedGender : true) &&
         (this.selectedBrand ? product.brand === this.selectedBrand : true)
       );
@@ -71,11 +70,7 @@ export class StoreComponent implements OnInit {
     return Array.from(colors);
   }
 
-  getUniqueSizes(products: Product[]): string[] {
-    // Obtener tallas únicas
-    const sizes = new Set(products.flatMap(product => product.sizes));
-    return Array.from(sizes);
-  }
+  
 
   getUniqueGenders(products: Product[]): string[] {
     // Obtener géneros únicos

@@ -45,8 +45,6 @@ export class NavComponent {
       if (!this.userService.getCurrentUser()) {
         console.log('El usuario no está logueado.'); // Para depuración
       }
-    } else {
-      console.log('No se está en un entorno de navegador.'); // Para depuración
     }
   }
   

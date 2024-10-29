@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '../interfaces/user.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,11 @@ export class UserService {
   public userRole: string | null = null;
   private currentUser: any;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     const storedUser = this.getStoredUser();
     this.currentUser = storedUser;
   }
@@ -108,21 +113,28 @@ export class UserService {
     this.currentUser = { ...this.currentUser, username };
   }
 
-  // Guarda el rol y nombre del usuario en el localStorage
+  // Guarda el rol y nombre del usuario en el localStorage si está disponible
   private saveUserToLocalStorage(role: string, username: string): void {
-    const user = { role, username };
-    localStorage.setItem('user', JSON.stringify(user));
+    if (isPlatformBrowser(this.platformId)) {
+      const user = { role, username };
+      localStorage.setItem('user', JSON.stringify(user));
+    }
   }
 
-  // Método privado para eliminar el usuario del localStorage
+  // Método privado para eliminar el usuario del localStorage si está disponible
   private removeUserFromLocalStorage(): void {
-    localStorage.removeItem('user');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('user');
+    }
   }
 
-  // Método privado para obtener el usuario almacenado
+  // Método privado para obtener el usuario almacenado si localStorage está disponible
   private getStoredUser(): any {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
   }
 
   // Método para actualizar la configuración del usuario

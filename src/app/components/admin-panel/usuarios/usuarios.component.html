@@ -1,0 +1,125 @@
+ <!-- Sección de usuarios -->
+ <div *ngIf="showUsers" [ngClass]="{'animate-fadeIn': showUsers, 'animate-fadeOut': !showUsers}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
+    <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Usuarios</h2>
+
+    <!-- Botón para mostrar el formulario de registro -->
+    <div class="flex justify-center">
+      <button (click)="showRegisterForm = !showRegisterForm" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200 mb-4">
+        Registrar Nuevo Usuario
+      </button>
+    </div>
+
+    <!-- Formulario de registro de usuario -->
+    <div *ngIf="showRegisterForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+      <h3 class="text-xl font-bold text-yellow-600 mb-2">Registrar Nuevo Usuario</h3>
+      <form (ngSubmit)="register()">
+        <label for="username" class="block mb-2">Nombre de Usuario:</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+        <label for="email" class="block mb-2">Correo Electrónico:</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+        <label for="password" class="block mb-2">Contraseña:</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+        <label for="role" class="block mb-2">Rol:</label>
+        <select id="role" [(ngModel)]="role" name="role" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+          <option value="admin">Admin</option>
+          <option value="client">Cliente</option>
+        </select>
+
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Usuario</button>
+        <button type="button" (click)="cancelRegister()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </form>
+    </div>
+
+    <!-- Paginación -->
+    <div class="mt-4 flex justify-center mb-6">
+      <button (click)="previousPage()" 
+              [disabled]="currentPage === 1" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+              [ngClass]="{'cursor-not-allowed opacity-50': currentPage === 1}">
+        Anterior
+      </button>
+      <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" 
+              [disabled]="currentPage === totalPages" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+              [ngClass]="{'cursor-not-allowed opacity-50': currentPage === totalPages}">
+        Siguiente
+      </button>
+    </div>
+
+    <!-- Formulario de edición de usuario al principio de la tabla -->
+    <div *ngIf="currentUser" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+      <h3 class="text-xl font-bold text-yellow-600 mb-2">Editar Usuario</h3>
+      <form (ngSubmit)="updateUser()">
+        <label for="username" class="block mb-2">Nombre de Usuario:</label>
+        <input type="text" id="username" [(ngModel)]="currentUser.username" name="username" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+    
+        <label for="email" class="block mb-2">Email:</label>
+        <input type="email" id="email" [(ngModel)]="currentUser.email" name="email" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+    
+        <label for="role" class="block mb-2">Rol:</label>
+        <select id="role" [(ngModel)]="currentUser.role" name="role" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+          <option value="admin">Admin</option>
+          <option value="client">Cliente</option>
+        </select>
+
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+        <button type="button" (click)="cancelEdit()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+        <button type="button" (click)="deleteUser(currentUser.id)" class="bg-red-700 text-white hover:bg-red-800 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
+      </form>
+    </div>
+
+    <!-- Barra de búsqueda y filtros -->
+    <div class="flex items-center mb-4">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="filterUsers()" 
+        placeholder="Buscar usuario..." 
+        class="border border-yellow-300 p-2 rounded-lg w-full mr-2" 
+      />
+
+      <select [(ngModel)]="searchBy" (change)="filterUsers()" class="border border-yellow-300 p-2 rounded-lg mr-2">
+        <option value="username">Nombre de Usuario</option>
+        <option value="email">Email</option>
+      </select>
+
+      <select [(ngModel)]="roleFilter" (change)="filterUsers()" class="border border-yellow-300 p-2 rounded-lg">
+        <option value="">Todos los Roles</option>
+        <option value="admin">Admin</option>
+        <option value="client">Cliente</option>
+      </select>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <table class="min-w-full border-collapse text-center">
+      <thead class="bg-yellow-200">
+        <tr>
+          <th class="border border-yellow-300 p-2">ID</th>
+          <th class="border border-yellow-300 p-2">Nombre de Usuario</th>
+          <th class="border border-yellow-300 p-2">Email</th>
+          <th class="border border-yellow-300 p-2">Rol</th>
+          <th class="border border-yellow-300 p-2">Fecha de Creación</th>
+          <th class="border border-yellow-300 p-2">Última Actualización</th>
+          <th class="border border-yellow-300 p-2">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of paginatedUsers" class="hover:bg-yellow-100 transition duration-300">
+          <td class="border border-yellow-300 p-2">{{ user.id }}</td>
+          <td class="border border-yellow-300 p-2">{{ user.username }}</td>
+          <td class="border border-yellow-300 p-2">{{ user.email }}</td>
+          <td class="border border-yellow-300 p-2">{{ user.role }}</td>
+          <td class="border border-yellow-300 p-2">{{ user.createdAt | date:'short' }}</td>
+          <td class="border border-yellow-300 p-2">{{ user.updatedAt | date:'short' }}</td>
+          <td class="border border-yellow-300 p-2">
+            <button (click)="editUser(user)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
+            <button (click)="deleteUser(user.id)" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

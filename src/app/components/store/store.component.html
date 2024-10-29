@@ -61,14 +61,7 @@
           <!-- Precio del producto -->
           <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
 
-          <!-- Selección de tamaños -->
-          <div class="size-selection mt-3">
-            <label for="size-{{ product.id }}" class="text-gray-700">Tamaño:</label>
-            <select id="size-{{ product.id }}" [(ngModel)]="selectedSize[product.id]" class="mt-1 border border-yellow-300 rounded-xl p-2 w-full focus:outline-none focus:ring-2 focus:ring-yellow-400">
-              <option value="">Selecciona un tamaño</option>
-              <option *ngFor="let size of product.sizes" [value]="size">{{ size }}</option>
-            </select>
-          </div>
+        
 
           <!-- Botón para agregar al carrito -->
           <button (click)="addToCart(product)" class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">

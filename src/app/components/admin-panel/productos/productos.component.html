@@ -1,0 +1,128 @@
+<!-- Sección de productos -->
+<div *ngIf="showProducts" [ngClass]="{'animate-fadeIn': showProducts, 'animate-fadeOut': !showProducts}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
+  <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Productos</h2>
+
+  <!-- Botón para mostrar el formulario de registro de producto -->
+  <div class="flex justify-center mb-4">
+    <button (click)="showProductForm = true" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">
+      Registrar Nuevo Producto
+    </button>
+  </div>
+
+  <!-- Formulario de registro de producto -->
+  <div *ngIf="showProductForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+    <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Registrar Nuevo Producto</h3>
+    <form (ngSubmit)="registerProduct()">
+      <label for="productName" class="block mb-2">Nombre del Producto:</label>
+      <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+      <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
+      <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
+
+      <label for="productPrice" class="block mb-2">Precio del Producto:</label>
+      <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+      <label for="productGender" class="block mb-2">Género:</label>
+      <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+      </select>
+
+      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
+      <input type="url" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+      <div class="flex justify-center">
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
+        <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Paginación para productos -->
+  <div class="mt-4 flex justify-center mb-4">
+    <button (click)="previousProductPage()" 
+            [disabled]="currentProductPage === 1" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentProductPage === 1}">
+        Anterior
+    </button>
+    <span class="mx-2">Página {{ currentProductPage }} de {{ totalProductPages }}</span>
+    <button (click)="nextProductPage()" 
+            [disabled]="currentProductPage === totalProductPages" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentProductPage === totalProductPages}">
+        Siguiente
+    </button>
+  </div>
+
+  <!-- Barra de búsqueda y filtros -->
+  <div class="flex items-center mb-4">
+    <input 
+        type="text" 
+        [(ngModel)]="searchProductTerm" 
+        (input)="filterProducts()" 
+        placeholder="Buscar producto..." 
+        class="border border-yellow-300 p-2 rounded-lg w-full mr-2" 
+    />
+    <select [(ngModel)]="genderFilter" (change)="filterProducts()" class="border border-yellow-300 p-2 rounded-lg">
+        <option value="">Todos los Géneros</option>
+        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+    </select>
+  </div>
+
+  <!-- Tabla de productos -->
+  <table class="min-w-full border-collapse text-center">
+    <thead class="bg-yellow-200">
+      <tr>
+        <th class="border border-yellow-300 p-2">ID</th>
+        <th class="border border-yellow-300 p-2">Nombre</th>
+        <th class="border border-yellow-300 p-2">Descripción</th>
+        <th class="border border-yellow-300 p-2">Imagen</th>
+        <th class="border border-yellow-300 p-2">Precio</th>
+        <th class="border border-yellow-300 p-2">Género</th>
+        <th class="border border-yellow-300 p-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of paginatedProducts" class="hover:bg-yellow-100 transition duration-300">
+        <td class="border border-yellow-300 p-2">{{ product.id }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.name }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.description }}</td>
+        <td class="border border-yellow-300 p-2">
+          <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-16 h-16 object-cover mx-auto" />
+        </td>
+        <td class="border border-yellow-300 p-2">{{ product.price }} €</td>
+        <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
+        <td class="border border-yellow-300 p-2">
+          <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
+          <button (click)="deleteProduct(product.id)" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Formulario de edición de producto -->
+  <div *ngIf="isEditing" class="mt-4 p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+    <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Editar Producto</h3>
+    <form (ngSubmit)="updateProduct(selectedProduct?.id)">
+      <input type="hidden" [(ngModel)]="selectedProduct.id" name="id" />
+      <label class="block mb-2" for="name">Nombre</label>
+      <input id="name" type="text" [(ngModel)]="selectedProduct.name" name="name" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
+      
+      <label class="block mb-2" for="description">Descripción</label>
+      <input id="description" type="text" [(ngModel)]="selectedProduct.description" name="description" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
+      
+      <label class="block mb-2" for="price">Precio</label>
+      <input id="price" type="number" [(ngModel)]="selectedProduct.price" name="price" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
+      
+      <label class="block mb-2" for="gender">Género</label>
+      <select id="gender" [(ngModel)]="selectedProduct.gender" name="gender" class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+      </select>
+      
+      <div class="flex justify-center">
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+        <button (click)="cancelEdit()" type="button" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
