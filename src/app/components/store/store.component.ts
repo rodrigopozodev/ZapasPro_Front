@@ -20,7 +20,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedSize: string = '';
   selectedGender: string = '';
   selectedBrand: string = '';
-  selectedSort: string = ''; // Definición añadida para la propiedad selectedSort
+  selectedSort: string = ''; 
   showFilters: boolean = true;
 
   uniqueColors: string[] = [];
@@ -132,7 +132,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getUniqueColors(products: Product[]): string[] {
-    return Array.from(new Set(products.map(product => product.color)));
+    return Array.from(new Set(products.map(product => product.color).flat()));
   }
 
   getUniqueGenders(products: Product[]): string[] {
@@ -170,19 +170,15 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
       return (
-        (this.selectedColor ? product.color === this.selectedColor : true) &&
-        (this.selectedGender ? product.gender === this.selectedGender : true)
-        // (this.selectedBrand ? product.brand === this.selectedBrand : true) // Comentado por falta de datos
-        // (this.selectedSize ? product.size === this.selectedSize : true) // Comentado por falta de datos
+        (this.selectedColor ? product.color.includes(this.selectedColor) : true) &&
+        (this.selectedGender ? product.gender === this.selectedGender : true) &&
+        (this.selectedBrand ? product.brand === this.selectedBrand : true)
+        
       );
     });
 
-    // Aplicar ordenamiento (Eliminé `createdAt`)
     if (this.selectedSort === 'recent') {
-      this.filteredProducts.sort((a, b) => {
-        // Aquí se puede implementar el ordenamiento que necesites.
-        return 0; // Implementa tu lógica de ordenamiento
-      });
+      this.filteredProducts.sort((a, b) => 0);
     } else if (this.selectedSort === 'priceHighLow') {
       this.filteredProducts.sort((a, b) => b.price - a.price);
     } else if (this.selectedSort === 'priceLowHigh') {

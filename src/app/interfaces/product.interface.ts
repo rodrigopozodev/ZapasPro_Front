@@ -1,10 +1,11 @@
+// Ejemplo de la interfaz Product
 export interface Product {
-  id: number;                    // Identificador único del producto
-  name: string;                  // Nombre del producto
-  price: number;                 // Precio del producto
-  description: string;           // Descripción del producto
-  imageUrl: string;              // URL de la imagen del producto
+  id: number;
+  name: string;
+  description: string;
+  price: number;
   gender: string;
-  color: string;                 // Color del producto
-  brand: string;                 // Marca del producto
+  color: string;
+  brand: string; // Asegúrate de que esta propiedad esté incluida
+  imageUrl: string; // Y también esta
 }

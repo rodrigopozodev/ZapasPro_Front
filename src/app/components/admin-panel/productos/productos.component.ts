@@ -32,7 +32,8 @@ export class ProductosComponent {
   genderFilter: string = ''; // Filtro por género
   itemsPerPage: number = 20; // Items por página
   showEditForm = false;
-
+  selectedColorFilter: string = ''; // Filtro por color (agregado según los errores que mencionaste)
+  colors: string[] = ['Rojo', 'Verde', 'Azul', 'Negro', 'Blanco']; // Colores disponibles
   // Nuevo array de URLs de imágenes
   imageUrls: string[] = [
     '/img/Nike Air Max Plus Drift.png',
@@ -111,8 +112,6 @@ export class ProductosComponent {
       console.log('Eliminación cancelada.');
     }
   }
-  
-  
 
   filterProducts() {
     let filtered = this.products;
@@ -129,6 +128,11 @@ export class ProductosComponent {
       filtered = filtered.filter(product => product.gender.toLowerCase() === this.genderFilter.toLowerCase());
     }
 
+    // Filtrar por color
+    if (this.selectedColorFilter) {
+      filtered = filtered.filter(product => product.color.includes(this.selectedColorFilter)); // Asegúrate de que la propiedad color exista
+    }
+
     this.filteredProducts = filtered;
     this.calculateTotalProductPages(); // Actualiza el total de páginas después de filtrar
     this.updateProductList(); // Actualiza la lista de productos mostrada
@@ -143,15 +147,6 @@ export class ProductosComponent {
 
   updateProduct(productId: number) {
     if (this.selectedProduct) {
-      // Asegurarse de que 'size' es un array
-      if (typeof this.selectedProduct.size === 'string') {
-        // Si viene como un string, convertirlo en un array
-        this.selectedProduct.size = this.selectedProduct.size.split(',').map(Number);
-      } else if (!Array.isArray(this.selectedProduct.size)) {
-        // Si no es un array, lo convertimos a un array
-        this.selectedProduct.size = [this.selectedProduct.size];
-      }
-
       // Ahora se debe enviar como JSON
       this.http.put(`${this.apiUrlProducts}/${productId}`, this.selectedProduct).subscribe(
         (response) => {
