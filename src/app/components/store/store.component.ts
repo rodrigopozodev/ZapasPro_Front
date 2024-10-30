@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product.interface';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store',
@@ -12,81 +13,180 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
-export class StoreComponent implements OnInit {
-  products: Product[] = []; // Lista de todos los productos
-  filteredProducts: Product[] = []; // Lista de productos filtrados
+export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
   selectedColor: string = '';
-  selectedSize: string = ''; // Cambiado a string para manejar el tamaño seleccionado
+  selectedSize: string = '';
   selectedGender: string = '';
   selectedBrand: string = '';
-  showFilters: boolean = true; // Inicialmente mostrar filtros
+  selectedSort: string = ''; // Definición añadida para la propiedad selectedSort
+  showFilters: boolean = true;
 
-  uniqueColors: string[] = []; // Lista única de colores
-  uniqueGenders: string[] = []; // Lista única de géneros
-  uniqueBrands: string[] = []; // Lista única de marcas
-  productsPerRow: number = 4; // Valor por defecto
+  uniqueColors: string[] = [];
+  uniqueGenders: string[] = [];
+  uniqueBrands: string[] = [];
+  productsPerRow: number = 4;
 
-  constructor(public cartService: CartService, private productService: ProductService) {}
+  currentSlideIndex: number = 0;
+  private carouselInterval?: any;
+  private isReversed: boolean = false;
+  carouselImages: string[] = [
+    "/img/Nike Air Max Plus Drift.png",
+    "/img/Air%20Force%201%20SP.png",
+    "/img/Nike-AIR_FORCE_1_07_amarilla.png",
+    "/img/Nike-AIR_FORCE_1_07.png"
+  ];
+
+  constructor(
+    public cartService: CartService,
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
   }
 
+  ngAfterViewInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.startCarousel();
+    }
+  }
+
   loadProducts() {
-    // Cargar productos y obtener listas únicas para filtros
-    this.productService.getProducts().subscribe((products: Product[]) => {
-      this.products = products; // Asignar productos obtenidos
-      this.filteredProducts = this.products;
-      this.uniqueColors = this.getUniqueColors(this.products);
-      this.uniqueGenders = this.getUniqueGenders(this.products);
-      this.uniqueBrands = this.getUniqueBrands(this.products);
+    this.productService.getProducts().subscribe({
+      next: (products: Product[]) => {
+        this.products = products;
+        this.filteredProducts = products;
+        this.uniqueColors = this.getUniqueColors(this.products);
+        this.uniqueGenders = this.getUniqueGenders(this.products);
+        this.uniqueBrands = this.getUniqueBrands(this.products);
+      },
+      error: (error) => {
+        console.error('Error al cargar productos', error);
+      },
     });
   }
 
-  addToCart(product: Product): void {
-    if (this.selectedSize) {
-      const productWithSize = { ...product, selectedSize: this.selectedSize };
-      this.cartService.addToCart(productWithSize);
+  startCarousel() {
+    this.resetCarouselInterval(5000);
+  }
+
+  resetCarouselInterval(intervalTime: number) {
+    clearInterval(this.carouselInterval);
+    this.carouselInterval = setInterval(() => {
+      this.moveSlide();
+    }, intervalTime);
+  }
+
+  moveSlide() {
+    if (!this.isReversed) {
+      if (this.currentSlideIndex < this.carouselImages.length - 1) {
+        this.currentSlideIndex++;
+      } else {
+        this.isReversed = true;
+        this.currentSlideIndex--;
+      }
     } else {
-      console.warn('Por favor selecciona un tamaño.'); // Mensaje de advertencia si no hay tamaño seleccionado
+      if (this.currentSlideIndex > 0) {
+        this.currentSlideIndex--;
+      } else {
+        this.isReversed = false;
+        this.currentSlideIndex++;
+      }
+    }
+    this.cdr.detectChanges();
+  }
+
+  nextSlide() {
+    clearInterval(this.carouselInterval);
+    this.isReversed = false;
+    if (this.currentSlideIndex < this.carouselImages.length - 1) {
+      this.currentSlideIndex++;
+    } else {
+      this.isReversed = true;
+      this.currentSlideIndex--;
+    }
+    this.cdr.detectChanges();
+    this.resetCarouselInterval(5000);
+  }
+
+  previousSlide() {
+    clearInterval(this.carouselInterval);
+    this.isReversed = true;
+    if (this.currentSlideIndex > 0) {
+      this.currentSlideIndex--;
+    } else {
+      this.isReversed = false;
+      this.currentSlideIndex++;
+    }
+    this.cdr.detectChanges();
+    this.resetCarouselInterval(5000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.carouselInterval);
+  }
+
+  getUniqueColors(products: Product[]): string[] {
+    return Array.from(new Set(products.map(product => product.color)));
+  }
+
+  getUniqueGenders(products: Product[]): string[] {
+    return Array.from(new Set(products.map(product => product.gender)));
+  }
+
+  getUniqueBrands(products: Product[]): string[] {
+    return Array.from(new Set(products.map(product => product.brand)));
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
+  }
+
+  setProductsPerRow(n: number) {
+    this.productsPerRow = n;
+    this.applyFilters();
+  }
+
+  addToCart(product: Product): void {
+    this.cartService.addItem(product);
+  }
+
+  buyNow() {
+    const productToBuy = this.products.find(product => product.imageUrl === this.carouselImages[this.currentSlideIndex]);
+    
+    if (productToBuy) {
+      this.cartService.addItem(productToBuy);
+      this.router.navigate(['/cart']);
+    } else {
+      console.error('Producto no encontrado');
     }
   }
 
   applyFilters() {
-    // Filtrar productos según las selecciones
     this.filteredProducts = this.products.filter(product => {
       return (
         (this.selectedColor ? product.color === this.selectedColor : true) &&
-        (this.selectedGender ? product.gender === this.selectedGender : true) &&
-        (this.selectedBrand ? product.brand === this.selectedBrand : true)
+        (this.selectedGender ? product.gender === this.selectedGender : true)
+        // (this.selectedBrand ? product.brand === this.selectedBrand : true) // Comentado por falta de datos
+        // (this.selectedSize ? product.size === this.selectedSize : true) // Comentado por falta de datos
       );
     });
-  }
 
-  getUniqueColors(products: Product[]): string[] {
-    // Obtener colores únicos
-    const colors = new Set(products.map(product => product.color));
-    return Array.from(colors);
+    // Aplicar ordenamiento (Eliminé `createdAt`)
+    if (this.selectedSort === 'recent') {
+      this.filteredProducts.sort((a, b) => {
+        // Aquí se puede implementar el ordenamiento que necesites.
+        return 0; // Implementa tu lógica de ordenamiento
+      });
+    } else if (this.selectedSort === 'priceHighLow') {
+      this.filteredProducts.sort((a, b) => b.price - a.price);
+    } else if (this.selectedSort === 'priceLowHigh') {
+      this.filteredProducts.sort((a, b) => a.price - b.price);
+    }
   }
-
-  getUniqueGenders(products: Product[]): string[] {
-    // Obtener géneros únicos
-    const genders = new Set(products.map(product => product.gender));
-    return Array.from(genders);
-  }
-
-  getUniqueBrands(products: Product[]): string[] {
-    // Obtener marcas únicas
-    const brands = new Set(products.map(product => product.brand));
-    return Array.from(brands);
-  }
-
-  toggleFilters() {
-    this.showFilters = !this.showFilters; // Alternar visibilidad
-  }
-
-  setProductsPerRow(n: number) {
-    this.productsPerRow = n; // Establecer el número de productos por fila
-    this.applyFilters(); // Aplicar filtros si es necesario
-  }  
 }

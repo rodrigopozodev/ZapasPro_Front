@@ -1,0 +1,27 @@
+/* Agrega este CSS a tu archivo de estilos */
+.carousel {
+  height: 500px; /* Ajusta esto al tamaño deseado */
+  overflow: hidden; /* Evita que las imágenes excedan el contenedor */
+}
+
+.carousel img {
+  height: 100%; /* Las imágenes llenarán el contenedor del carrusel */
+  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+}
+
+
+.carousel-inner {
+  height: 300px; /* Ajusta la altura según sea necesario */
+}
+
+.carousel-item {
+  height: 100%; /* Cada item debe ocupar el 100% de la altura del contenedor */
+  flex: 0 0 100%; /* Esto asegura que cada viñeta ocupe el 100% del ancho del carrusel */
+}
+
+.carousel-item img {
+  height: 100%; /* Las imágenes llenan todo el alto del contenedor de la viñeta */
+  width: 28%; /* Mantiene la proporción de la imagen */
+  max-width: 100%; /* Limita el ancho máximo de la imagen */
+  object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsionarse */
+}

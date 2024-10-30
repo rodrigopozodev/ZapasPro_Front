@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common'; // Importa el módulo común de 
 import { Component, OnInit } from '@angular/core'; // Importa los decoradores de componente y ciclo de vida
 import { CartService } from '../../services/cart.service'; // Importa el servicio del carrito
 import { CartItem } from '../../interfaces/cart.interface'; // Importa la interfaz del carrito
-import { UserService } from '../../services/user.service'; // Cambia userService por UserService
+import { UserService } from '../../services/user.service'; // Importa el servicio de usuario
 import { Router } from '@angular/router'; // Importa el enrutador de Angular
 
 @Component({
@@ -14,23 +14,35 @@ import { Router } from '@angular/router'; // Importa el enrutador de Angular
 })
 export class CartComponent implements OnInit { // Define el componente
   cartProducts: CartItem[] = []; // Array para almacenar los productos del carrito
+  totalPrice: number = 0; // Variable para almacenar el precio total
 
   // Constructor para inyectar servicios
-  constructor(private cartService: CartService, private userService: UserService, private router: Router) {} // Cambia userService por UserService
+  constructor(private cartService: CartService, private userService: UserService, private router: Router) {}
 
   // Método de ciclo de vida que se ejecuta al inicializar el componente
   ngOnInit(): void {
-    this.cartProducts = this.cartService.getCart(); // Esto ahora debe coincidir con el tipo correcto
+    this.loadCart(); // Cargar los productos del carrito al inicializar
+  }
+
+  // Método para cargar los productos del carrito y calcular el precio total
+  private loadCart(): void {
+    this.cartProducts = this.cartService.getCart(); // Obtiene los productos del carrito
+    this.calculateTotalPrice(); // Calcula el precio total de los productos
+  }
+
+  // Método para calcular el precio total de los productos en el carrito
+  private calculateTotalPrice(): void {
+    this.totalPrice = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0); // Suma los precios de todos los productos
   }
 
   // Método para navegar a la tienda
-  goToStore() {
+  goToStore(): void {
     this.router.navigate(['/store']); // Navega a la ruta de la tienda
   }
 
   // Método para cerrar sesión
-  logout() {
-    this.userService.logout(); // Cambia userService.logout() por userService.logout()
+  logout(): void {
+    this.userService.logout(); // Cierra sesión del usuario
     this.router.navigate(['/login']); // Navega a la página de login al cerrar sesión
   }
 
@@ -38,12 +50,22 @@ export class CartComponent implements OnInit { // Define el componente
   clearCart(): void {
     this.cartService.clearCart(); // Llama al método clearCart del servicio del carrito
     this.cartProducts = []; // Limpia el array de productos del carrito
+    this.totalPrice = 0; // Resetea el precio total
+  }
+
+  // Método para eliminar un producto del carrito
+  removeFromCart(productId: number): void {
+    this.cartService.removeFromCart(productId); // Llama al método removeFromCart del servicio del carrito
+    this.loadCart(); // Vuelve a cargar el carrito para actualizar la vista
   }
 
   // Método para simular la compra
-  buy() {
-    alert('Compra realizada con éxito!'); // Muestra un mensaje de éxito
-    this.cartService.clearCart(); // Limpia el carrito después de la compra
-    this.cartProducts = []; // Limpia el array de productos del carrito
+  buy(): void {
+    if (this.cartProducts.length > 0) {
+      alert('Compra realizada con éxito!'); // Muestra un mensaje de éxito
+      this.clearCart(); // Limpia el carrito después de la compra
+    } else {
+      alert('El carrito está vacío.'); // Mensaje si el carrito está vacío
+    }
   }
 }

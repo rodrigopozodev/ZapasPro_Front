@@ -9,33 +9,35 @@
     </button>
   </div>
 
-  <!-- Formulario de registro de producto -->
-  <div *ngIf="showProductForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
-    <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Registrar Nuevo Producto</h3>
-    <form (ngSubmit)="registerProduct()">
-      <label for="productName" class="block mb-2">Nombre del Producto:</label>
-      <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+<!-- Formulario de registro de producto -->
+<div *ngIf="showProductForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+  <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Registrar Nuevo Producto</h3>
+  <form (ngSubmit)="registerProduct()">
+    <label for="productName" class="block mb-2">Nombre del Producto:</label>
+    <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
 
-      <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
-      <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
+    <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
+    <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
 
-      <label for="productPrice" class="block mb-2">Precio del Producto:</label>
-      <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+    <label for="productPrice" class="block mb-2">Precio del Producto:</label>
+    <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
 
-      <label for="productGender" class="block mb-2">Género:</label>
-      <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
-      </select>
+    <label for="productGender" class="block mb-2">Género:</label>
+    <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+      <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+    </select>
 
-      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-      <input type="url" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+    <label for="productImageUrl" class="block mb-2">Seleccionar Imagen:</label>
+    <select id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+      <option *ngFor="let imageUrl of imageUrls" [value]="imageUrl">{{ imageUrl }}</option>
+    </select>
 
-      <div class="flex justify-center">
-        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
-        <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
-      </div>
-    </form>
-  </div>
+    <div class="flex justify-center">
+      <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
+      <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+    </div>
+  </form>
+</div>
 
   <!-- Paginación para productos -->
   <div class="mt-4 flex justify-center mb-4">

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './productos.component.html',
-  styleUrl: './productos.component.css'
+  styleUrls: ['./productos.component.css'], // Cambié styleUrl a styleUrls (plural)
 })
 export class ProductosComponent {
   private apiUrlProducts = 'http://localhost:3000/api/products';
@@ -33,27 +33,37 @@ export class ProductosComponent {
   itemsPerPage: number = 20; // Items por página
   showEditForm = false;
 
+  // Nuevo array de URLs de imágenes
+  imageUrls: string[] = [
+    '/img/Nike Air Max Plus Drift.png',
+    '/img/Nike-AIR_FORCE_1_07.png',
+    '/img/Nike-AIR_FORCE_1_07_amarilla.png',
+    '/img/Air Force 1 SP.png',
+    '/img/Air Force 1 \'07 PRM.png', // Agregando la nueva imagen
+    // Agrega más URLs según sea necesario
+  ];
+
   constructor(private http: HttpClient, private router: Router) {
     this.products = [];
     this.filteredProducts = this.products;
     this.loadProducts(); // Llama a loadProducts al iniciar
   }
 
-  // Método para cargar productos (se mantiene en el código, pero no se llama al iniciar)
+  // Método para cargar productos
   public loadProducts(): void {
-  this.getProducts(this.currentProductPage).subscribe(
-    (response: Product[]) => {
-      this.products = response;
-      this.filteredProducts = this.products;
-      this.filterProducts(); // Aplica filtros al cargar
-      this.calculateTotalProductPages(); // Calcular total de páginas
-      this.showProducts = true; // Asegúrate de que esto esté en true
-    },
-    (error: any) => {
-      console.error('Error en la solicitud de productos:', error);
-    }
-  );
-}
+    this.getProducts(this.currentProductPage).subscribe(
+      (response: Product[]) => {
+        this.products = response;
+        this.filteredProducts = this.products;
+        this.filterProducts(); // Aplica filtros al cargar
+        this.calculateTotalProductPages(); // Calcular total de páginas
+        this.showProducts = true; // Asegúrate de que esto esté en true
+      },
+      (error: any) => {
+        console.error('Error en la solicitud de productos:', error);
+      }
+    );
+  }
 
   public getProducts(page: number): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrlProducts}?_page=${page}&_limit=${this.itemsPerPage}`);
@@ -71,35 +81,54 @@ export class ProductosComponent {
   public editProduct(product: any) {
     this.selectedProduct = { ...product }; // Clona el producto seleccionado
     this.isEditing = true; // Muestra el formulario de edición
-}
-
-public cancelProduct(): void {
-  this.selectedProduct = null; // Resetea el producto seleccionado
-  this.showProductForm = false; // Oculta el formulario de registro de producto
-  this.newProduct = {}; // Resetea el formulario de nuevo producto
-}
- 
-  deleteProduct(productId: number) {
-    console.log(`Eliminando producto con ID: ${productId}`);
-    this.products = this.products.filter(product => product.id !== productId);
   }
 
+  public cancelProduct(): void {
+    this.selectedProduct = null; // Resetea el producto seleccionado
+    this.showProductForm = false; // Oculta el formulario de registro de producto
+    this.newProduct = {}; // Resetea el formulario de nuevo producto
+  }
+
+  deleteProduct(productId: number) {
+    // Muestra un mensaje de confirmación antes de eliminar
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
+    if (confirmDelete) {
+      // Realiza la solicitud DELETE al servidor
+      this.http.delete(`${this.apiUrlProducts}/${productId}`).subscribe(
+        (response) => {
+          console.log(`Producto con ID: ${productId} eliminado`, response);
+          // Actualiza la lista de productos solo si la eliminación fue exitosa
+          this.products = this.products.filter(product => product.id !== productId);
+          this.filteredProducts = this.filteredProducts.filter(product => product.id !== productId);
+          this.calculateTotalProductPages(); // Recalcula el total de páginas después de eliminar
+          this.updateProductList(); // Actualiza la lista de productos mostrada
+        },
+        (error: any) => {
+          console.error('Error al eliminar el producto:', error);
+        }
+      );
+    } else {
+      console.log('Eliminación cancelada.');
+    }
+  }
   
+  
+
   filterProducts() {
     let filtered = this.products;
-  
+
     // Filtrar por nombre del producto
     if (this.searchProductTerm) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(this.searchProductTerm.toLowerCase())
       );
     }
-  
+
     // Filtrar por género
     if (this.genderFilter) {
       filtered = filtered.filter(product => product.gender.toLowerCase() === this.genderFilter.toLowerCase());
     }
-  
+
     this.filteredProducts = filtered;
     this.calculateTotalProductPages(); // Actualiza el total de páginas después de filtrar
     this.updateProductList(); // Actualiza la lista de productos mostrada
@@ -114,29 +143,29 @@ public cancelProduct(): void {
 
   updateProduct(productId: number) {
     if (this.selectedProduct) {
-        // Asegurarse de que 'size' es un array
-        if (typeof this.selectedProduct.size === 'string') {
-            // Si viene como un string, convertirlo en un array
-            this.selectedProduct.size = this.selectedProduct.size.split(',').map(Number);
-        } else if (!Array.isArray(this.selectedProduct.size)) {
-            // Si no es un array, lo convertimos a un array
-            this.selectedProduct.size = [this.selectedProduct.size];
-        }
-
-        // Ahora se debe enviar como JSON
-        this.http.put(`${this.apiUrlProducts}/${productId}`, this.selectedProduct).subscribe(
-            (response) => {
-                console.log('Producto actualizado:', response);
-                this.loadProducts(); // Recargar productos para reflejar los cambios
-                this.showEditForm = false; // Ocultar el formulario de edición
-                this.selectedProduct = null; // Limpiar la selección
-            },
-            (error: any) => {
-                console.error('Error al actualizar el producto:', error);
-            }
-        );
+      // Asegurarse de que 'size' es un array
+      if (typeof this.selectedProduct.size === 'string') {
+        // Si viene como un string, convertirlo en un array
+        this.selectedProduct.size = this.selectedProduct.size.split(',').map(Number);
+      } else if (!Array.isArray(this.selectedProduct.size)) {
+        // Si no es un array, lo convertimos a un array
+        this.selectedProduct.size = [this.selectedProduct.size];
       }
+
+      // Ahora se debe enviar como JSON
+      this.http.put(`${this.apiUrlProducts}/${productId}`, this.selectedProduct).subscribe(
+        (response) => {
+          console.log('Producto actualizado:', response);
+          this.loadProducts(); // Recargar productos para reflejar los cambios
+          this.showEditForm = false; // Ocultar el formulario de edición
+          this.selectedProduct = null; // Limpiar la selección
+        },
+        (error: any) => {
+          console.error('Error al actualizar el producto:', error);
+        }
+      );
     }
+  }
 
   public nextProductPage(): void {
     if (this.currentProductPage < this.totalProductPages) {
