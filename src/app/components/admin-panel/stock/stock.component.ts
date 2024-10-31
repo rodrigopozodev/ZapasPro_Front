@@ -17,7 +17,7 @@ export class StockComponent {
   private apiUrlStock = 'http://localhost:3000/api/stock';
 
   showStock = false; 
-  stockItems: Stock[] = []; // Inicializar como array
+  stockItems: Stock[] = []; 
   paginatedStock: Stock[] = [];
   totalStockPages: number = 1; 
   currentStockPage: number = 1; 
@@ -25,21 +25,33 @@ export class StockComponent {
   isEditing = false; 
   itemsPerPage: number = 20; 
 
+  // Nueva propiedad para registrar un nuevo movimiento
+  newMovement = {
+    fecha: '',
+    productoId: 0, // Cambiado a 0 para que sea un número
+    talla: '',
+    cantidad: 0,
+    movimiento: 'compra' // Por defecto, será compra
+  };
+
+  // Nueva propiedad para mostrar u ocultar el formulario de movimiento
+  showMovementForm = false;
+
+  // Propiedades para el filtrado
+  selectedFilter: string = 'id'; // Filtro por defecto
+  searchTerm: string = '';
+  
   constructor(private http: HttpClient, private router: Router) {
     this.loadStock();
   }
 
   public loadStock(): void {
     this.getStock(this.currentStockPage).subscribe(
-      (response: { success: boolean; stocks: Stock[] }) => {
-        if (response.success) {
-          this.stockItems = response.stocks; // Extraer el array de stocks
-          this.calculateTotalStockPages();
-          this.updateStockList();
-          this.showStock = true; 
-        } else {
-          console.error('Error: La respuesta no fue exitosa.', response);
-        }
+      (response: Stock[]) => {
+        this.stockItems = response; 
+        this.calculateTotalStockPages();
+        this.updateStockList();
+        this.showStock = true; 
       },
       (error: any) => {
         console.error('Error en la solicitud de stock:', error);
@@ -47,28 +59,21 @@ export class StockComponent {
     );
   }
   
-  public getStock(page: number): Observable<{ success: boolean; stocks: Stock[] }> {
-    return this.http.get<{ success: boolean; stocks: Stock[] }>(`${this.apiUrlStock}?_page=${page}&_limit=${this.itemsPerPage}`);
+  public getStock(page: number): Observable<Stock[]> {
+    return this.http.get<Stock[]>(`${this.apiUrlStock}?_page=${page}&_limit=${this.itemsPerPage}`);
   }
 
   calculateTotalStockPages(): void {
-    this.http.get<{ success: boolean; stocks: Stock[] }>(this.apiUrlStock).subscribe((response) => {
-      if (response.success) {
-        const totalItems = response.stocks.length; // Asegúrate de que sea un número
-        this.totalStockPages = Math.ceil(totalItems / this.itemsPerPage);
-      }
+    this.http.get<Stock[]>(this.apiUrlStock).subscribe((response) => {
+      const totalItems = response.length; 
+      this.totalStockPages = Math.ceil(totalItems / this.itemsPerPage);
     });
   }
 
   private updateStockList() {
-    if (Array.isArray(this.stockItems)) {
-      const startIndex = (this.currentStockPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      this.paginatedStock = this.stockItems.slice(startIndex, endIndex);
-    } else {
-      console.error('stockItems no es un array:', this.stockItems);
-      this.paginatedStock = []; // Restablecer paginatedStock si hay un error
-    }
+    const startIndex = (this.currentStockPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedStock = this.stockItems.slice(startIndex, endIndex);
   }
 
   public editStock(stock: Stock) {
@@ -83,7 +88,7 @@ export class StockComponent {
 
   deleteStock(stockId: number) {
     this.stockItems = this.stockItems.filter(stock => stock.id !== stockId);
-    this.updateStockList(); // Actualiza la lista después de eliminar
+    this.updateStockList(); 
   }
 
   updateStock(stockId: number) {
@@ -113,5 +118,75 @@ export class StockComponent {
       this.currentStockPage--;
       this.updateStockList();
     }
+  }
+
+  // Nueva función para registrar un movimiento de stock
+  public registerMovement(): void {
+    const { fecha, productoId, talla, cantidad, movimiento } = this.newMovement;
+
+    // Crear una nueva entrada de stock asegurando incluir todas las propiedades necesarias
+    const newStockEntry: Stock = {
+      id: 0, // O asignar el ID que tu API maneje
+      fecha,
+      productoId,
+      talla,
+      cantidad,
+      movimiento,
+      createdAt: new Date().toISOString(), // Convertir a string
+      updatedAt: new Date().toISOString()  // Convertir a string
+    };
+
+    // Llamada a la API para registrar el nuevo movimiento
+    this.http.post<Stock>(this.apiUrlStock, newStockEntry).subscribe(
+      response => {
+        this.loadStock(); // Recargar el stock para reflejar los cambios
+        this.resetNewMovement(); // Reiniciar el formulario de movimiento
+        this.showMovementForm = false; // Ocultar el formulario después de registrar
+      },
+      error => {
+        console.error('Error al registrar el movimiento:', error);
+      }
+    );
+  }
+
+  // Método para reiniciar el formulario de nuevo movimiento
+  private resetNewMovement(): void {
+    this.newMovement = {
+      fecha: '',
+      productoId: 0, // Reiniciado a 0 para que sea un número
+      talla: '',
+      cantidad: 0,
+      movimiento: 'compra'
+    };
+  }
+
+  // Método para cancelar el registro de movimiento y ocultar el formulario
+  public resetMovementForm(): void {
+    this.resetNewMovement();
+    this.showMovementForm = false; // Ocultar el formulario
+  }
+
+  // Método para filtrar el stock
+  public filteredStock(): Stock[] {
+    return this.stockItems.filter(item => {
+      switch (this.selectedFilter) {
+        case 'id':
+          return item.productoId.toString().includes(this.searchTerm);
+        case 'fecha':
+          return new Date(item.fecha).toLocaleDateString().includes(this.searchTerm); // Asegúrate de que el formato coincide
+        case 'talla':
+          return item.talla.toLowerCase().includes(this.searchTerm.toLowerCase());
+        case 'cantidad':
+          return item.cantidad.toString().includes(this.searchTerm);
+        case 'movimiento':
+          return item.movimiento.toLowerCase().includes(this.searchTerm.toLowerCase());
+        default:
+          return true;
+      }
+    });
+  }
+
+  public applyFilter(): void {
+    this.updateStockList(); // Actualiza la lista mostrada al aplicar el filtro
   }
 }

@@ -71,15 +71,15 @@
 
   <!-- Fila de columnas: Filtros y Productos -->
   <div class="flex mx-4 mt-8">
-   <!-- Sección de filtros -->
-<aside *ngIf="showFilters" class="filters bg-white rounded-3xl shadow-lg p-4 w-80 mr-8 flex flex-col justify-start sticky top-20" style="max-height: 90vh; overflow-y: auto;">
-  <h2 class="text-lg font-bold text-yellow-600 text-center">Filtros</h2>
+    <!-- Sección de filtros -->
+    <aside *ngIf="showFilters" class="filters bg-white rounded-3xl shadow-lg p-4 w-80 mr-8 flex flex-col justify-start sticky top-20" style="max-height: 90vh; overflow-y: auto;">
+      <h2 class="text-lg font-bold text-yellow-600 text-center">Filtros</h2>
 
       <!-- Filtro: Ordenar por -->
       <div class="filter-section mt-4">
         <h3 class="text-md font-semibold text-gray-700">Ordenar por</h3>
         <select [(ngModel)]="selectedSort" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Seleccione</option>
+          <option value="">Sin ordenar</option>
           <option value="priceHighLow">Precio: alto-bajo</option>
           <option value="priceLowHigh">Precio: bajo-alto</option>
         </select>
@@ -106,18 +106,18 @@
       <!-- Filtro: Marca -->
       <div class="filter-section mt-4">
         <h3 class="text-md font-semibold text-gray-700">Marca</h3>
-        <select [(ngModel)]="selectedBrand" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <select [(ngModel)]="selectedMarca" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <option value="">Todas</option>
-          <!-- <option *ngFor="let brand of uniqueBrands" [value]="brand">{{ brand }}</option> -->
+          <option *ngFor="let marca of uniqueMarcas" [value]="marca">{{ marca }}</option>
         </select>
       </div>
 
       <!-- Filtro: Talla -->
       <div class="filter-section mt-4">
         <h3 class="text-md font-semibold text-gray-700">Talla</h3>
-        <select [(ngModel)]="selectedSize" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <select [(ngModel)]="selectedTalla" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
           <option value="">Todas</option>
-          <!-- <option *ngFor="let size of uniqueSizes" [value]="size">{{ size }}</option> -->
+          <option *ngFor="let talla of uniqueTallas" [value]="talla">{{ talla }}</option>
         </select>
       </div>
 

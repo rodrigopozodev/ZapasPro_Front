@@ -33,7 +33,9 @@ export class ProductosComponent {
   itemsPerPage: number = 20; // Items por página
   showEditForm = false;
   selectedColorFilter: string = ''; // Filtro por color (agregado según los errores que mencionaste)
-  colors: string[] = ['Rojo', 'Verde', 'Azul', 'Negro', 'Blanco']; // Colores disponibles
+  colors: string[] = ['Negro', 'Azul', 'Marrón', 'Verde', 'Gris', 'Naranja', 'Rosa', 'Morado', 'Rojo', 'Blanco', 'Amarillo', 'Multicolor'];
+  marcas: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Converse'];
+
   // Nuevo array de URLs de imágenes
   imageUrls: string[] = [
     '/img/Nike Air Max Plus Drift.png',

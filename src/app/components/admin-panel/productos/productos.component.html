@@ -27,8 +27,23 @@
         <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
       </select>
 
-      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-      <input type="url" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+    <!-- Campo para el color -->
+    <label for="productColor" class="block mb-2">Color:</label>
+    <select id="productColor" [(ngModel)]="newProduct.color" name="productColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+    </select>
+
+    <!-- Campo para la marca -->
+    <label for="productBrand" class="block mb-2">Marca:</label>
+    <select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+    </select>
+
+    <!-- Campo para la URL de la imagen -->
+    <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
+    <select id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let imageUrl of imageUrls" [value]="imageUrl">{{ imageUrl }}</option>
+    </select>
 
       <div class="flex justify-center">
         <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
@@ -79,6 +94,8 @@
         <th class="border border-yellow-300 p-2">Imagen</th>
         <th class="border border-yellow-300 p-2">Precio</th>
         <th class="border border-yellow-300 p-2">Género</th>
+        <th class="border border-yellow-300 p-2">Color</th>
+        <th class="border border-yellow-300 p-2">Marca</th>
         <th class="border border-yellow-300 p-2">Acciones</th>
       </tr>
     </thead>
@@ -92,6 +109,8 @@
         </td>
         <td class="border border-yellow-300 p-2">{{ product.price }} €</td>
         <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.color }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.marca }}</td>
         <td class="border border-yellow-300 p-2">
           <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
           <button (click)="deleteProduct(product.id)" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
@@ -118,7 +137,41 @@
       <select id="gender" [(ngModel)]="selectedProduct.gender" name="gender" class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
         <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
       </select>
-      
+
+      <!-- Campo para el color en el formulario de edición -->
+      <label for="color" class="block mb-2">Color</label>
+      <select id="color" [(ngModel)]="selectedProduct.color" name="color" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+          <option value="negro">Negro</option>
+          <option value="azul">Azul</option>
+          <option value="marron">Marrón</option>
+          <option value="verde">Verde</option>
+          <option value="gris">Gris</option>
+          <option value="naranja">Naranja</option>
+          <option value="rosa">Rosa</option>
+          <option value="morado">Morado</option>
+          <option value="rojo">Rojo</option>
+          <option value="blanco">Blanco</option>
+          <option value="amarillo">Amarillo</option>
+          <option value="multicolor">Multicolor</option>
+      </select>
+
+      <!-- Campo para la marca en el formulario de edición -->
+      <label for="marca" class="block mb-2">Marca</label>
+      <select id="marca" [(ngModel)]="selectedProduct.marca" name="marca" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+          <option value="Nike">Nike</option>
+          <option value="Adidas">Adidas</option>
+          <option value="Puma">Puma</option>
+          <option value="Reebok">Reebok</option>
+          <option value="Converse">Converse</option>
+          <option value="New Balance">New Balance</option>
+      </select>
+
+      <!-- Campo para la URL de la imagen en el formulario de edición -->
+      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
+      <select id="productImageUrl" [(ngModel)]="selectedProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+          <option *ngFor="let imageUrl of imageUrls" [value]="imageUrl">{{ imageUrl }}</option>
+      </select>
+
       <div class="flex justify-center">
         <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
         <button (click)="cancelEdit()" type="button" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>

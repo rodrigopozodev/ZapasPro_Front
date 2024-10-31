@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
 import { ProductService } from '../../services/product.service';
+import { StockService } from '../../services/stock.service';
 import { Product } from '../../interfaces/product.interface';
+import { Stock } from '../../interfaces/stock.interfaces'; // Importación de la interfaz Stock
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
@@ -16,16 +18,18 @@ import { Router } from '@angular/router';
 export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
+  stock: Stock[] = []; // Almacenará los datos de inventario de tallas
   selectedColor: string = '';
-  selectedSize: string = '';
+  selectedTalla: string = ''; // Añadido: propiedad de talla seleccionada
   selectedGender: string = '';
-  selectedBrand: string = '';
+  selectedMarca: string = '';
   selectedSort: string = ''; 
   showFilters: boolean = true;
 
   uniqueColors: string[] = [];
   uniqueGenders: string[] = [];
-  uniqueBrands: string[] = [];
+  uniqueMarcas: string[] = [];
+  uniqueTallas: string[] = []; // Añadido: propiedad para las tallas únicas
   productsPerRow: number = 4;
 
   currentSlideIndex: number = 0;
@@ -41,6 +45,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public cartService: CartService,
     private productService: ProductService,
+    private stockService: StockService, // Usar servicio StockService en lugar de ProductService para inventario
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object,
     private router: Router
@@ -48,6 +53,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.loadStock(); // Cargar inventario de tallas
   }
 
   ngAfterViewInit() {
@@ -63,10 +69,23 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.filteredProducts = products;
         this.uniqueColors = this.getUniqueColors(this.products);
         this.uniqueGenders = this.getUniqueGenders(this.products);
-        this.uniqueBrands = this.getUniqueBrands(this.products);
+        this.uniqueMarcas = this.getUniqueMarcas(this.products);
       },
-      error: (error) => {
+      error: (error: unknown) => { // Cambio: especificar el tipo de error
         console.error('Error al cargar productos', error);
+      },
+    });
+  }
+
+  // Método para cargar el stock de tallas desde el servicio de inventario
+  loadStock() {
+    this.stockService.getStocks().subscribe({ // Usar servicio de inventario StockService
+      next: (stockData: Stock[]) => {
+        this.stock = stockData;
+        this.uniqueTallas = this.getUniqueTallas(this.stock); // Generar tallas únicas desde el inventario
+      },
+      error: (error: unknown) => { // Cambio: especificar el tipo de error
+        console.error('Error al cargar el stock', error);
       },
     });
   }
@@ -139,8 +158,12 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
     return Array.from(new Set(products.map(product => product.gender)));
   }
 
-  getUniqueBrands(products: Product[]): string[] {
-    return Array.from(new Set(products.map(product => product.brand)));
+  getUniqueMarcas(products: Product[]): string[] {
+    return Array.from(new Set(products.map(product => product.marca)));
+  }
+
+  getUniqueTallas(stock: Stock[]): string[] {  // Obtener tallas únicas desde el inventario
+    return Array.from(new Set(stock.map(item => item.talla)));
   }
 
   toggleFilters() {
@@ -169,11 +192,13 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
+      const productStock = this.stock.find(stockItem => stockItem.productoId === product.id && stockItem.talla === this.selectedTalla);
+      
       return (
         (this.selectedColor ? product.color.includes(this.selectedColor) : true) &&
+        (this.selectedTalla ? productStock !== undefined : true) && // Filtra por existencia de talla en stock
         (this.selectedGender ? product.gender === this.selectedGender : true) &&
-        (this.selectedBrand ? product.brand === this.selectedBrand : true)
-        
+        (this.selectedMarca ? product.marca === this.selectedMarca : true)
       );
     });
 

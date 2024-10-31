@@ -2,6 +2,48 @@
 <div *ngIf="showStock" [ngClass]="{'animate-fadeIn': showStock, 'animate-fadeOut': !showStock}" class="table-container w-full bg-white p-6 rounded-lg shadow-lg mb-10 border border-yellow-300 transition-all duration-500 ease-out transform">
   <h2 class="text-2xl font-bold text-yellow-800 mb-4 text-center">Stock</h2>
 
+  <!-- Botón para mostrar el formulario de registro de movimiento -->
+  <div class="flex justify-center mb-4">
+    <button (click)="showMovementForm = !showMovementForm" 
+            class="bg-yellow-600 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">
+      {{ showMovementForm ? 'Ocultar Formulario' : 'Registrar Movimiento' }}
+    </button>
+  </div>
+
+  <!-- Formulario para registrar nuevos movimientos -->
+  <div *ngIf="showMovementForm" class="mt-4 bg-gray-100 p-4 rounded-lg">
+    <h3 class="text-xl font-semibold text-yellow-800 mb-2 text-center">Registrar Nuevo Movimiento</h3>
+    <form (ngSubmit)="registerMovement()">
+      <div class="mb-2">
+        <label class="block mb-1" for="newFecha">Fecha</label>
+        <input id="newFecha" type="date" [(ngModel)]="newMovement.fecha" name="newFecha" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="newProductoId">Producto ID</label>
+        <input id="newProductoId" type="text" [(ngModel)]="newMovement.productoId" name="newProductoId" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="newTalla">Talla</label>
+        <input id="newTalla" type="text" [(ngModel)]="newMovement.talla" name="newTalla" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="newCantidad">Cantidad</label>
+        <input id="newCantidad" type="number" [(ngModel)]="newMovement.cantidad" name="newCantidad" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="newMovimiento">Movimiento</label>
+        <select id="newMovimiento" [(ngModel)]="newMovement.movimiento" name="newMovimiento" class="border border-yellow-300 p-2 rounded-lg w-full" required>
+          <option value="compra">Compra</option>
+          <option value="ajuste">Ajuste</option>
+        </select>
+      </div>
+      <div class="flex justify-center mt-4">
+        <button type="submit" class="bg-yellow-600 text-white hover:bg-yellow-700 p-2 rounded-lg transition duration-200">Registrar Movimiento</button>
+        <button (click)="resetMovementForm()" type="button" class="bg-red-500 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
   <!-- Paginación para stock -->
   <div class="mt-4 flex justify-center">
     <button (click)="previousStockPage()" 
@@ -19,13 +61,24 @@
     </button>
   </div>
 
+  <!-- Filtro de búsqueda debajo de la paginación -->
+  <div class="mb-4 flex justify-between mt-4">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar..." class="border border-yellow-300 p-2 rounded-lg w-full" />
+    <select [(ngModel)]="selectedFilter" class="border border-yellow-300 p-2 rounded-lg ml-2">
+      <option value="id">ID</option>
+      <option value="fecha">Fecha</option>
+      <option value="talla">Talla</option>
+      <option value="cantidad">Cantidad</option>
+      <option value="movimiento">Movimiento</option>
+    </select>
+  </div>
+
   <!-- Tabla de stock -->
   <table class="min-w-full border-collapse text-center mt-4">
     <thead class="bg-yellow-200">
       <tr>
         <th class="border border-yellow-300 p-2">ID</th>
         <th class="border border-yellow-300 p-2">Fecha</th>
-        <th class="border border-yellow-300 p-2">Producto</th>
         <th class="border border-yellow-300 p-2">Talla</th>
         <th class="border border-yellow-300 p-2">Cantidad</th>
         <th class="border border-yellow-300 p-2">Movimiento</th>
@@ -33,10 +86,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let stock of paginatedStock" class="hover:bg-yellow-100 transition duration-300">
-        <td class="border border-yellow-300 p-2">{{ stock.id }}</td>
-        <td class="border border-yellow-300 p-2">{{ stock.fecha | date:'shortDate' }}</td>
-        <td class="border border-yellow-300 p-2">{{ stock.producto }}</td>
+      <tr *ngFor="let stock of filteredStock()" class="hover:bg-yellow-100 transition duration-300">
+        <td class="border border-yellow-300 p-2">{{ stock.productoId }}</td>
+        <td class="border border-yellow-300 p-2">{{ stock.fecha | date:'short' }}</td>
         <td class="border border-yellow-300 p-2">{{ stock.talla }}</td>
         <td class="border border-yellow-300 p-2">{{ stock.cantidad }}</td>
         <td class="border border-yellow-300 p-2">{{ stock.movimiento }}</td>
@@ -50,7 +102,7 @@
 
   <!-- Formulario de edición de stock -->
   <div *ngIf="isEditing && selectedStock" class="mt-4 bg-gray-100 p-4 rounded-lg">
-    <h3 class="text-xl font-semibold text-yellow-800 mb-2">Editar Stock</h3>
+    <h3 class="text-xl font-semibold text-yellow-800 mb-2 text-center">Editar Stock</h3>
     <form (ngSubmit)="updateStock(selectedStock.id)">
       <input type="hidden" [(ngModel)]="selectedStock.id" name="id" />
       <div class="mb-2">
@@ -58,8 +110,8 @@
         <input id="fecha" type="date" [(ngModel)]="selectedStock.fecha" name="fecha" required class="border border-yellow-300 p-2 rounded-lg w-full" />
       </div>
       <div class="mb-2">
-        <label class="block mb-1" for="producto">Producto</label>
-        <input id="producto" type="text" [(ngModel)]="selectedStock.producto" name="producto" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+        <label class="block mb-1" for="producto">Producto ID</label>
+        <input id="producto" type="text" [(ngModel)]="selectedStock.productoId" name="producto" required class="border border-yellow-300 p-2 rounded-lg w-full" />
       </div>
       <div class="mb-2">
         <label class="block mb-1" for="talla">Talla</label>
@@ -77,8 +129,10 @@
           <option value="ajuste">Ajuste</option>
         </select>
       </div>
-      <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
-      <button (click)="cancelStock()" type="button" class="bg-gray-400 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      <div class="flex justify-center mt-4">
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+        <button (click)="cancelStock()" type="button" class="bg-red-500 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
     </form>
   </div>
 </div>
