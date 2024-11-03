@@ -107,14 +107,32 @@
         <td class="border border-yellow-300 p-2">
           <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-16 h-16 object-cover mx-auto" />
         </td>
-        <td class="border border-yellow-300 p-2">{{ product.price }} €</td>
+        <td class="border border-yellow-300 p-2">
+          <div class="flex items-center justify-center space-x-1">
+            <span>{{ product.price }}</span>
+            <span>€</span>
+          </div>
+        </td>        
         <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
         <td class="border border-yellow-300 p-2">{{ product.color }}</td>
         <td class="border border-yellow-300 p-2">{{ product.marca }}</td>
         <td class="border border-yellow-300 p-2">
-          <button (click)="editProduct(product)" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Editar</button>
-          <button (click)="deleteProduct(product.id)" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Eliminar</button>
+          <div class="flex justify-center space-x-2">
+            <button 
+              (click)="editProduct(product)" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200"
+            >
+              Editar
+            </button>
+            <button 
+              (click)="deleteProduct(product.id)" 
+              class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200"
+            >
+              Eliminar
+            </button>
+          </div>
         </td>
+        
       </tr>
     </tbody>
   </table>

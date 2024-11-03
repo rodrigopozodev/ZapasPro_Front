@@ -1,27 +1,44 @@
-/* Agrega este CSS a tu archivo de estilos */
-.carousel {
-  height: 500px; /* Ajusta esto al tamaño deseado */
-  overflow: hidden; /* Evita que las imágenes excedan el contenedor */
-}
-
-.carousel img {
-  height: 100%; /* Las imágenes llenarán el contenedor del carrusel */
-  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
-}
-
-
-.carousel-inner {
-  height: 300px; /* Ajusta la altura según sea necesario */
+.carrusel {
+  height: 500px; /* Altura total del contenedor del carrusel */
 }
 
 .carousel-item {
-  height: 100%; /* Cada item debe ocupar el 100% de la altura del contenedor */
-  flex: 0 0 100%; /* Esto asegura que cada viñeta ocupe el 100% del ancho del carrusel */
+  width: 100%; /* Asegura que cada item ocupe el ancho completo */
+  height: 100%; /* La altura total del item será de 500px */
+  position: relative; /* Necesario para el posicionamiento de los elementos hijos */
+  display: flex; /* Permite que los hijos se alineen correctamente */
+  flex-direction: column; /* Alinea los hijos verticalmente */
 }
 
-.carousel-item img {
-  height: 100%; /* Las imágenes llenan todo el alto del contenedor de la viñeta */
-  width: 28%; /* Mantiene la proporción de la imagen */
-  max-width: 100%; /* Limita el ancho máximo de la imagen */
-  object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsionarse */
+.carousel-inner {
+  height: 100%; /* Se asegura que el contenedor interno ocupe el 100% */
+  display: flex; /* Flex para manejar el desplazamiento */
+}
+
+.image-container {
+  height: 400px; /* Altura específica del contenedor de la imagen */
+  width: 100%; /* Asegura que el contenedor de la imagen ocupe todo el ancho */
+  overflow: hidden; /* Evita que la imagen sobresalga */
+  display: flex; /* Para centrar la imagen */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+}
+
+.image-container img {
+  width: auto; /* Ajuste automático del ancho */
+  height: 190%; /* La imagen ocupa el 100% de la altura del contenedor */
+  object-fit: contain; /* Asegura que la imagen se vea completa sin recortarla */
+}
+
+/* Ajuste para el div de texto y botón */
+.texto-boton {
+  position: absolute; /* Posiciona el texto y botón de manera absoluta */
+  bottom: 0; /* Fijo al fondo del contenedor */
+  left: 50%; /* Centrado horizontalmente */
+  transform: translateX(-50%); /* Ajusta el centrado */
+  text-align: center; /* Centra el texto */
+  padding: 16px; /* Espaciado */
+  width: 100%; /* Ancho completo */
+  background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente */
+  height: 100px; /* Altura del contenedor de texto y botón */
 }

@@ -23,24 +23,22 @@ export class StockComponent {
   currentStockPage: number = 1; 
   selectedStock: Stock | null = null; 
   isEditing = false; 
-  itemsPerPage: number = 20; 
+  itemsPerPage: number = 10; 
+  searchTerm: string = '';
+  selectedFilter: string = 'todos'; // Filtro por defecto
 
   // Nueva propiedad para registrar un nuevo movimiento
   newMovement = {
     fecha: '',
-    productoId: 0, // Cambiado a 0 para que sea un número
+    productoId: 0,
     talla: '',
     cantidad: 0,
-    movimiento: 'compra' // Por defecto, será compra
+    movimiento: 'compra'
   };
 
   // Nueva propiedad para mostrar u ocultar el formulario de movimiento
   showMovementForm = false;
 
-  // Propiedades para el filtrado
-  selectedFilter: string = 'id'; // Filtro por defecto
-  searchTerm: string = '';
-  
   constructor(private http: HttpClient, private router: Router) {
     this.loadStock();
   }
@@ -49,8 +47,8 @@ export class StockComponent {
     this.getStock(this.currentStockPage).subscribe(
       (response: Stock[]) => {
         this.stockItems = response; 
-        this.calculateTotalStockPages();
-        this.updateStockList();
+        this.calculateTotalStockPages(); // Calcular total de páginas
+        this.updatePagination(); // Actualizar la paginación
         this.showStock = true; 
       },
       (error: any) => {
@@ -58,23 +56,53 @@ export class StockComponent {
       }
     );
   }
-  
+
   public getStock(page: number): Observable<Stock[]> {
     return this.http.get<Stock[]>(`${this.apiUrlStock}?_page=${page}&_limit=${this.itemsPerPage}`);
   }
 
-  calculateTotalStockPages(): void {
-    this.http.get<Stock[]>(this.apiUrlStock).subscribe((response) => {
+  public calculateTotalStockPages(): void {
+    this.http.get<Stock[]>(this.apiUrlStock).subscribe((response: Stock[]) => {
       const totalItems = response.length; 
       this.totalStockPages = Math.ceil(totalItems / this.itemsPerPage);
+      this.updatePagination(); // Actualizar la paginación después de calcular total
     });
   }
 
-  private updateStockList() {
+  public updatePagination(): void {
+    const filtered = this.filteredStock(); // Filtrar stock
     const startIndex = (this.currentStockPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedStock = this.stockItems.slice(startIndex, endIndex);
+    this.paginatedStock = filtered.slice(startIndex, endIndex); // Actualizar paginación
+    this.totalStockPages = Math.ceil(filtered.length / this.itemsPerPage); // Actualizar total de páginas
   }
+
+  public filteredStock(): Stock[] {
+    return this.stockItems.filter(item => {
+      switch (this.selectedFilter) {
+        case 'id':
+          return item.productoId.toString().includes(this.searchTerm);
+        case 'fecha':
+          return new Date(item.fecha).toLocaleDateString().includes(this.searchTerm);
+        case 'talla':
+          return item.talla.toLowerCase().includes(this.searchTerm.toLowerCase());
+        case 'cantidad':
+          return item.cantidad.toString().includes(this.searchTerm);
+        case 'movimiento':
+          return item.movimiento.toLowerCase().includes(this.searchTerm.toLowerCase());
+        default:
+          return true;
+      }
+    });
+  }
+
+  public applyFilter(): void {
+    if (this.selectedFilter !== 'todos') {
+      this.currentStockPage = 1; // Resetear a la primera página al aplicar el filtro
+    }
+    this.updatePagination(); // Actualizar la paginación después de filtrar
+  }
+  
 
   public editStock(stock: Stock) {
     this.selectedStock = { ...stock };
@@ -86,12 +114,12 @@ export class StockComponent {
     this.isEditing = false; 
   }
 
-  deleteStock(stockId: number) {
+  public deleteStock(stockId: number) {
     this.stockItems = this.stockItems.filter(stock => stock.id !== stockId);
-    this.updateStockList(); 
+    this.updatePagination(); 
   }
 
-  updateStock(stockId: number) {
+  public updateStock(stockId: number) {
     if (this.selectedStock) {
       this.http.put(`${this.apiUrlStock}/${stockId}`, this.selectedStock).subscribe(
         (response) => {
@@ -109,39 +137,35 @@ export class StockComponent {
   public nextStockPage(): void {
     if (this.currentStockPage < this.totalStockPages) {
       this.currentStockPage++;
-      this.updateStockList();
+      this.updatePagination(); // Actualizar la paginación al cambiar de página
     }
   }
 
   public previousStockPage(): void {
     if (this.currentStockPage > 1) {
       this.currentStockPage--;
-      this.updateStockList();
+      this.updatePagination(); // Actualizar la paginación al cambiar de página
     }
   }
 
-  // Nueva función para registrar un movimiento de stock
   public registerMovement(): void {
     const { fecha, productoId, talla, cantidad, movimiento } = this.newMovement;
-
-    // Crear una nueva entrada de stock asegurando incluir todas las propiedades necesarias
     const newStockEntry: Stock = {
-      id: 0, // O asignar el ID que tu API maneje
+      id: 0,
       fecha,
       productoId,
       talla,
       cantidad,
       movimiento,
-      createdAt: new Date().toISOString(), // Convertir a string
-      updatedAt: new Date().toISOString()  // Convertir a string
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
-    // Llamada a la API para registrar el nuevo movimiento
     this.http.post<Stock>(this.apiUrlStock, newStockEntry).subscribe(
       response => {
-        this.loadStock(); // Recargar el stock para reflejar los cambios
-        this.resetNewMovement(); // Reiniciar el formulario de movimiento
-        this.showMovementForm = false; // Ocultar el formulario después de registrar
+        this.loadStock(); 
+        this.resetNewMovement(); 
+        this.showMovementForm = false; 
       },
       error => {
         console.error('Error al registrar el movimiento:', error);
@@ -149,44 +173,18 @@ export class StockComponent {
     );
   }
 
-  // Método para reiniciar el formulario de nuevo movimiento
   private resetNewMovement(): void {
     this.newMovement = {
       fecha: '',
-      productoId: 0, // Reiniciado a 0 para que sea un número
+      productoId: 0,
       talla: '',
       cantidad: 0,
       movimiento: 'compra'
     };
   }
 
-  // Método para cancelar el registro de movimiento y ocultar el formulario
   public resetMovementForm(): void {
     this.resetNewMovement();
-    this.showMovementForm = false; // Ocultar el formulario
-  }
-
-  // Método para filtrar el stock
-  public filteredStock(): Stock[] {
-    return this.stockItems.filter(item => {
-      switch (this.selectedFilter) {
-        case 'id':
-          return item.productoId.toString().includes(this.searchTerm);
-        case 'fecha':
-          return new Date(item.fecha).toLocaleDateString().includes(this.searchTerm); // Asegúrate de que el formato coincide
-        case 'talla':
-          return item.talla.toLowerCase().includes(this.searchTerm.toLowerCase());
-        case 'cantidad':
-          return item.cantidad.toString().includes(this.searchTerm);
-        case 'movimiento':
-          return item.movimiento.toLowerCase().includes(this.searchTerm.toLowerCase());
-        default:
-          return true;
-      }
-    });
-  }
-
-  public applyFilter(): void {
-    this.updateStockList(); // Actualiza la lista mostrada al aplicar el filtro
+    this.showMovementForm = false; 
   }
 }

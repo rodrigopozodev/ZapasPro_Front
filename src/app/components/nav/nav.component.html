@@ -1,24 +1,24 @@
-<nav class="bg-gradient-to-r from-orange-500 to-white shadow-lg">
+<nav class="bg-gradient-to-r from-yellow-500 to-white shadow-lg">
   <div class="container mx-auto flex justify-between items-center p-4">
     <!-- Logo de la aplicación -->
     <a href="/store">
     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="h-12">
     </a>
     <div class="flex items-center space-x-4 relative">
-      <button *ngIf="isAdmin()" class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToAdmin()" title="Admin">
+      <button *ngIf="isAdmin()" class="bg-yellow-500 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToAdmin()" title="Admin">
         <i class="bi bi-shield-lock fs-4"></i>
       </button>
-      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToStore()" title="Tienda">
+      <button class="bg-yellow-500 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToStore()" title="Tienda">
         <i class="bi bi-shop fs-4"></i>
       </button>
-      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToCart()" title="Carrito">
+      <button class="bg-yellow-500 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="goToCart()" title="Carrito">
         <i class="bi bi-cart fs-4"></i>
       </button>
-      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="logout()" title="Cerrar sesión">
+      <button class="bg-yellow-500 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="logout()" title="Cerrar sesión">
         <i class="bi bi-box-arrow-right fs-4"></i>
       </button>
 
-      <button class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="toggleDropdown()" title="Perfil">
+      <button class="bg-yellow-500 hover:bg-orange-700 text-white rounded-full p-2 shadow-lg transition duration-300" (click)="toggleDropdown()" title="Perfil">
         <i class="bi bi-person-circle fs-2"></i>
         <span class="user-greeting text-sm"> Hola, {{ getCurrentUserName() }}!</span>
       </button>

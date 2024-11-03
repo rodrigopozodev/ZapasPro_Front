@@ -1,0 +1,16 @@
+/* login.component.css */
+@keyframes blinkAndScale {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1); /* Tamaño original */
+    }
+    50% {
+      opacity: 0.5; /* Aumentar la opacidad */
+      transform: scale(1.2); /* Aumentar el tamaño del ícono */
+    }
+  }
+  
+  .blink {
+    animation: blinkAndScale 1s ease-in-out infinite; /* Cambia la duración aquí si es necesario */
+  }
+  

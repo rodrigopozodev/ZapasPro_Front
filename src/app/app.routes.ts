@@ -28,6 +28,9 @@ import { ProductosComponent } from './components/admin-panel/productos/productos
 import { RecibosComponent } from './components/admin-panel/recibos/recibos.component';
 import { StockComponent } from './components/admin-panel/stock/stock.component';
 
+// Importa el componente de detalle del producto
+import { ProductDetailComponent } from './components/store/product-detail/product-detail.component'; // Asegúrate de que la ruta sea correcta
+
 // Define las rutas de la aplicación
 export const routes: Routes = [
   { path: '', component: LoginComponent }, // Ruta inicial
@@ -65,6 +68,7 @@ export const routes: Routes = [
       { path: 'perfil/sizes', component: SizesComponent },
       { path: 'perfil/brands', component: BrandsComponent },
       { path: 'perfil/recommendation-preferences', component: RecommendationPreferencesComponent },
+      { path: 'product/:id', component: ProductDetailComponent }, // Ruta para el detalle del producto
     ],
   },
   { path: '**', redirectTo: '' }, // Redirige cualquier ruta no válida

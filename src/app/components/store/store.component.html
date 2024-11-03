@@ -1,33 +1,30 @@
 <!-- Contenedor principal de la tienda -->
 <div class="store bg-[#f3e8d5] py-10 min-h-screen">
-
-  <!-- Carrusel de imágenes -->
-  <div class="relative mx-8 mb-4">
-    <div class="carousel custom-carousel w-full overflow-hidden rounded-3xl shadow-lg bg-white">
-      <div class="carousel-inner flex transition-transform duration-700 ease-in-out"
+<!-- Carrusel de imágenes -->
+<div class="relative mx-8 mb-4">
+  <div class="bg-white rounded-3xl overflow-hidden shadow-lg carrusel"> <!-- Carrusel con altura de 500px -->
+    <div class="carousel custom-carousel h-full">
+      <div class="carousel-inner flex transition-transform duration-700 ease-in-out h-full"
            [ngStyle]="{'transform': 'translateX(-' + (currentSlideIndex * 100) + '%)'}">
-        <div *ngFor="let image of carouselImages; let i = index" class="carousel-item flex-shrink-0 w-full relative">
-          <img [src]="image" alt="Carrusel" class="w-full h-auto max-h-[37.5vh] object-contain mx-auto carousel-image carousel-item" style="padding-top: 0; margin-top: 0;">
+        <div *ngFor="let image of carouselImages; let i = index" class="carousel-item flex-shrink-0 relative h-full">
+          <!-- Div de la Imagen -->
+          <div class="image-container"> <!-- Div de imagen ocupa 150px de altura -->
+            <img [src]="image" alt="Carrusel" class="object-cover"> <!-- La imagen ocupa su espacio -->
+          </div>
+          <!-- Div de Texto y Botón -->
+          <div *ngIf="currentSlideIndex === 0" class="texto-boton"> <!-- Texto y botón -->
+            <h2 class="text-lg font-bold text-yellow-600">Nuestra zapatilla más vendida</h2>
+            <button (click)="buyNow()" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
+              ¡Cómprala ya!
+            </button>
+          </div>
         </div>
-      </div>
-      <button (click)="currentSlideIndex = (currentSlideIndex - 1 + carouselImages.length) % carouselImages.length"
-              class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-yellow-200 transition duration-200 ease-in-out">
-        <i class="fas fa-chevron-left text-yellow-600"></i>
-      </button>
-      <button (click)="currentSlideIndex = (currentSlideIndex + 1) % carouselImages.length"
-              class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-yellow-200 transition duration-200 ease-in-out">
-        <i class="fas fa-chevron-right text-yellow-600"></i>
-      </button>
-
-      <!-- Texto y botón dentro del carrusel -->
-      <div *ngIf="currentSlideIndex === 0" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-center p-4">
-        <h2 class="text-lg font-bold text-yellow-600">Nuestra zapatilla más vendida</h2>
-        <button (click)="buyNow()" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
-          ¡Cómprala ya!
-        </button>
       </div>
     </div>
   </div>
+</div>
+
+
 
   <!-- Fila superior con botones -->
   <div class="flex justify-between mb-4 mx-8 items-center">
@@ -136,7 +133,10 @@
              'grid-cols-6': productsPerRow === 6
            }">
         <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl">
-          <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
+          <a [routerLink]="['/product', product.id]"> <!-- Enlace actualizado -->
+            <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
+          </a>
+          
           <div class="product-info mt-4">
             <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
             <span class="text-sm font-medium bg-yellow-200 text-yellow-800 py-1 px-2 rounded-full">
@@ -148,6 +148,7 @@
             </button>
           </div>
         </div>
+        
       </div>
     </div>
 
