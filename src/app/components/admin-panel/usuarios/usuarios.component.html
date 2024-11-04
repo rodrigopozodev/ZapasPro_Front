@@ -41,7 +41,7 @@
               [ngClass]="{'cursor-not-allowed opacity-50': currentPage === 1}">
         Anterior
       </button>
-      <span class="mx-2">Página {{ currentPage }} de {{ totalPages }}</span>
+      <span class="mx-2 mt-2">Página {{ currentPage }} de {{ totalPages }}</span>
       <button (click)="nextPage()" 
               [disabled]="currentPage === totalPages" 
               class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
@@ -83,6 +83,7 @@
       />
 
       <select [(ngModel)]="searchBy" (change)="filterUsers()" class="border border-yellow-300 p-2 rounded-lg mr-2">
+        <option value="">Buscar por:</option>
         <option value="username">Nombre de Usuario</option>
         <option value="email">Email</option>
       </select>

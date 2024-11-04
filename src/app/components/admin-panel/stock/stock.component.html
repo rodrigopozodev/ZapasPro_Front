@@ -44,6 +44,23 @@
     </form>
   </div>
 
+   <!-- Paginación para stock -->
+   <div class="mt-4 flex justify-center">
+    <button (click)="previousStockPage()" 
+            [disabled]="currentStockPage === 1" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === 1}">
+        Anterior
+    </button>
+    <span class="mx-2 mt-2">Página {{ currentStockPage }} de {{ totalStockPages }}</span>
+    <button (click)="nextStockPage()" 
+            [disabled]="currentStockPage === totalStockPages" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === totalStockPages}">
+        Siguiente
+    </button>
+  </div>
+
   <!-- Filtro de búsqueda debajo de la paginación -->
   <div class="mb-4 flex justify-between mt-4">
     <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Buscar..." class="border border-yellow-300 p-2 rounded-lg w-full" />
@@ -55,24 +72,6 @@
       <option value="cantidad">Cantidad</option>
       <option value="movimiento">Movimiento</option>
     </select>
-    
-  </div>
-
-  <!-- Paginación para stock -->
-  <div class="mt-4 flex justify-center">
-    <button (click)="previousStockPage()" 
-            [disabled]="currentStockPage === 1" 
-            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
-            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === 1}">
-        Anterior
-    </button>
-    <span class="mx-2">Página {{ currentStockPage }} de {{ totalStockPages }}</span>
-    <button (click)="nextStockPage()" 
-            [disabled]="currentStockPage === totalStockPages" 
-            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
-            [ngClass]="{'cursor-not-allowed opacity-50': currentStockPage === totalStockPages}">
-        Siguiente
-    </button>
   </div>
 
   <!-- Tabla de stock -->

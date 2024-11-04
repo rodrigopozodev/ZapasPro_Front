@@ -60,7 +60,7 @@
             [ngClass]="{'cursor-not-allowed opacity-50': currentProductPage === 1}">
         Anterior
     </button>
-    <span class="mx-2">Página {{ currentProductPage }} de {{ totalProductPages }}</span>
+    <span class="mx-2 mt-2">Página {{ currentProductPage }} de {{ totalProductPages }}</span>
     <button (click)="nextProductPage()" 
             [disabled]="currentProductPage === totalProductPages" 
             class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
@@ -68,74 +68,6 @@
         Siguiente
     </button>
   </div>
-
-  <!-- Barra de búsqueda y filtros -->
-  <div class="flex items-center mb-4">
-    <input 
-        type="text" 
-        [(ngModel)]="searchProductTerm" 
-        (input)="filterProducts()" 
-        placeholder="Buscar producto..." 
-        class="border border-yellow-300 p-2 rounded-lg w-full mr-2" 
-    />
-    <select [(ngModel)]="genderFilter" (change)="filterProducts()" class="border border-yellow-300 p-2 rounded-lg">
-        <option value="">Todos los Géneros</option>
-        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
-    </select>
-  </div>
-
-  <!-- Tabla de productos -->
-  <table class="min-w-full border-collapse text-center">
-    <thead class="bg-yellow-200">
-      <tr>
-        <th class="border border-yellow-300 p-2">ID</th>
-        <th class="border border-yellow-300 p-2">Nombre</th>
-        <th class="border border-yellow-300 p-2">Descripción</th>
-        <th class="border border-yellow-300 p-2">Imagen</th>
-        <th class="border border-yellow-300 p-2">Precio</th>
-        <th class="border border-yellow-300 p-2">Género</th>
-        <th class="border border-yellow-300 p-2">Color</th>
-        <th class="border border-yellow-300 p-2">Marca</th>
-        <th class="border border-yellow-300 p-2">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of paginatedProducts" class="hover:bg-yellow-100 transition duration-300">
-        <td class="border border-yellow-300 p-2">{{ product.id }}</td>
-        <td class="border border-yellow-300 p-2">{{ product.name }}</td>
-        <td class="border border-yellow-300 p-2">{{ product.description }}</td>
-        <td class="border border-yellow-300 p-2">
-          <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-16 h-16 object-cover mx-auto" />
-        </td>
-        <td class="border border-yellow-300 p-2">
-          <div class="flex items-center justify-center space-x-1">
-            <span>{{ product.price }}</span>
-            <span>€</span>
-          </div>
-        </td>        
-        <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
-        <td class="border border-yellow-300 p-2">{{ product.color }}</td>
-        <td class="border border-yellow-300 p-2">{{ product.marca }}</td>
-        <td class="border border-yellow-300 p-2">
-          <div class="flex justify-center space-x-2">
-            <button 
-              (click)="editProduct(product)" 
-              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200"
-            >
-              Editar
-            </button>
-            <button 
-              (click)="deleteProduct(product.id)" 
-              class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200"
-            >
-              Eliminar
-            </button>
-          </div>
-        </td>
-        
-      </tr>
-    </tbody>
-  </table>
 
   <!-- Formulario de edición de producto -->
   <div *ngIf="isEditing" class="mt-4 p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
@@ -196,4 +128,84 @@
       </div>
     </form>
   </div>
+
+  <!-- Barra de búsqueda y filtros -->
+  <div class="flex items-center mb-4">
+    <input 
+        type="text" 
+        [(ngModel)]="searchProductTerm" 
+        (input)="filterProducts()" 
+        placeholder="Buscar producto..." 
+        class="border border-yellow-300 p-2 rounded-lg w-full mr-2" 
+    />
+    <select [(ngModel)]="genderFilter" (change)="filterProducts()" class="border border-yellow-300 p-2 rounded-lg mr-2">
+        <option value="">Todos los Géneros</option>
+        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+    </select>
+    
+    <!-- Selector para Todos los Colores -->
+    <select id="colorFilter" [(ngModel)]="selectedColorFilter" (change)="filterProducts(); filterBrandsByColor(selectedColorFilter)" class="border border-yellow-300 p-2 rounded-lg mr-2">
+      <option value="">Todos los colores</option>
+      <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+    </select>
+
+    <!-- Selector para Todas las Marcas -->
+    <select id="brandFilter" [(ngModel)]="brandFilter" (change)="filterProducts(); filterColorsByBrand(brandFilter)" class="border border-yellow-300 p-2 rounded-lg">
+      <option value="">Todas las marcas</option>
+      <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+    </select>
+  </div>
+
+  <!-- Tabla de productos -->
+  <table class="min-w-full border-collapse text-center">
+    <thead class="bg-yellow-200">
+      <tr>
+        <th class="border border-yellow-300 p-2">ID</th>
+        <th class="border border-yellow-300 p-2">Nombre</th>
+        <th class="border border-yellow-300 p-2">Descripción</th>
+        <th class="border border-yellow-300 p-2">Imagen</th>
+        <th class="border border-yellow-300 p-2">Precio</th>
+        <th class="border border-yellow-300 p-2">Género</th>
+        <th class="border border-yellow-300 p-2">Color</th>
+        <th class="border border-yellow-300 p-2">Marca</th>
+        <th class="border border-yellow-300 p-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of paginatedProducts" class="hover:bg-yellow-100 transition duration-300">
+        <td class="border border-yellow-300 p-2">{{ product.id }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.name }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.description }}</td>
+        <td class="border border-yellow-300 p-2">
+          <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-16 h-16 object-cover mx-auto" />
+        </td>
+        <td class="border border-yellow-300 p-2">
+          <div class="flex items-center justify-center space-x-1">
+            <span>{{ product.price }}</span>
+            <span>€</span>
+          </div>
+        </td>        
+        <td class="border border-yellow-300 p-2">{{ product.gender }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.color }}</td>
+        <td class="border border-yellow-300 p-2">{{ product.marca }}</td>
+        <td class="border border-yellow-300 p-2">
+          <div class="flex justify-center space-x-2">
+            <button 
+              (click)="editProduct(product)" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200"
+            >
+              Editar
+            </button>
+            <button 
+              (click)="deleteProduct(product.id)" 
+              class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200"
+            >
+              Eliminar
+            </button>
+          </div>
+        </td>
+        
+      </tr>
+    </tbody>
+  </table>
 </div>

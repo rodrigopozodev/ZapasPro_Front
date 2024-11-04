@@ -22,7 +22,7 @@ export class UsuariosComponent {
   currentUser: User | null = null;
   showUsers: boolean = true; // Mostrar usuarios por defecto
   username: string = '';
-  searchBy: string = 'username'; // 'username' o 'email'
+  searchBy: string = ''; // 'username' o 'email'
   filteredUsers: User[] = [];
   isEditing = false; // Variable para controlar la visibilidad del formulario de edición
   currentPage: number = 1;

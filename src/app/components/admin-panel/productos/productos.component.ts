@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css'], // Cambié styleUrl a styleUrls (plural)
+  styleUrls: ['./productos.component.css'],
 })
 export class ProductosComponent {
   private apiUrlProducts = 'http://localhost:3000/api/products';
@@ -19,37 +19,52 @@ export class ProductosComponent {
   showProducts = false; // Inicialmente ocultar productos
   products: Product[] = [];
   currentProduct: Product | null = null;
-  searchProductTerm: string = ''; // Se agregó esta propiedad
+  searchProductTerm: string = ''; 
   paginatedProducts: Product[] = [];
-  filteredProducts: Product[] = []; // Productos después de aplicar filtros
-  totalProductPages: number = 1; // Total de páginas de productos
-  currentProductPage: number = 1; // Página actual
-  selectedProduct: any; // Para almacenar el producto que se va a editar
-  showProductForm: boolean = false; // Ejemplo de inicialización
-  newProduct: any = {}; // Puedes definir un tipo más específico si tienes una interfaz
-  isEditing = false; // Variable para controlar la visibilidad del formulario de edición
-  genders: string[] = ['Masculino', 'Femenino', 'Unisex']; // Lista de géneros disponibles
-  genderFilter: string = ''; // Filtro por género
-  itemsPerPage: number = 20; // Items por página
+  filteredProducts: Product[] = []; 
+  totalProductPages: number = 1; 
+  currentProductPage: number = 1; 
+  selectedProduct: any; 
+  showProductForm: boolean = false; 
+  newProduct: any = {}; 
+  isEditing = false; 
+  genders: string[] = ['Masculino', 'Femenino', 'Unisex']; 
+  genderFilter: string = ''; 
+  brandFilter: string = ''; // Nuevo filtro por marca
+  itemsPerPage: number = 5; 
   showEditForm = false;
-  selectedColorFilter: string = ''; // Filtro por color (agregado según los errores que mencionaste)
-  colors: string[] = ['Negro', 'Azul', 'Marrón', 'Verde', 'Gris', 'Naranja', 'Rosa', 'Morado', 'Rojo', 'Blanco', 'Amarillo', 'Multicolor'];
-  marcas: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Converse'];
+  selectedColorFilter: string = ''; 
+  colors: string[] = []; // Inicializar vacío para que se llene con los colores disponibles
+  marcas: string[] = []; // Inicializar vacío para que se llene con las marcas disponibles
 
-  // Nuevo array de URLs de imágenes
   imageUrls: string[] = [
     '/img/Nike Air Max Plus Drift.png',
-    '/img/Nike-AIR_FORCE_1_07.png',
-    '/img/Nike-AIR_FORCE_1_07_amarilla.png',
-    '/img/Air Force 1 SP.png',
-    '/img/Air Force 1 \'07 PRM.png', // Agregando la nueva imagen
-    // Agrega más URLs según sea necesario
+    '/img/Nike Dunk Low.png',
+    '/img/Nike Air Max Plus.png',
+    '/img/Nike Air Max Excee.png',
+    '/img/Nike Air Force 1 Low EVO.png',
+    '/img/Nike Air Force 1 Sage Low.png', 
+    '/img/Nike Air Max 1.png',           
+    '/img/Nike Air Max 90.png',         
+    '/img/Nike SB Dunk Low Pro Premium.png',
+    '/img/Nike_Air Max Plus Drift.png', 
+    '/img/Adidas_Gazelle_Negro.png',         
+    '/img/Adidas_Handball_Spezial_Azul.png', 
+    '/img/Adidas_Handball_Spezial_Naranjas.png', 
+    '/img/Adidas_Handball_Spezial_Turkesa.png', 
+    '/img/Adidas_Stan_Smith_Blanco.png',
+    '/img/Puma Rebound.png',              
+    '/img/Puma Mayze.png',                
+    '/img/Puma Mayze Luxe.png',           
+    '/img/Puma Ca Pro Classic.png',       
+    '/img/Puma 180.png'                   
   ];
+  
+  // Agregar selectedFilter para manejar el filtro
+  selectedFilter: string = ''; // Propiedad para manejar el filtro seleccionado
 
   constructor(private http: HttpClient, private router: Router) {
-    this.products = [];
-    this.filteredProducts = this.products;
-    this.loadProducts(); // Llama a loadProducts al iniciar
+    this.loadProducts();
   }
 
   // Método para cargar productos
@@ -58,9 +73,10 @@ export class ProductosComponent {
       (response: Product[]) => {
         this.products = response;
         this.filteredProducts = this.products;
-        this.filterProducts(); // Aplica filtros al cargar
-        this.calculateTotalProductPages(); // Calcular total de páginas
-        this.showProducts = true; // Asegúrate de que esto esté en true
+        this.extractUniqueBrands(); // Extraer marcas únicas
+        this.extractUniqueColors(); // Extraer colores únicos
+        this.filterProducts(); 
+        this.showProducts = true; 
       },
       (error: any) => {
         console.error('Error en la solicitud de productos:', error);
@@ -72,39 +88,78 @@ export class ProductosComponent {
     return this.http.get<Product[]>(`${this.apiUrlProducts}?_page=${page}&_limit=${this.itemsPerPage}`);
   }
 
-  // Método para calcular el total de páginas
-  calculateTotalProductPages(): void {
-    this.http.get<Product[]>(this.apiUrlProducts).subscribe((response: Product[]) => {
-      const totalItems = response.length;
-      this.totalProductPages = Math.ceil(totalItems / this.itemsPerPage);
-      this.updateProductList(); // Actualiza la lista de productos para la primera página
+  // Extraer marcas únicas
+  private extractUniqueBrands(): void {
+    const uniqueBrandsSet = new Set<string>();
+    this.products.forEach(product => {
+      uniqueBrandsSet.add(product.marca);
     });
+    this.marcas = Array.from(uniqueBrandsSet); // Asignar marcas únicas a la propiedad
+  }
+
+  // Extraer colores únicos
+  private extractUniqueColors(): void {
+    const uniqueColorsSet = new Set<string>();
+    this.products.forEach(product => {
+      uniqueColorsSet.add(product.color);
+    });
+    this.colors = Array.from(uniqueColorsSet); // Asignar colores únicos a la propiedad
+  }
+
+  // Filtrar colores basados en la marca seleccionada
+  public filterColorsByBrand(selectedBrand: string) {
+    if (selectedBrand) {
+      const filteredProducts = this.products.filter(product => product.marca === selectedBrand);
+      const uniqueColorsSet = new Set<string>(filteredProducts.map(product => product.color));
+      this.colors = Array.from(uniqueColorsSet);
+      this.selectedColorFilter = ''; // Reiniciar el filtro de color
+    } else {
+      this.extractUniqueColors(); // Si no hay marca seleccionada, extraer todos los colores
+    }
+  }
+
+  // Filtrar marcas basados en el color seleccionado
+  public filterBrandsByColor(selectedColor: string) {
+    if (selectedColor) {
+      const filteredProducts = this.products.filter(product => product.color === selectedColor);
+      const uniqueBrandsSet = new Set<string>(filteredProducts.map(product => product.marca));
+      this.marcas = Array.from(uniqueBrandsSet);
+      this.brandFilter = ''; // Reiniciar el filtro de marca
+    } else {
+      this.extractUniqueBrands(); // Si no hay color seleccionado, extraer todas las marcas
+    }
+  }
+
+  // Actualizar el método para calcular el total de páginas
+  calculateTotalProductPages(): void {
+    const totalItems = this.filteredProducts.length; // Cambia esto para que cuente los productos filtrados
+    this.totalProductPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.updateProductList();
   }
 
   public editProduct(product: any) {
-    this.selectedProduct = { ...product }; // Clona el producto seleccionado
-    this.isEditing = true; // Muestra el formulario de edición
+    this.selectedProduct = { ...product };
+    this.isEditing = true; 
   }
 
   public cancelProduct(): void {
-    this.selectedProduct = null; // Resetea el producto seleccionado
-    this.showProductForm = false; // Oculta el formulario de registro de producto
-    this.newProduct = {}; // Resetea el formulario de nuevo producto
+    this.selectedProduct = null; 
+    this.showProductForm = false; 
+    this.newProduct = {}; 
   }
 
   deleteProduct(productId: number) {
-    // Muestra un mensaje de confirmación antes de eliminar
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
     if (confirmDelete) {
-      // Realiza la solicitud DELETE al servidor
       this.http.delete(`${this.apiUrlProducts}/${productId}`).subscribe(
         (response) => {
           console.log(`Producto con ID: ${productId} eliminado`, response);
-          // Actualiza la lista de productos solo si la eliminación fue exitosa
           this.products = this.products.filter(product => product.id !== productId);
           this.filteredProducts = this.filteredProducts.filter(product => product.id !== productId);
-          this.calculateTotalProductPages(); // Recalcula el total de páginas después de eliminar
-          this.updateProductList(); // Actualiza la lista de productos mostrada
+          this.extractUniqueBrands(); // Actualizar las marcas después de eliminar un producto
+          this.extractUniqueColors(); // Actualizar los colores después de eliminar un producto
+          this.calculateTotalProductPages(); 
+          this.updateProductList();
         },
         (error: any) => {
           console.error('Error al eliminar el producto:', error);
@@ -118,26 +173,36 @@ export class ProductosComponent {
   filterProducts() {
     let filtered = this.products;
 
-    // Filtrar por nombre del producto
     if (this.searchProductTerm) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(this.searchProductTerm.toLowerCase())
       );
     }
 
-    // Filtrar por género
     if (this.genderFilter) {
       filtered = filtered.filter(product => product.gender.toLowerCase() === this.genderFilter.toLowerCase());
     }
 
-    // Filtrar por color
     if (this.selectedColorFilter) {
-      filtered = filtered.filter(product => product.color.includes(this.selectedColorFilter)); // Asegúrate de que la propiedad color exista
+      filtered = filtered.filter(product => product.color.toLowerCase() === this.selectedColorFilter.toLowerCase()); // Corregido para comparar el tipo de unión
+    }
+
+    if (this.brandFilter) {
+      filtered = filtered.filter(product => product.marca.toLowerCase() === this.brandFilter.toLowerCase());
+    }
+
+    // Filtrar por el filtro seleccionado
+    if (this.selectedFilter) {
+      filtered = filtered.filter(product => 
+        product.gender.toLowerCase() === this.selectedFilter.toLowerCase() || 
+        product.color.toLowerCase() === this.selectedFilter.toLowerCase() || 
+        product.marca.toLowerCase() === this.selectedFilter.toLowerCase()
+      );
     }
 
     this.filteredProducts = filtered;
-    this.calculateTotalProductPages(); // Actualiza el total de páginas después de filtrar
-    this.updateProductList(); // Actualiza la lista de productos mostrada
+    this.calculateTotalProductPages(); // Llama aquí para recalcular el total de páginas después de filtrar
+    this.updateProductList();
   }
 
   private updateProductList() {
@@ -149,13 +214,12 @@ export class ProductosComponent {
 
   updateProduct(productId: number) {
     if (this.selectedProduct) {
-      // Ahora se debe enviar como JSON
       this.http.put(`${this.apiUrlProducts}/${productId}`, this.selectedProduct).subscribe(
         (response) => {
           console.log('Producto actualizado:', response);
-          this.loadProducts(); // Recargar productos para reflejar los cambios
-          this.showEditForm = false; // Ocultar el formulario de edición
-          this.selectedProduct = null; // Limpiar la selección
+          this.loadProducts(); 
+          this.showEditForm = false; 
+          this.selectedProduct = null; 
         },
         (error: any) => {
           console.error('Error al actualizar el producto:', error);
@@ -194,8 +258,8 @@ export class ProductosComponent {
     this.http.post(this.apiUrlProducts, this.newProduct).subscribe(
       (response) => {
         console.log('Producto registrado:', response);
-        this.loadProducts(); // Recargar productos para reflejar el nuevo producto
-        this.cancelProduct(); // Reinicia el formulario
+        this.loadProducts(); 
+        this.cancelProduct(); 
       },
       (error: any) => {
         console.error('Error al registrar el producto:', error);
