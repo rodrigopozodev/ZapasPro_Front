@@ -123,4 +123,20 @@
         </tr>
       </tbody>
     </table>
+     <!-- Paginación -->
+     <div class="mt-4 flex justify-center mb-6">
+      <button (click)="previousPage()" 
+              [disabled]="currentPage === 1" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+              [ngClass]="{'cursor-not-allowed opacity-50': currentPage === 1}">
+        Anterior
+      </button>
+      <span class="mx-2 mt-2">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" 
+              [disabled]="currentPage === totalPages" 
+              class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+              [ngClass]="{'cursor-not-allowed opacity-50': currentPage === totalPages}">
+        Siguiente
+      </button>
+    </div>
   </div>

@@ -26,7 +26,7 @@ export class ProductosComponent {
   currentProductPage: number = 1; 
   selectedProduct: any; 
   showProductForm: boolean = false; 
-  newProduct: any = {}; 
+  // newProduct: any = {}; 
   isEditing = false; 
   genders: string[] = ['Masculino', 'Femenino', 'Unisex']; 
   genderFilter: string = ''; 
@@ -36,6 +36,15 @@ export class ProductosComponent {
   selectedColorFilter: string = ''; 
   colors: string[] = []; // Inicializar vacío para que se llene con los colores disponibles
   marcas: string[] = []; // Inicializar vacío para que se llene con las marcas disponibles
+
+  newProduct: any = { imageUrl: '' }; // Modelo del nuevo producto
+  previewImageUrl: string | ArrayBuffer | null | undefined = null;
+  customImageUrl: string = '';
+  showUploadOptions: boolean = false; // Para mostrar las opciones de subida
+  brandsImages: { [key: string]: string[] } = { Nike: [], Puma: [], Adidas: [] }; // Almacena las imágenes por marca
+  selectedBrandImage: string | null = null; // Imagen seleccionada de las marcas
+  showUrlInput: boolean = false; // Para mostrar el input de URL
+  showUploadImageInput: boolean = false; // Para mostrar el input de subida de imagen
 
   imageUrls: string[] = [
     '/img/Nike Air Max Plus Drift.png',
@@ -142,11 +151,7 @@ export class ProductosComponent {
     this.isEditing = true; 
   }
 
-  public cancelProduct(): void {
-    this.selectedProduct = null; 
-    this.showProductForm = false; 
-    this.newProduct = {}; 
-  }
+ 
 
   deleteProduct(productId: number) {
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
@@ -266,4 +271,98 @@ export class ProductosComponent {
       }
     );
   }
+
+   // Método para agregar una nueva imagen (opcional, según tu lógica)
+  addImage() {
+    if (this.customImageUrl) {
+      this.imageUrls.push(this.customImageUrl); // Agrega la nueva URL a la lista
+      this.customImageUrl = ''; // Limpia el campo después de agregar
+    }
+  }
+
+   // Método para manejar la selección de archivo
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewImageUrl = e.target.result; // Establecer la vista previa
+      };
+      reader.readAsDataURL(file); // Leer la imagen como URL
+    }
+  }
+  
+    // Método para limpiar el formulario y la vista previa al cancelar
+    resetForm() {
+      this.newProduct = { imageUrl: '' }; // Reinicia el modelo del producto
+      this.customImageUrl = ''; // Limpia la URL personalizada
+      this.previewImageUrl = null; // Limpia la vista previa
+  }
+
+  // Método para mostrar la vista previa al pasar el ratón sobre las opciones del select
+  showPreviewOnHover(url: string) {
+    this.previewImageUrl = url;
+  }
+
+     // Método para mostrar la vista previa al pasar el ratón sobre las opciones del select
+  updatePreview(url: string) {
+    if (url) {
+      this.previewImageUrl = url; // Actualiza la vista previa con la URL seleccionada
+    } else {
+      this.previewImageUrl = null; // Si no hay URL, limpia la vista previa
+    }
+  }
+
+  // Esta función se llama al cancelar el formulario
+  cancelProduct() {
+    this.newProduct.imageUrl = '';
+    this.customImageUrl = '';
+    this.previewImageUrl = null; 
+    this.selectedProduct = null; 
+    this.showProductForm = false; 
+    this.newProduct = {}; // Limpia la vista previa
+    // Agrega aquí la lógica para cancelar el registro, si es necesario
+  }
+
+   // Método para navegar a la página de seleccionar imágenes
+  public navigateToImageSelection() {
+    // Redirige a la ruta especificada para la selección de imágenes
+    this.router.navigate(['/admin/productos/image-selection']);
+  }
+
+
+    // Método para alternar la visibilidad de las opciones de subida
+  toggleUploadOptions() {
+    this.showUploadOptions = !this.showUploadOptions;
+    // Resetea las vistas de URL e imagen al alternar
+    this.showUrlInput = false; 
+    this.showUploadImageInput = false; 
+  }
+
+  // Método para mostrar las opciones de subir imagen
+  useUploadImage() {
+    // Lógica para manejar la subida de imagen
+    this.showUploadOptions = false; // Oculta las opciones
+  }
+
+  // Método para usar una URL de imagen
+  useCustomImageUrl() {
+    // Lógica para manejar el uso de URL de imagen
+    this.showUploadOptions = false; // Oculta las opciones
+  }
+
+  // Método para cargar imágenes en las marcas
+  loadBrandImages() {
+    // Asignar imágenes a las marcas según su nombre
+    this.imageUrls.forEach(url => {
+      const brand = url.split('/')[2]; // Asume que la estructura es /img/[marca]/[imagen]
+      if (brand === 'Nike' || brand === 'Puma' || brand === 'Adidas') {
+        this.brandsImages[brand].push(url);
+      }
+    });
+  }
+
+  
+
 }
+

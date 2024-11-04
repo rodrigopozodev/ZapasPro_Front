@@ -30,6 +30,7 @@ import { StockComponent } from './components/admin-panel/stock/stock.component';
 
 // Importa el componente de detalle del producto
 import { ProductDetailComponent } from './components/store/product-detail/product-detail.component'; // Asegúrate de que la ruta sea correcta
+import { ImageSelectionComponent } from './components/admin-panel/productos/image-selection/image-selection.component';
 
 // Define las rutas de la aplicación
 export const routes: Routes = [
@@ -48,6 +49,7 @@ export const routes: Routes = [
           { path: '', redirectTo: 'usuarios', pathMatch: 'full' }, // Redirigir a 'usuarios' por defecto
           { path: 'usuarios', component: UsuariosComponent },
           { path: 'productos', component: ProductosComponent },
+          { path: 'productos/image-selection', component: ImageSelectionComponent }, // Nueva ruta para la selección de imágenes
           { path: 'recibos', component: RecibosComponent },
           { path: 'stock', component: StockComponent }, // Ruta para StockComponent
         ]

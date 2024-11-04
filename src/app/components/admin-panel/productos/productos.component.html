@@ -39,16 +39,45 @@
         <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
     </select>
 
-    <!-- Campo para la URL de la imagen -->
-    <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-    <select id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-        <option *ngFor="let imageUrl of imageUrls" [value]="imageUrl">{{ imageUrl }}</option>
-    </select>
 
-      <div class="flex justify-center">
-        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
-        <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
-      </div>
+  <!-- Campo para la URL de la imagen -->
+<label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
+<div class="flex mb-4">
+    <button (click)="navigateToImageSelection()" class="border border-blue-500 p-2 rounded-lg mr-2">Utilizar Imagen</button>
+    <button (click)="toggleUploadOptions()" class="border border-blue-500 p-2 rounded-lg">Subir Imagen</button>
+</div>
+
+<!-- Opciones para subir imagen -->
+<div *ngIf="showUploadOptions" class="mb-4">
+    <div class="flex mb-2">
+        <button (click)="showUrlInput = true; showUploadImageInput = false" class="border border-green-500 p-2 rounded-lg mr-2">Usar URL de imagen</button>
+        <button (click)="showUploadImageInput = true; showUrlInput = false" class="border border-green-500 p-2 rounded-lg">Subir Imagen (PNG sin fondo)</button>
+    </div>
+
+    <!-- Input para usar URL de imagen -->
+    <div *ngIf="showUrlInput">
+        <label for="customImageUrl" class="block mb-2">Ingresa una URL personalizada de la imagen:</label>
+        <input type="url" id="customImageUrl" [(ngModel)]="customImageUrl" [ngModelOptions]="{standalone: true}" placeholder="Ingresa la URL de la imagen" class="border border-yellow-300 p-2 w-full rounded-lg mb-2" name="customImageUrl" (input)="updatePreview(customImageUrl)">
+    </div>
+
+    <!-- Input para subir imagen -->
+    <div *ngIf="showUploadImageInput">
+        <label for="imageUpload" class="block mb-2">Sube una imagen (PNG sin fondo):</label>
+        <input type="file" id="imageUpload" accept="image/png" (change)="onFileSelected($event)" class="border border-yellow-300 p-2 w-full rounded-lg" name="imageUpload">
+    </div>
+</div>
+
+<!-- Vista previa de la imagen -->
+<div id="imagePreviewContainer" class="mt-4">
+    <img *ngIf="previewImageUrl" [src]="previewImageUrl" alt="Vista previa de la imagen" class="w-48 h-auto rounded-lg border border-gray-300"/>
+</div>
+
+
+<!-- Botones de registro y cancelación -->
+<div class="flex justify-center">
+    <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
+    <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+</div>
     </form>
   </div>
 
@@ -208,4 +237,20 @@
       </tr>
     </tbody>
   </table>
+  <!-- Paginación para productos -->
+  <div class="mt-4 flex justify-center mb-4">
+    <button (click)="previousProductPage()" 
+            [disabled]="currentProductPage === 1" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentProductPage === 1}">
+        Anterior
+    </button>
+    <span class="mx-2 mt-2">Página {{ currentProductPage }} de {{ totalProductPages }}</span>
+    <button (click)="nextProductPage()" 
+            [disabled]="currentProductPage === totalProductPages" 
+            class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200" 
+            [ngClass]="{'cursor-not-allowed opacity-50': currentProductPage === totalProductPages}">
+        Siguiente
+    </button>
+  </div>
 </div>
