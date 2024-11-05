@@ -1,59 +1,66 @@
 <div class="image-selection-container p-8 rounded-xl shadow-lg bg-white max-w-5xl mx-auto mt-6">
-    <h2 class="text-3xl font-bold text-yellow-800 mb-6 text-center">Seleccionar Marca</h2>
-  
-    <!-- Botones para seleccionar la marca -->
-    <div *ngIf="showButtons">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <button
-          *ngFor="let group of images"
-          (click)="filterByFirstWord(group.firstWord)"
-          class="bg-yellow-500 text-white hover:bg-yellow-600 px-4 py-2 rounded-lg font-semibold transition duration-200"
-        >
-          {{ group.firstWord }}
-        </button>
-      </div>
-    </div>
-  
-    <!-- Contenedor principal para la lista de productos y la imagen -->
-    <div *ngIf="!showButtons && filteredImages.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Lista de productos -->
-      <div class="md:col-span-2">
-        <h3 class="text-xl font-semibold text-yellow-700 mb-4">{{ selectedFirstWord }}</h3>
-        <ul class="space-y-2">
-          <li
-            *ngFor="let product of filteredImages[0].products"
-            (click)="selectImage(product.imageUrl)"
-            class="cursor-pointer text-yellow-600 hover:text-yellow-800 font-medium border-b border-yellow-200 pb-2 transition duration-150"
-          >
-            {{ product.name }}
-          </li>
-        </ul>
-      </div>
-  
-      <!-- Imagen seleccionada -->
-      <div *ngIf="selectedImageUrl" class="flex justify-center items-start md:justify-end">
-        <img [src]="selectedImageUrl" [alt]="selectedFirstWord" class="w-40 h-auto object-cover rounded-lg shadow-md" />
-      </div>
-    </div>
-  
-    <!-- Botón para volver a la selección de marcas -->
-    <div *ngIf="!showButtons" class="flex justify-center mt-6">
-      <button (click)="showAllImages()" class="bg-blue-500 text-white hover:bg-blue-600 px-6 py-2 rounded-lg font-semibold transition duration-200">
-        Volver
+  <h2 class="text-3xl font-bold text-yellow-800 mb-6 text-center">Seleccionar Marca</h2>
+
+  <!-- Botones para seleccionar la marca -->
+  <div *ngIf="showButtons">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <button
+        *ngFor="let group of images"
+        (click)="filterByFirstWord(group.firstWord)"
+        class="bg-yellow-500 text-white hover:bg-yellow-600 px-4 py-2 rounded-lg font-semibold transition duration-200"
+      >
+        {{ group.firstWord }}
       </button>
     </div>
-  
-    <!-- Mensaje de carga -->
-    <ng-template #loading>
-      <p class="text-center text-yellow-600">Cargando imágenes...</p>
-    </ng-template>
-  
-    <!-- Botón para cancelar la selección -->
-    <div class="flex justify-center mt-6">
-      <button (click)="cancelSelection()" class="bg-red-500 text-white hover:bg-red-600 px-6 py-2 rounded-lg font-semibold transition duration-200">
-        Cancelar
+    <!-- Botón para volver al formulario -->
+    <div class="flex justify-center mt-4">
+      <button (click)="volverAlFormulario()" class="bg-red-500 text-white hover:bg-red-600 px-6 py-2 rounded-lg font-semibold transition duration-200">
+        Volver al Formulario
       </button>
     </div>
   </div>
-  
+
+  <!-- Contenedor principal para la lista de productos y la imagen -->
+  <div *ngIf="!showButtons && filteredImages.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    
+    <!-- Lista de productos con espacio aumentado y margen inferior -->
+    <div class="md:col-span-2">
+      <h3 class="text-xl font-semibold text-yellow-700 mb-4">{{ selectedFirstWord }}</h3>
+      <ul class="space-y-4"> <!-- Aumenta el espacio entre productos y agrega margen inferior -->
+        <li
+          *ngFor="let product of filteredImages[0].products"
+          (mouseover)="showPreviewImage(product.imageUrl)"  
+          (mouseleave)="clearPreviewImage()"               
+          (mouseenter)="onMouseOverProduct(product)"
+          (mouseleave)="onMouseLeaveProduct()"
+          class="flex justify-between items-center cursor-pointer text-yellow-600 hover:text-yellow-800 font-medium border-b border-yellow-200 pb-2 transition duration-150"
+        >
+          <span>{{ product.name }}</span>
+          <button 
+              *ngIf="isHoveringProduct(product)"
+              (click)="confirmImageSelection(product.imageUrl)"  
+              class="bg-blue-500 text-white hover:bg-blue-600 px-4 rounded-lg font-semibold transition duration-200"
+          >
+              Utilizar Imagen
+          </button>
+
+        </li>
+      </ul>
+
+      <!-- Botones para volver a la selección de marcas y volver al formulario -->
+      <div class="flex justify-between mt-20">
+        <button (click)="showAllImages()" class="bg-blue-500 text-white hover:bg-blue-600 px-6 py-2 rounded-lg font-semibold transition duration-200">
+          Volver
+        </button>
+        <button (click)="volverAlFormulario()" class="bg-red-500 text-white hover:bg-red-600 px-6 py-2 rounded-lg font-semibold transition duration-200">
+          Volver al Formulario
+        </button>
+      </div>
+    </div>
+
+    <!-- Imagen de vista previa con transición suave -->
+    <div *ngIf="previewImageUrl" class="flex flex-col items-center md:items-end mt-4 md:mt-0 transition-opacity duration-300">
+      <img [src]="previewImageUrl" [alt]="selectedFirstWord" class="w-64 h-auto object-cover rounded-lg shadow-md mb-4" />
+    </div>
+  </div>
+</div>

@@ -2,10 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { FormStateService } from '../../../../services/form-state.service';  // Asegúrate de ajustar la ruta si es necesario
 
+// Define un nuevo tipo para las imágenes agrupadas
 interface GroupedImages {
   firstWord: string;
-  products: { id: number; name: string; imageUrl: string }[];  // Cambié `url` a `imageUrl` para claridad
+  products: { name: string; url: SafeUrl; imageUrl: string }[];
 }
 
 @Component({
@@ -18,12 +22,18 @@ interface GroupedImages {
 export class ImageSelectionComponent implements OnInit {
   private apiUrlProducts = 'http://localhost:3000/api/products';
   images: GroupedImages[] = [];
-  selectedImageUrl: string | null = null;
   filteredImages: GroupedImages[] = [];
   showButtons: boolean = true;
   selectedFirstWord: string | null = null;
+  previewImageUrl: string | null = null;  // Para almacenar la URL de la imagen que se mostrará al pasar el ratón
+  hoveringProduct: any | null = null; // Para rastrear el producto que está siendo destacado
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private router: Router,              // Inyecta el router aquí
+    private http: HttpClient, 
+    private sanitizer: DomSanitizer,
+    private formStateService: FormStateService  // Inyecta el servicio de estado del formulario
+  ) {}
 
   ngOnInit(): void {
     this.loadImages();
@@ -32,19 +42,18 @@ export class ImageSelectionComponent implements OnInit {
   loadImages(): void {
     this.http.get<Product[]>(this.apiUrlProducts).subscribe(
       (response) => {
-        const groupedImages: { [key: string]: { id: number; name: string; imageUrl: string }[] } = {};
-
+        const groupedImages: { [key: string]: { name: string; url: SafeUrl; imageUrl: string }[] } = {};
         response.forEach((product) => {
           const firstWord = product.name.split(' ')[0];
+          const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(product.imageUrl);
           if (!groupedImages[firstWord]) {
             groupedImages[firstWord] = [];
           }
-          groupedImages[firstWord].push({ id: product.id, name: product.name, imageUrl: product.imageUrl });
+          groupedImages[firstWord].push({ name: product.name, url: sanitizedUrl, imageUrl: product.imageUrl });
         });
-
         this.images = Object.entries(groupedImages).map(([key, value]) => ({
           firstWord: key,
-          products: value.sort((a, b) => a.name.localeCompare(b.name)),
+          products: value,
         }));
       },
       (error) => {
@@ -59,18 +68,45 @@ export class ImageSelectionComponent implements OnInit {
     this.showButtons = false;
   }
 
-  selectImage(imageUrl: string): void {
-    this.selectedImageUrl = imageUrl;  // Asignar la URL de la imagen directamente
-  }
-
   showAllImages(): void {
     this.showButtons = true;
     this.filteredImages = [];
-    this.selectedImageUrl = null;
-    this.selectedFirstWord = null;
   }
 
-  cancelSelection(): void {
-    this.selectedImageUrl = null;
+  confirmImageSelection(imageUrl: string): void {
+    this.formStateService.setSelectedImage(imageUrl); // Almacena la URL de la imagen seleccionada
+    this.formStateService.setShowProductForm(true); // Asegúrate de que el formulario se muestre
+    this.router.navigate(['/admin/productos']); // Navega al formulario
+  }
+
+
+  volverAlFormulario(): void {
+    this.formStateService.setShowProductForm(true);  // Establece que el formulario debe ser visible
+    this.router.navigate(['/admin/productos']);  // Navega de vuelta al formulario
+  }
+
+  // Método para mostrar la vista previa al pasar el ratón
+  showPreviewImage(imageUrl: string) {
+    this.previewImageUrl = imageUrl; // Establece la URL de la imagen de vista previa
+  }
+
+  // Método para limpiar la vista previa
+  clearPreviewImage() {
+    this.previewImageUrl = null; // Limpia la vista previa
+  }
+
+  // Método que se llamará al pasar el mouse sobre un producto
+  onMouseOverProduct(product: any) {
+    this.hoveringProduct = product;
+  }
+
+  // Método que se llamará al salir el mouse de un producto
+  onMouseLeaveProduct() {
+    this.hoveringProduct = null;
+  }
+
+  // Verifica si el producto está siendo resaltado
+  isHoveringProduct(product: any): boolean {
+    return this.hoveringProduct === product;
   }
 }
