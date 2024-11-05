@@ -33,11 +33,19 @@
       <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
     </select>
 
-    <!-- Campo para la marca -->
-    <label for="productBrand" class="block mb-2">Marca:</label>
-    <select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-      <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
-    </select>
+<!-- Campo para la marca -->
+<label for="productBrand" class="block mb-2">Marca:</label>
+<select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" (change)="onBrandChange($event)" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+  <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
+  <option value="newBrand">Registrar Nueva Marca</option>
+</select>
+
+<!-- Campo para registrar una nueva marca -->
+<div *ngIf="showNewBrandInput" class="mb-4">
+  <label for="newBrand" class="block mb-2">Ingresa una nueva marca:</label>
+  <input type="text" id="newBrand" [(ngModel)]="newBrand" placeholder="Ingresa una nueva marca" class="border border-yellow-300 p-2 w-full rounded-lg" />
+  <button type="button" (click)="addBrand()" class="mt-2 bg-blue-500 text-white p-2 rounded-lg">Agregar Marca</button>
+</div>
 
     <!-- URL de la imagen (opcional, solo para referencia) -->
     <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>

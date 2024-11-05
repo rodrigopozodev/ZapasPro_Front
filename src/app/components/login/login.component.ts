@@ -9,116 +9,93 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   standalone: true,
   styleUrls: ['./login.component.css'],
-  imports: [FormsModule, CommonModule] // Import FormsModule for ngModel binding
+  imports: [FormsModule, CommonModule]
 })
 export class LoginComponent {
-  email: string = ''; // Store the email input
-  password: string = ''; // Store the password input
-  emailError: string = ''; // Error message for email
-  passwordError: string = ''; // Error message for password
-  loginError: string = ''; // General login error message
-  passwordRecoveryMessage: string = ''; // Message for password recovery
-  emailValid: boolean = false; // Flag for email validation
-  passwordValid: boolean = false; // Flag for password validation
-  attemptCount: number = 0; // Count the number of password attempts
+  email: string = ''; // Almacena el correo ingresado
+  password: string = ''; // Almacena la contraseña ingresada
+  emailError: string = ''; // Mensaje de error para el correo
+  passwordError: string = ''; // Mensaje de error para la contraseña
+  loginError: string = ''; // Mensaje de error general para el login
+  passwordRecoveryMessage: string = ''; // Mensaje de recuperación tras tres intentos fallidos
+
+  private failedAttempts: number = 0; // Contador de intentos fallidos
 
   constructor(private userService: UserService, private router: Router) { }
 
-  // Navigate to the registration page
+  // Navega a la página de registro
   goToRegister() {
-    this.router.navigate(['/home']); // Ensure this route is defined in your routing module
+    this.router.navigate(['/home']);
   }
 
-  // Navigate to the password recovery page
+  // Navega a la página de recuperación de contraseña
   goToPasswordRecovery() {
-    this.router.navigate(['/recover-password']); // Ensure this route is defined for password recovery
+    this.router.navigate(['/recover-password']);
   }
 
-  // Validate form fields and handle submission
+  // Valida el formulario y envía la solicitud de inicio de sesión
   onSubmit(): void {
+    // Reinicia los mensajes de error
     this.emailError = '';
     this.passwordError = '';
-    this.loginError = ''; // Reset login error message
-    this.passwordRecoveryMessage = ''; // Reset password recovery message
-    this.emailValid = false; // Reset email validity
-    this.passwordValid = false; // Reset password validity
+    this.loginError = '';
+    this.passwordRecoveryMessage = ''; // Reiniciar el mensaje de recuperación al intentar de nuevo
 
-    // Validate email
+    // Validar que el campo de correo no esté vacío
     if (!this.email) {
       this.emailError = 'Por favor, rellene el campo con su correo.';
-    } else if (/[A-Z]/.test(this.email)) {
-      this.emailError = 'El correo electrónico no debe contener mayúsculas.'; // Prioritized check for uppercase letters
-    } else if (!this.email.includes('@') || !this.email.includes('.')) {
-      this.emailError = 'El correo electrónico debe contener al menos un "@" y un "."';
-    } else {
-      this.emailValid = true; // Set valid if all checks passed
     }
 
-    // Validate password
+    // Validar que el campo de contraseña no esté vacío
     if (!this.password) {
       this.passwordError = 'Por favor, rellene el campo con su contraseña.';
-    } else {
-      // Check for password length
-      if (this.password.length < 8) {
-        this.passwordError = 'La contraseña debe tener al menos 8 caracteres.';
-      } 
-      // Check for number
-      else if (!/[0-9]/.test(this.password)) {
-        this.passwordError = 'La contraseña debe incluir al menos un número.';
-      } 
-      // Check for uppercase letter
-      else if (!/[A-Z]/.test(this.password)) {
-        this.passwordError = 'La contraseña debe incluir al menos una mayúscula.';
-      } 
-      else {
-        this.passwordValid = true; // Set valid if all checks passed
-      }
     }
 
-    // If there are any validation errors, stop the submission
+    // Si hay errores en los campos, detener el envío
     if (this.emailError || this.passwordError) {
-      return; // Do not proceed with the login process
+      return;
     }
 
-    // Proceed with login if validation passes
+    // Proceder con el inicio de sesión si no hay errores de validación
     this.userService.login(this.email, this.password).subscribe(
       response => {
         if (response.success) {
-          // Reset attempt count on successful login
-          this.attemptCount = 0;
-          // Redirect user based on their role
+          // Redirige al usuario según su rol
           const redirectRoute = response.role === 'admin' ? '/admin' : '/store';
-          this.router.navigate([redirectRoute]); // Navigate to appropriate page
+          this.router.navigate([redirectRoute]);
+
+          // Reiniciar el contador de intentos en caso de inicio de sesión exitoso
+          this.failedAttempts = 0;
         } else {
-          // Handle specific error responses based on the API response
-          if (response.error === 'usuario_no_registrado') {
-            this.loginError = 'Usuario no registrado. Regístrate para iniciar sesión.'; // User not registered
-          } else if (response.error === 'contraseña_incorrecta') {
-            this.attemptCount++; // Increment the attempt count
-            this.passwordError = 'Contraseña incorrecta.'; // Incorrect password
-            if (this.attemptCount >= 3) {
-              this.passwordRecoveryMessage = '¿Olvidaste tu contraseña? <a href="#" (click)="goToPasswordRecovery()">Recupérala aquí.</a>'; // Prompt for password recovery
-            }
-          } else {
-            this.loginError = 'Error al iniciar sesión. Intente de nuevo.'; // General error message
-          }
+          this.handleLoginFailure();
         }
       },
       error => {
-        // Handle error based on the response status
-        if (error.status === 404) {
-          this.loginError = 'Usuario no registrado. Regístrate para iniciar sesión.';
-        } else if (error.status === 401) {
-          this.passwordError = 'Contraseña incorrecta.';
-          this.attemptCount++; // Increment the attempt count
-          if (this.attemptCount >= 3) {
-            this.passwordRecoveryMessage = '¿Olvidaste tu contraseña? <a href="#" (click)="goToPasswordRecovery()">Recupérala aquí.</a>'; // Prompt for password recovery
-          }
+        // Manejo de errores en caso de falla en la solicitud
+        if (error.status === 404 || error.status === 401) {
+          this.handleLoginFailure();
         } else {
-          console.error('Error al iniciar sesión', error); // Log error for debugging
-          this.loginError = 'Error al iniciar sesión. Intente de nuevo.'; // General error message
+          console.error('Error al iniciar sesión', error);
+          this.loginError = 'Error al iniciar sesión. Intente de nuevo.';
         }
       }
     );
+  }
+
+  private handleLoginFailure(): void {
+    // Incrementa el contador de intentos fallidos
+    this.failedAttempts++;
+
+    // Mostrar mensaje de error
+    this.loginError = 'Correo o contraseña incorrecto.';
+
+   // Mostrar mensaje de recuperación tras tres intentos fallidos
+    if (this.failedAttempts >= 3) {
+      this.passwordRecoveryMessage = `
+        <span class="text-yellow-700">¿No recuerdas tu contraseña?</span> 
+        <a (click)="goToPasswordRecovery()" class="text-yellow-600 underline cursor-pointer">Recupera tu contraseña</a>
+      `;
+      this.failedAttempts = 0; // Reiniciar el contador después de mostrar el mensaje
+    }
   }
 }

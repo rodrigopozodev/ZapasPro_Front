@@ -46,6 +46,10 @@ export class ProductosComponent implements OnInit {
   showUrlInput: boolean = false; 
   showUploadImageInput: boolean = false;
 
+  isAddingNewBrand: boolean = false; // Estado para mostrar el campo de nueva marca
+  newBrand: string = ''; // Nueva propiedad para la marca a registrar
+  showNewBrandInput: boolean = false;
+
   imageUrls: string[] = [
     '/img/Nike Air Max Plus Drift.png',
     '/img/Nike Dunk Low.png',
@@ -408,5 +412,66 @@ resetForm() {
     return fileName.split('.')[0]; // Elimina la extensión del nombre del archivo
   }
 
+   // Método para habilitar el ingreso de una nueva marca
+   enableNewBrand() {
+    this.isAddingNewBrand = true;
+    this.newBrand = ''; // Limpiar el campo de nueva marca
+  }
+
+  // Método para agregar una nueva marca al listado y al producto
+  addNewBrand() {
+    if (this.newBrand.trim()) {
+      this.marcas.push(this.newBrand); // Agrega la nueva marca a la lista de marcas
+      this.newProduct.marca = this.newBrand; // Asigna la nueva marca al producto actual
+      this.isAddingNewBrand = false; // Oculta el campo de nueva marca
+      this.newBrand = ''; // Limpia el campo de nueva marca
+    }
+  }
+
+  // Método para cancelar la entrada de una nueva marca
+  cancelNewBrand() {
+    this.isAddingNewBrand = false;
+    this.newBrand = ''; // Limpia el campo de nueva marca
+  }
+
+  // Método para manejar el cambio en el select de marcas
+onBrandChange(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const selectedValue = selectElement.value;
+
+  // Mostrar el campo para ingresar una nueva marca si se selecciona "Registrar Nueva Marca"
+  this.showNewBrandInput = selectedValue === 'newBrand'; 
+
+  if (this.showNewBrandInput) {
+    // Limpiar los campos si se selecciona la opción para registrar una nueva marca
+    this.newProduct.marca = ''; // Limpia el campo de marca del producto
+    this.newBrand = ''; // Limpia el campo de nueva marca
+  } else {
+    // Si se selecciona una marca existente
+    this.newBrand = ''; // Limpia el campo de nueva marca
+    this.newProduct.marca = selectedValue; // Asigna la marca seleccionada al producto
+  }
+}
+
+
+  // Método para agregar una nueva marca
+  addBrand() {
+    // Verificar si la nueva marca no está vacía y no es duplicada
+    if (this.newBrand.trim() === '' || this.marcas.includes(this.newBrand)) {
+      alert('Por favor, ingrese una marca válida y no duplicada.');
+      return; // Salir de la función si la validación falla
+    }
+  
+    // Agregar la nueva marca a la lista de marcas
+    this.marcas.push(this.newBrand.trim());
+  
+    // Limpiar el campo de nueva marca
+    this.newBrand = '';
+    
+    // Opcional: Seleccionar automáticamente la nueva marca en el select
+    this.newProduct.marca = this.newBrand; // O puedes elegir no hacer esto
+    this.showNewBrandInput = false; // Ocultar el campo de nueva marca
+  }
+  
 }
 
