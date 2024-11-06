@@ -176,14 +176,14 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addToCart(product: Product): void {
-    this.cartService.addItem(product);
+    this.cartService.addToCart(product);
   }
 
   buyNow() {
     const productToBuy = this.products.find(product => product.imageUrl === this.carouselImages[this.currentSlideIndex]);
     
     if (productToBuy) {
-      this.cartService.addItem(productToBuy);
+      this.cartService.addToCart(productToBuy);
       this.router.navigate(['/cart']);
     } else {
       console.error('Producto no encontrado');

@@ -19,16 +19,22 @@ export class CartComponent implements OnInit { // Define el componente
   // Constructor para inyectar servicios
   constructor(private cartService: CartService, private userService: UserService, private router: Router) {}
 
-  // Método de ciclo de vida que se ejecuta al inicializar el componente
-  ngOnInit(): void {
-    this.loadCart(); // Cargar los productos del carrito al inicializar
-  }
+ngOnInit(): void {
+  this.loadCart(); // Cargar los productos del carrito al inicializar
+}
 
-  // Método para cargar los productos del carrito y calcular el precio total
-  private loadCart(): void {
+// Método para cargar los productos del carrito y calcular el precio total
+private loadCart(): void {
+  const user = this.userService.getCurrentUser();
+  if (user) {
     this.cartProducts = this.cartService.getCart(); // Obtiene los productos del carrito
     this.calculateTotalPrice(); // Calcula el precio total de los productos
+  } else {
+    // Si no hay un usuario autenticado, limpia el carrito
+    this.cartProducts = [];
+    this.totalPrice = 0;
   }
+}
 
   // Método para calcular el precio total de los productos en el carrito
   private calculateTotalPrice(): void {
@@ -55,7 +61,7 @@ export class CartComponent implements OnInit { // Define el componente
 
   // Método para eliminar un producto del carrito
   removeFromCart(productId: number): void {
-    this.cartService.removeFromCart(productId); // Llama al método removeFromCart del servicio del carrito
+    this.cartService.removeItem(productId); // Llama al método removeFromCart del servicio del carrito
     this.loadCart(); // Vuelve a cargar el carrito para actualizar la vista
   }
 

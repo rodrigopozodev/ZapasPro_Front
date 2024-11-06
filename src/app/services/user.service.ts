@@ -79,8 +79,14 @@ export class UserService {
     this.userRole = null;
     this.currentUser = null;
     this.removeUserFromLocalStorage();
+    // Limpia el carrito del usuario actual en localStorage
+    const currentUserName = this.getCurrentUserName();
+    if (currentUserName) {
+      localStorage.removeItem(`cart_${currentUserName}`);
+    }
     this.router.navigate(['/login']);
   }
+  
 
   // Método para obtener el rol del usuario actual desde el localStorage
   getCurrentUserRole(): string | null {
