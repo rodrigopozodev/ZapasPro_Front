@@ -123,34 +123,28 @@
       </button>
     </aside>
 
-    <!-- Contenido principal -->
-    <div class="flex-1">
-      <!-- Sección de productos -->
-      <div class="product-grid flex-grow grid gap-8"
-           [ngClass]="{
-             'grid-cols-2': productsPerRow === 2,
-             'grid-cols-4': productsPerRow === 4,
-             'grid-cols-6': productsPerRow === 6
-           }">
-        <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl">
-          <a [routerLink]="['/product', product.id]"> <!-- Enlace actualizado -->
-            <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
-          </a>
-          
-          <div class="product-info mt-4">
-            <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
-            <span class="text-sm font-medium bg-yellow-200 text-yellow-800 py-1 px-2 rounded-full">
-              En el carrito: {{ cartService.getItemCount(product.id) }}
-            </span>
-            <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
-            <button (click)="addToCart(product)" class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-        
+  <!-- Contenido principal -->
+<div class="flex-1">
+  <!-- Sección de productos -->
+  <div class="product-grid flex-grow grid gap-8"
+       [ngClass]="{
+         'grid-cols-2': productsPerRow === 2,
+         'grid-cols-4': productsPerRow === 4,
+         'grid-cols-6': productsPerRow === 6
+       }">
+    <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex flex-col">
+      <a [routerLink]="['/product', product.id]"> <!-- Enlace actualizado -->
+        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
+      </a>
+      <div class="product-info mt-4 flex-grow flex flex-col justify-between">
+        <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
+        <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
       </div>
     </div>
+  </div>
+</div>
+
+
 
     <!-- Mensaje si no hay productos filtrados -->
     <div *ngIf="filteredProducts.length === 0" class="text-center text-gray-600 mt-4">

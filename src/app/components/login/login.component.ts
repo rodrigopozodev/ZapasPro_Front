@@ -12,12 +12,13 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule]
 })
 export class LoginComponent {
-  email: string = ''; // Almacena el correo ingresado
-  password: string = ''; // Almacena la contraseña ingresada
-  emailError: string = ''; // Mensaje de error para el correo
-  passwordError: string = ''; // Mensaje de error para la contraseña
-  loginError: string = ''; // Mensaje de error general para el login
-  passwordRecoveryMessage: string = ''; // Mensaje de recuperación tras tres intentos fallidos
+  email: string = '';
+  password: string = '';
+  emailError: string = '';
+  passwordError: string = '';
+  loginError: string = '';
+  passwordRecoveryMessage: string = '';
+  passwordVisible: boolean = false; // Controla la visibilidad de la contraseña
 
   private failedAttempts: number = 0; // Contador de intentos fallidos
 
@@ -26,6 +27,10 @@ export class LoginComponent {
   // Navega a la página de registro
   goToRegister() {
     this.router.navigate(['/home']);
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   // Navega a la página de recuperación de contraseña
