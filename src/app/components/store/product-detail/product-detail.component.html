@@ -1,14 +1,51 @@
-<div class="flex flex-col md:flex-row justify-between p-4">
-  <div class="flex-1 p-2">
-    <h2 class="text-xl font-semibold">Columna 1</h2>
-    <!-- Columna 1 vacía por ahora -->
+<div class="flex flex-col md:flex-row justify-between p-6 bg-gray-100 rounded-lg shadow-lg">
+  <!-- Columna 1 - Columna Adicional -->
+  <div class="flex-1 p-4">
+    <h2 class="text-2xl font-semibold text-yellow-600 mb-4">Columna Adicional</h2>
+    <!-- Puedes agregar más contenido aquí, por ejemplo, información sobre el producto o sugerencias -->
   </div>
-  <div class="flex-1 p-2">
-    <h2 class="text-xl font-semibold">Columna 2</h2>
-    <img [src]="product?.imageUrl" alt="{{ product?.name }}" class="w-auto h-auto object-cover mx-auto" /> <!-- Cambiado a w-64 y h-64 -->
+
+  <!-- Columna 2 - Imagen del producto -->
+  <div class="flex-1 p-4">
+    <h2 class="text-2xl font-semibold text-yellow-600 mb-4">Imagen del Producto</h2>
+    <!-- Imagen centrada en la columna -->
+    <img [src]="product?.imageUrl" alt="{{ product?.name }}" class="w-full h-auto object-cover rounded-lg shadow-md" />
   </div>
-  <div class="flex-1 p-2">
-    <h2 class="text-xl font-semibold">Columna 3</h2>
-    <!-- Columna 3 vacía por ahora -->
+
+  <!-- Columna 3 - Información del producto -->
+  <div class="flex-1 p-4 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-yellow-600 mb-4">{{ product?.name }}</h2>
+    <p class="text-gray-700 mb-4">{{ product?.description }}</p>
+    <p class="text-lg font-semibold text-yellow-600 mb-4">Precio: {{ product?.price}}€</p>
+    
+    <!-- Tallas disponibles -->
+    <div class="mb-4">
+      <p class="text-lg font-semibold text-yellow-600">Selecciona tu talla</p>
+      
+      <!-- Cuadrícula de tallas -->
+      <div class="grid grid-cols-4 gap-2 mt-2">
+        <!-- Lista de tallas en la cuadrícula -->
+        <div 
+          *ngFor="let talla of ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48']" 
+          class="py-2 px-4 text-center border rounded-lg cursor-pointer"
+          [ngClass]="{
+            'text-gray-500 line-through': !isTallaDisponible(talla),
+            'bg-yellow-100': isTallaDisponible(talla),
+            'hover:bg-yellow-200': isTallaDisponible(talla)
+          }"
+          (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
+        >
+          EU {{ talla }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para añadir al carrito -->
+    <button 
+      (click)="addToCart()" 
+      class="w-full py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300"
+    >
+      Añadir al carrito
+    </button>
   </div>
 </div>

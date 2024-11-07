@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
 
@@ -7,7 +7,8 @@ import { Product } from '../interfaces/product.interface';
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/products';
+  private apiUrl = 'http://localhost:3000/api/products'; // URL base para productos
+  private stockApiUrl = 'http://localhost:3000/api/stock/producto'; // URL base para stock
 
   constructor(private http: HttpClient) {}
 
@@ -26,9 +27,17 @@ export class ProductService {
     );
   }
 
+  // Método para obtener el stock de un producto por productoId (debe devolver todas las tallas)
+  getStockByProductoId(productoId: string): Observable<any> {
+    const url = `${this.stockApiUrl}/${productoId}`; // Construye la URL para obtener el stock
+    return this.http.get<any>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Método para manejar errores
   private handleError(error: any) {
     console.error('Ha ocurrido un error:', error);
-    return throwError(() => new Error('Error en la obtención de productos, intenta más tarde'));
+    return throwError(() => new Error('Error en la obtención de datos, intenta más tarde'));
   }
 }
