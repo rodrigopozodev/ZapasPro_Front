@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '../interfaces/user.interface';
@@ -14,6 +14,10 @@ export class UserService {
   private authenticated = false;
   public userRole: string | null = null;
   private currentUser: any;
+
+  // Nuevo BehaviorSubject que emite cambios de usuario
+  private userChangedSubject = new BehaviorSubject<void>(undefined);
+  public userChanged$ = this.userChangedSubject.asObservable();
 
   constructor(
     private http: HttpClient, 
@@ -35,27 +39,26 @@ export class UserService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Método para iniciar sesión
-  login(email: string, password: string): Observable<any> {
+   // Método para iniciar sesión
+   login(email: string, password: string): Observable<any> {
     return this.http.post<{ success: boolean, user: { role: string, username: string } }>(
       `${this.apiUrl}/login`, { email, password }
     ).pipe(
       tap(response => {
         if (response.success) {
-          console.log("Login exitoso:", response);
           this.setAuthenticated(true);
           const user = response.user;
-          console.log("Rol del usuario:", user.role);
           this.setUserRole(user.role);
           this.setUserName(user.username);
           this.saveUserToLocalStorage(user.role, user.username);
-          
+
+          // Emitir cambio de usuario
+          this.userChangedSubject.next(); // Aquí emitimos el cambio
+
           // Redirigir según el rol
           if (this.userRole === 'admin') {
-            console.log("Redirigiendo a /admin");
             this.router.navigate(['/admin']);
           } else {
-            console.log("Redirigiendo a /");
             this.router.navigate(['/']);
           }
         }
@@ -73,17 +76,16 @@ export class UserService {
     return this.authenticated;
   }
 
-  // Método para cerrar sesión
+  // Eliminar el usuario del localStorage y emitir cambio
   logout(): void {
     this.authenticated = false;
     this.userRole = null;
     this.currentUser = null;
     this.removeUserFromLocalStorage();
-    // Limpia el carrito del usuario actual en localStorage
-    const currentUserName = this.getCurrentUserName();
-    if (currentUserName) {
-      localStorage.removeItem(`cart_${currentUserName}`);
-    }
+
+    // Emitir cambio de usuario al cerrar sesión
+    this.userChangedSubject.next(); // Emitir cambio
+
     this.router.navigate(['/login']);
   }
   

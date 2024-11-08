@@ -1,30 +1,60 @@
 <!-- Contenedor principal de la tienda -->
 <div class="store bg-[#f3e8d5] py-10 min-h-screen">
-<!-- Carrusel de imágenes -->
-<div class="relative mx-8 mb-4">
-  <div class="bg-white rounded-3xl overflow-hidden shadow-lg carrusel"> <!-- Carrusel con altura de 500px -->
-    <div class="carousel custom-carousel h-full">
-      <div class="carousel-inner flex transition-transform duration-700 ease-in-out h-full"
-           [ngStyle]="{'transform': 'translateX(-' + (currentSlideIndex * 100) + '%)'}">
-        <div *ngFor="let image of carouselImages; let i = index" class="carousel-item flex-shrink-0 relative h-full">
-          <!-- Div de la Imagen -->
-          <div class="image-container"> <!-- Div de imagen ocupa 150px de altura -->
-            <img [src]="image" alt="Carrusel" class="object-cover"> <!-- La imagen ocupa su espacio -->
-          </div>
-          <!-- Div de Texto y Botón -->
-          <div *ngIf="currentSlideIndex === 0" class="texto-boton"> <!-- Texto y botón -->
-            <h2 class="text-lg font-bold text-yellow-600">Nuestra zapatilla más vendida</h2>
-            <button (click)="buyNow()" class="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 ease-in-out">
-              ¡Cómprala ya!
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Carrusel de imágenes -->
+  <div class="relative mx-8 mb-4">
+    <div class="bg-white rounded-3xl overflow-hidden shadow-lg carrusel">
+      <div class="carousel custom-carousel h-full">
+        <div class="carousel-inner flex transition-transform duration-700 ease-in-out h-full"
+            [ngStyle]="{'transform': 'translateX(-' + (currentSlideIndex * 100) + '%)'}">
+        <!-- Primera Viñeta -->
+<div class="carousel-item flex-shrink-0 relative h-full">
+  <div class="image-container">
+    <img [src]="carouselImages[0]" alt="Carrusel" class="object-cover w-full h-full">
+  </div>
+  <div *ngIf="currentSlideIndex === 0" class="absolute bottom-0 w-full bg-opacity-60  text-center py-6 px-4">
+    <h2 class="text-3xl font-bold text-yellow-600 mb-4">Nuestra zapatilla más vendida</h2>
+    <button (click)="buyNow()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform transition duration-300 ease-in-out hover:scale-105 focus:outline-none">
+      ¡Cómprala ya!
+    </button>
   </div>
 </div>
 
-
+        <!-- Segunda Viñeta -->
+        <div class="carousel-item flex-shrink-0 relative h-full bg-yellow-500">
+          <div class="image-container">
+            <img [src]="carouselImages[1]" alt="Carrusel" class="object-cover w-full h-full">
+          </div>
+          <div *ngIf="currentSlideIndex === 1" class="absolute inset-0 flex justify-center items-center text-center">
+            <div class="text-white">
+              <h2 class="text-4xl font-bold">Aplica este código del 15% en todos los productos solo este mes</h2>
+              <p class="text-2xl font-semibold text-red-600">ZapasProMola</p>
+            </div>
+          </div>
+        </div>
+        <!-- Tercera Viñeta -->
+        <div class="carousel-item flex-shrink-0 relative h-full">
+          <div class="image-container">
+            <img [src]="carouselImages[2]" alt="Carrusel" class="object-cover w-full h-full">
+           </div>
+           <div *ngIf="currentSlideIndex === 2" class="absolute bottom-0 w-full bg-opacity-70 bg-black text-center py-4">
+            <p class="text-2xl font-semibold text-white">Futuro lanzamiento Air Jordan 4 Retro "Fear" solo 100 pares</p>
+          </div>
+        </div>
+        </div>
+      </div>
+    <!-- Flechas de navegación -->
+    <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full" (click)="previousSlide()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full" (click)="nextSlide()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <path d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+</div>
 
   <!-- Fila superior con botones -->
   <div class="flex justify-between mb-4 mx-8 items-center">
@@ -72,15 +102,15 @@
     <aside *ngIf="showFilters" class="filters bg-white rounded-3xl shadow-lg p-4 w-80 mr-8 flex flex-col justify-start sticky top-20" style="max-height: 90vh; overflow-y: auto;">
       <h2 class="text-lg font-bold text-yellow-600 text-center">Filtros</h2>
 
-      <!-- Filtro: Ordenar por -->
-      <div class="filter-section mt-4">
-        <h3 class="text-md font-semibold text-gray-700">Ordenar por</h3>
-        <select [(ngModel)]="selectedSort" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-          <option value="">Sin ordenar</option>
-          <option value="priceHighLow">Precio: alto-bajo</option>
-          <option value="priceLowHigh">Precio: bajo-alto</option>
-        </select>
-      </div>
+        <!-- Filtro: Ordenar por -->
+        <div class="filter-section mt-4">
+          <h3 class="text-md font-semibold text-gray-700">Ordenar por</h3>
+          <select [(ngModel)]="selectedSort" class="border border-yellow-300 rounded-xl p-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">Sin ordenar</option>
+            <option value="priceHighLow">Precio: alto-bajo</option>
+            <option value="priceLowHigh">Precio: bajo-alto</option>
+          </select>
+        </div>
 
       <!-- Filtro: Color -->
       <div class="filter-section mt-4">
@@ -121,34 +151,88 @@
       <button (click)="applyFilters()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-xl mt-4 w-full transition duration-200 ease-in-out">
         Aplicar Filtros
       </button>
-    </aside>
+    <!-- Botón Reiniciar Filtros debajo de Aplicar Filtros -->
+    <button (click)="resetFilters()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-xl mt-2 w-full transition duration-200 ease-in-out">
+      Reiniciar Filtros
+    </button>
+    <!-- Logo con animación de pulso -->
+  <div class="flex justify-center mb-8 mt-16"> 
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png"
+    alt="ZP Logo" class="w-28 h-28 animate-zoom">
+  </div>
+  </aside>
+
+<!-- Mensaje si no hay productos filtrados -->
+<div *ngIf="filteredProducts.length === 0" class="flex flex-col items-center justify-center text-center text-gray-600 h-full min-h-[100vh] ml-36">
+  <p class="text-5xl font-bold mb-8 text-gray-700">
+    No hay productos disponibles con los filtros seleccionados.
+  </p>
+  <button (click)="resetFilters()" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-4 px-8 rounded-xl transition duration-200 ease-in-out text-xl">
+    Reiniciar Filtros
+  </button>
+</div>
 
   <!-- Contenido principal -->
-<div class="flex-1">
-  <!-- Sección de productos -->
-  <div class="product-grid flex-grow grid gap-8"
-       [ngClass]="{
-         'grid-cols-2': productsPerRow === 2,
-         'grid-cols-4': productsPerRow === 4,
-         'grid-cols-6': productsPerRow === 6
-       }">
-    <div *ngFor="let product of filteredProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex flex-col">
-      <a [routerLink]="['/product', product.id]"> <!-- Enlace actualizado -->
-        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
-      </a>
-      <div class="product-info mt-4 flex-grow flex flex-col justify-between">
-        <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
-        <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
+  <div class="flex-1">
+    <!-- Sección de productos -->
+    <div class="product-grid flex-grow grid gap-8"
+        [ngClass]="{
+          'grid-cols-2': productsPerRow === 2,
+          'grid-cols-4': productsPerRow === 4,
+          'grid-cols-6': productsPerRow === 6
+        }">
+      <div *ngFor="let product of paginatedProducts" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex flex-col">
+        <a [routerLink]="['/product', product.id]">
+          <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full aspect-[4/3] object-cover rounded-t-3xl" />
+        </a>
+        <div class="product-info mt-4 flex-grow flex flex-col justify-between">
+          <h2 class="product-name text-lg font-bold text-yellow-600">{{ product.name }}</h2>
+          <p class="product-price text-xl font-semibold text-yellow-500 mt-2">{{ product.price.toFixed(2) }} €</p>
+          
+          <!-- Botón de Favoritos con SVG -->
+          <button 
+            (click)="toggleFavorite(product)" 
+            [ngClass]="{'text-orange-500': isFavorite(product), 'hover:text-yellow-500': !isFavorite(product)}" 
+            class="favorite-btn mt-2 text-xl"
+            aria-label="Añadir a favoritos"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6" 
+                [ngClass]="{
+                  'stroke-yellow-600 fill-yellow-600': isFavorite(product), 
+                  'stroke-orange-600 fill-none hover:fill-orange-400': !isFavorite(product)
+                }">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>    
+    </div>
+      <!-- Paginación -->
+      <div *ngIf="paginatedProducts.length > 0" class="flex flex-col items-center mt-6">
+        <!-- Botones de navegación de página -->
+        <div class="flex justify-center">
+          <button (click)="previousPage()" [disabled]="currentPage === 1" class="px-4 py-2 bg-yellow-500 text-white font-semibold rounded-xl">
+            Anterior
+          </button>
+          <span class="px-4 py-2 text-lg font-semibold">
+            Página {{ currentPage }} de {{ totalPages }}
+          </span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 bg-yellow-500 text-white font-semibold rounded-xl">
+            Siguiente
+          </button>
+        </div>
+
+        <!-- Números de página -->
+        <div class="flex justify-center mt-4">
+          <button *ngFor="let page of [].constructor(totalPages); let i = index"
+                  (click)="currentPage = i + 1; paginateProducts()"
+                  [class.bg-yellow-500]="currentPage === i + 1"
+                  [class.text-white]="currentPage === i + 1"
+                  class="px-4 py-2 bg-yellow-200 hover:bg-yellow-300 text-gray-700 font-semibold rounded-xl mx-1">
+            {{ i + 1 }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-
-
-    <!-- Mensaje si no hay productos filtrados -->
-    <div *ngIf="filteredProducts.length === 0" class="text-center text-gray-600 mt-4">
-      No hay productos disponibles con los filtros seleccionados.
-    </div>
-  </div>
-</div>
