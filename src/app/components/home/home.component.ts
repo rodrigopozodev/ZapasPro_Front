@@ -25,6 +25,8 @@ export class HomeComponent {
   usernameValid: boolean = false; // Indicador de validación de nombre de usuario
   successMessage: string = ''; // Mensaje de éxito
   errorMessage: string = ''; // Mensaje de error en el registro
+  passwordVisible: boolean = false;
+
 
   constructor(private userService: UserService, private router: Router) { } // Inyección de servicios
 
@@ -94,5 +96,9 @@ export class HomeComponent {
   // Método para navegar a la página de inicio de sesión
   goToLogin() {
     this.router.navigate(['/login']); // Navega a la página de login
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 }
