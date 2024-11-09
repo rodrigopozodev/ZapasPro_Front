@@ -3,9 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from '../../../services/cart.service';
 import { Product } from '../../../interfaces/product.interface';
-import { CartItem } from '../../../interfaces/cart.interface';  // Asegúrate de importar la interfaz CartItem
+import { CartItem } from '../../../interfaces/cart.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-product-detail',
@@ -17,12 +19,12 @@ import { FormsModule } from '@angular/forms';
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
   stock: any[] = [];
-  cartProducts: CartItem[] = [];  // Cambiar el tipo a CartItem[]
+  cartProducts: CartItem[] = [];
   cartVisible: boolean = false;
   subtotal: number = 0;
   discount: number = 0;
   total: number = 0;
-  selectedSize: string = '';  // Para almacenar la talla seleccionada
+  selectedSize: string = '';
   discountCode: string = '';
   discountRate: number = 0;
 
@@ -32,7 +34,8 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
@@ -41,7 +44,8 @@ export class ProductDetailComponent implements OnInit {
       this.getProduct(id);
       this.getStock(id);
     }
-    this.loadDiscountCode();  // Cargar el código de descuento al iniciar
+    this.loadDiscountCode();
+    this.loadCart();  // Cargar el carrito al inicializar el componente
   }
 
   // Obtener los detalles del producto
@@ -81,14 +85,13 @@ export class ProductDetailComponent implements OnInit {
   addToCart(): void {
     if (this.product && this.selectedSize) {
       const selectedStock = this.stock.find(item => item.talla === this.selectedSize);
-  
       if (selectedStock) {
         const cartItem: CartItem = {
           product: this.product,
           quantity: 1,
-          stock: selectedStock  // Agregar el stock seleccionado aquí
+          stock: selectedStock
         };
-        this.cartService.addToCart(cartItem);  // Pasar el CartItem con stock al servicio
+        this.cartService.addToCart(cartItem);
         this.loadCart();
         this.cartVisible = true;
       } else {
@@ -98,7 +101,6 @@ export class ProductDetailComponent implements OnInit {
       console.log('Selecciona un producto y una talla antes de agregar al carrito');
     }
   }
-  
 
   // Cerrar la ventana del carrito
   closeCart(): void {
@@ -106,22 +108,28 @@ export class ProductDetailComponent implements OnInit {
   }
 
   // Comprar productos
-  buy() {
-    // Lógica de compra
+  buy(): void {
+    alert("Compra realizada con éxito");
+    this.clearDiscount();
+    this.cartService.clearCart();
+    this.loadCart();
   }
 
   // Cargar el carrito y calcular los totales
   loadCart(): void {
-    this.cartProducts = this.cartService.getCart();  // Obtener CartItem[] del carrito
-    this.calculateTotals(); // Recalcular los totales
+    this.cartProducts = this.cartService.getCart();
+    this.calculateTotals();
   }
 
-  // Cargar el código de descuento
+  // Cargar el código de descuento si ya se ha aplicado en una sesión anterior
   loadDiscountCode(): void {
-    const storedDiscountCode = localStorage.getItem('discountCode');
-    if (storedDiscountCode === this.validDiscountCode) {
-      this.discountCode = storedDiscountCode;
-      this.discountRate = this.discountPercentage;
+    if (isPlatformBrowser(this.platformId)) {
+      const storedDiscountCode = localStorage.getItem('discountCode');
+      if (storedDiscountCode === this.validDiscountCode) {
+        this.discountCode = storedDiscountCode;
+        this.discountRate = this.discountPercentage;
+        this.calculateTotals();
+      }
     }
   }
 
@@ -130,32 +138,38 @@ export class ProductDetailComponent implements OnInit {
     if (this.discountCode === this.validDiscountCode) {
       this.discountRate = this.discountPercentage;
       this.calculateTotals();
-      this.saveDiscountCode(); // Guardar el código de descuento
+      this.saveDiscountCode();
     } else {
       alert("Código de descuento inválido");
       this.discountRate = 0;
       this.calculateTotals();
-      localStorage.removeItem('discountCode'); // Eliminar el código de descuento si es inválido
+      localStorage.removeItem('discountCode');
     }
   }
 
-  // Guardar el código de descuento
+  // Guardar el código de descuento en localStorage
   saveDiscountCode(): void {
-    if (this.discountCode === this.validDiscountCode) {
-      localStorage.setItem('discountCode', this.discountCode); // Guardar en localStorage
-    } else {
-      localStorage.removeItem('discountCode'); // Eliminar el código si es inválido
+    if (isPlatformBrowser(this.platformId) && this.discountCode === this.validDiscountCode) {
+      localStorage.setItem('discountCode', this.discountCode);
+    } else if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('discountCode');
     }
+  }
+
+  // Limpiar el código de descuento después de la compra
+  clearDiscount(): void {
+    localStorage.removeItem('discountCode');
+    this.discountRate = 0;
+    this.discountCode = '';
   }
 
   // Calcular los totales (con descuento aplicado)
   calculateTotals(): void {
     this.subtotal = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
     
-    // Calcular el total con descuento
     this.total = this.cartProducts.reduce((total, item) => {
-      const discountedPrice = item.product.price - (item.product.price * this.discountRate); // Precio con descuento
-      return total + (discountedPrice * item.quantity); // Sumar el precio con descuento de cada producto
+      const discountedPrice = item.product.price - (item.product.price * this.discountRate);
+      return total + (discountedPrice * item.quantity);
     }, 0);
   }
 }

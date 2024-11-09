@@ -3,6 +3,8 @@ import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../interfaces/cart.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
@@ -18,46 +20,61 @@ export class CartComponent implements OnInit {
   total: number = 0;
   discountCode: string = '';
   discountRate: number = 0;
-  discountApplied: boolean = false; // Para verificar si ya se aplicó el descuento
+  discountApplied: boolean = false;
 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
+  private readonly userKeyPrefix: string = 'userCart_'; // Prefijo para la clave de localStorage
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService, 
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.loadCart();
-    this.checkDiscountStatus(); // Verificar si el descuento ya ha sido aplicado.
+    this.checkDiscountStatus();
   }
 
   // Cargar el carrito y calcular los totales
   loadCart(): void {
-    this.cartProducts = this.cartService.getCart(); // Obtener CartItem[] del carrito
-    this.calculateTotals(); // Recalcular los totales
+    const username = this.getUsername(); // Aquí se puede obtener el nombre de usuario
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      const savedCart = localStorage.getItem(`${this.userKeyPrefix}${username}`);
+      if (savedCart) {
+        this.cartProducts = JSON.parse(savedCart);
+      } else {
+        this.cartProducts = this.cartService.getCart(); // Si no hay datos, se carga el carrito normal
+      }
+    } else {
+      this.cartProducts = this.cartService.getCart(); // En caso de no estar en un entorno de navegador
+    }
+    this.calculateTotals();
   }
 
-  // Verificar si el descuento ya ha sido aplicado
+  // Verificar si el descuento ya ha sido aplicado en una sesión anterior
   checkDiscountStatus(): void {
-    const storedDiscountCode = localStorage.getItem('discountCode');
-    if (storedDiscountCode === this.validDiscountCode) {
-      this.discountApplied = true;
-      this.discountRate = this.discountPercentage;
-      this.calculateTotals(); // Recalcular totales si el descuento está aplicado
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      const username = this.getUsername();
+      const discountCode = localStorage.getItem(`${this.userKeyPrefix}${username}_discountCode`);
+      if (discountCode === this.validDiscountCode) {
+        this.discountRate = this.discountPercentage;
+        this.discountApplied = true;
+        this.calculateTotals();
+      }
     }
   }
 
   // Aplicar el descuento solo si no se ha aplicado previamente
   applyDiscount(): void {
-    if (this.discountApplied) {
-      alert("Este código de descuento ya se ha aplicado y no se puede usar nuevamente.");
-      return;
-    }
-
     if (this.discountCode === this.validDiscountCode) {
       this.discountRate = this.discountPercentage;
       this.discountApplied = true;
       this.calculateTotals();
-      localStorage.setItem('discountCode', this.discountCode); // Guardar el código en localStorage
+      if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+        const username = this.getUsername();
+        localStorage.setItem(`${this.userKeyPrefix}${username}_discountCode`, this.discountCode);
+      }
     } else {
       alert("Código de descuento inválido");
       this.discountRate = 0;
@@ -67,38 +84,62 @@ export class CartComponent implements OnInit {
 
   // Limpiar el carrito
   clearCart(): void {
+    const username = this.getUsername();
     this.cartService.clearCart();
-    this.loadCart(); // Recargar los productos del carrito
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      localStorage.removeItem(`${this.userKeyPrefix}${username}`);
+    }
+    this.loadCart();
   }
 
-  // Realizar la compra
+  // Realizar la compra y limpiar el descuento
   buy(): void {
-    this.clearDiscount(); // Limpiar el descuento después de la compra
+    this.clearDiscount();
   }
 
   // Limpiar el código de descuento después de la compra
   clearDiscount(): void {
-    localStorage.removeItem('discountCode');
+    const username = this.getUsername();
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      localStorage.removeItem(`${this.userKeyPrefix}${username}_discountCode`);
+    }
     this.discountApplied = false;
     this.discountRate = 0;
   }
 
   // Agregar un producto al carrito
   addProductToCart(product: CartItem): void {
-    this.cartService.addToCart(product); // Añadir el producto al carrito
-    this.loadCart(); // Recargar los productos del carrito
-    this.calculateTotals(); // Recalcular los totales después de agregar el producto
+    this.cartService.addToCart(product);
+    this.loadCart();
+    this.calculateTotals();
   }
 
   // Calcular los totales (con descuento aplicado)
   calculateTotals(): void {
-    // Subtotal: solo los precios originales (sin descuento)
     this.subtotal = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-
-    // Total: aplicar el descuento solo aquí
     this.total = this.cartProducts.reduce((total, item) => {
-      const discountedPrice = item.product.price - (item.product.price * this.discountRate); // Precio con descuento
-      return total + (discountedPrice * item.quantity); // Sumar el precio con descuento de cada producto
+      const discountedPrice = item.product.price - (item.product.price * this.discountRate);
+      return total + (discountedPrice * item.quantity);
     }, 0);
+  }
+
+  // Verificar si localStorage está disponible
+  private isLocalStorageAvailable(): boolean {
+    try {
+      // Intentar usar localStorage solo si está disponible
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (error) {
+      throw new Error('localStorage no está disponible en este entorno.');
+    }
+  }
+
+  // Obtener el nombre de usuario para asociar el carrito
+  private getUsername(): string {
+    // Aquí puedes obtener el nombre de usuario actual (por ejemplo, desde un servicio de autenticación)
+    // Este es un ejemplo simple, debes sustituirlo con tu lógica de obtención del nombre de usuario
+    return 'user123'; // Este es un ejemplo estático
   }
 }
