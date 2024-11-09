@@ -2,13 +2,11 @@
   <!-- Columna 1 - Columna Adicional -->
   <div class="flex-1 p-4">
     <h2 class="text-2xl font-semibold text-yellow-600 mb-4">Columna Adicional</h2>
-    <!-- Puedes agregar más contenido aquí, por ejemplo, información sobre el producto o sugerencias -->
   </div>
 
   <!-- Columna 2 - Imagen del producto -->
   <div class="flex-1 p-4">
     <h2 class="text-2xl font-semibold text-yellow-600 mb-4">Imagen del Producto</h2>
-    <!-- Imagen centrada en la columna -->
     <img [src]="product?.imageUrl" alt="{{ product?.name }}" class="w-full h-auto object-cover rounded-lg shadow-md" />
   </div>
 
@@ -16,28 +14,28 @@
   <div class="flex-1 p-4 bg-white rounded-lg shadow-md">
     <h2 class="text-2xl font-semibold text-yellow-600 mb-4">{{ product?.name }}</h2>
     <p class="text-gray-700 mb-4">{{ product?.description }}</p>
-    <p class="text-lg font-semibold text-yellow-600 mb-4">Precio: {{ product?.price}}€</p>
-    
+    <p class="text-lg font-semibold text-yellow-600 mb-4">Precio: {{ product?.price }}€</p>
+
     <!-- Tallas disponibles -->
     <div class="mb-4">
       <p class="text-lg font-semibold text-yellow-600">Selecciona tu talla</p>
-      
-      <!-- Cuadrícula de tallas -->
       <div class="grid grid-cols-4 gap-2 mt-2">
-        <!-- Lista de tallas en la cuadrícula -->
         <div 
           *ngFor="let talla of ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48']" 
           class="py-2 px-4 text-center border rounded-lg cursor-pointer"
           [ngClass]="{
-            'text-gray-500 line-through': !isTallaDisponible(talla),
-            'bg-yellow-100': isTallaDisponible(talla),
-            'hover:bg-yellow-200': isTallaDisponible(talla)
+            'text-gray-500 line-through': !isTallaDisponible(talla), 
+            'bg-yellow-100': talla === selectedSize && isTallaDisponible(talla), 
+            'bg-yellow-200 hover:bg-yellow-300': isTallaDisponible(talla) && talla !== selectedSize
           }"
           (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
         >
           EU {{ talla }}
         </div>
       </div>
+      
+      <!-- Mostrar la talla seleccionada debajo del nombre -->
+      <p *ngIf="selectedSize" class="mt-2 text-lg font-medium text-yellow-600">Talla seleccionada: EU {{ selectedSize }}</p>
     </div>
 
     <!-- Botón para añadir al carrito -->
@@ -47,5 +45,46 @@
     >
       Añadir al carrito
     </button>
+  </div>
+</div>
+
+<!-- Ventana emergente del carrito -->
+<div *ngIf="cartVisible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <div class="cart-container w-full max-w-3xl p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-2xl font-semibold text-yellow-600 mb-4">Carrito</h2>
+
+    <!-- Mensaje cuando el carrito está vacío -->
+    <div *ngIf="cartProducts.length === 0" class="empty-cart text-center py-10">
+      <p class="text-lg text-gray-500">El carrito está vacío</p>
+    </div>
+
+   <!-- Lista de productos en el carrito -->
+   <div *ngFor="let cartProduct of cartProducts" class="cart-product flex items-center border-b border-gray-200 py-4">
+    <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
+    <div class="product-info ml-6">
+      <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
+      
+      <!-- Precio original tachado y precio con descuento si aplica -->
+      <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
+      <p class="product-price text-xl font-semibold text-yellow-500">
+        {{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €
+      </p>
+      
+      <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
+    </div>
+  </div>
+
+     <!-- Resumen del pedido -->
+     <div class="order-summary mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+      <p class="text-xl font-semibold text-gray-700">Subtotal: {{ subtotal.toFixed(2) }} €</p>
+      <p *ngIf="discountRate > 0" class="discount text-green-500">Descuento aplicado: -{{ (subtotal * discountRate).toFixed(2) }} €</p>
+      <p class="total text-2xl font-semibold text-yellow-600">Total: {{ total.toFixed(2) }} €</p>
+    </div>
+
+    <!-- Botones de acciones -->
+    <div class="mt-4 flex justify-between">
+      <button (click)="buy()" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl transition duration-200">Comprar</button>
+      <button (click)="closeCart()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded-xl transition duration-200">Cerrar</button>
+    </div>
   </div>
 </div>

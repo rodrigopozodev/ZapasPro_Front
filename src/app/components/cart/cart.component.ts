@@ -1,77 +1,104 @@
-import { CommonModule } from '@angular/common'; // Importa el módulo común de Angular
-import { Component, OnInit } from '@angular/core'; // Importa los decoradores de componente y ciclo de vida
-import { CartService } from '../../services/cart.service'; // Importa el servicio del carrito
-import { CartItem } from '../../interfaces/cart.interface'; // Importa la interfaz del carrito
-import { UserService } from '../../services/user.service'; // Importa el servicio de usuario
-import { Router } from '@angular/router'; // Importa el enrutador de Angular
+import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../services/cart.service';
+import { CartItem } from '../../interfaces/cart.interface';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-cart', // Selector para el componente
-  templateUrl: './cart.component.html', // Ruta al archivo HTML del componente
-  standalone: true, // Indica que es un componente independiente
-  styleUrls: ['./cart.component.css'], // Ruta al archivo CSS del componente
-  imports: [CommonModule] // Importa el CommonModule para utilizar directivas comunes
+  selector: 'app-cart',
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
-export class CartComponent implements OnInit { // Define el componente
-  cartProducts: CartItem[] = []; // Array para almacenar los productos del carrito
-  totalPrice: number = 0; // Variable para almacenar el precio total
+export class CartComponent implements OnInit {
+  cartProducts: CartItem[] = [];
+  subtotal: number = 0;
+  discount: number = 0;
+  total: number = 0;
+  discountCode: string = '';
+  discountRate: number = 0;
+  discountApplied: boolean = false; // Para verificar si ya se aplicó el descuento
 
-  // Constructor para inyectar servicios
-  constructor(private cartService: CartService, private userService: UserService, private router: Router) {}
+  private readonly validDiscountCode: string = 'ZapasProMola';
+  private readonly discountPercentage: number = 0.15;
 
-ngOnInit(): void {
-  this.loadCart(); // Cargar los productos del carrito al inicializar
-}
+  constructor(private cartService: CartService) {}
 
-// Método para cargar los productos del carrito y calcular el precio total
-private loadCart(): void {
-  const user = this.userService.getCurrentUser();
-  if (user) {
-    this.cartProducts = this.cartService.getCart(); // Obtiene los productos del carrito
-    this.calculateTotalPrice(); // Calcula el precio total de los productos
-  } else {
-    // Si no hay un usuario autenticado, limpia el carrito
-    this.cartProducts = [];
-    this.totalPrice = 0;
-  }
-}
-
-  // Método para calcular el precio total de los productos en el carrito
-  private calculateTotalPrice(): void {
-    this.totalPrice = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0); // Suma los precios de todos los productos
+  ngOnInit(): void {
+    this.loadCart();
+    this.checkDiscountStatus(); // Verificar si el descuento ya ha sido aplicado.
   }
 
-  // Método para navegar a la tienda
-  goToStore(): void {
-    this.router.navigate(['/store']); // Navega a la ruta de la tienda
+  // Cargar el carrito y calcular los totales
+  loadCart(): void {
+    this.cartProducts = this.cartService.getCart(); // Obtener CartItem[] del carrito
+    this.calculateTotals(); // Recalcular los totales
   }
 
-  // Método para cerrar sesión
-  logout(): void {
-    this.userService.logout(); // Cierra sesión del usuario
-    this.router.navigate(['/login']); // Navega a la página de login al cerrar sesión
-  }
-
-  // Método para vaciar el carrito
-  clearCart(): void {
-    this.cartService.clearCart(); // Llama al método clearCart del servicio del carrito
-    this.cartProducts = []; // Limpia el array de productos del carrito
-    this.totalPrice = 0; // Resetea el precio total
-  }
-
-  // Método para eliminar un producto del carrito
-  removeFromCart(productId: number): void {
-    this.cartService.removeItem(productId); // Llama al método removeFromCart del servicio del carrito
-    this.loadCart(); // Vuelve a cargar el carrito para actualizar la vista
-  }
-
-  // Método para simular la compra
-  buy(): void {
-    if (this.cartProducts.length > 0) {
-      alert('Compra realizada con éxito!'); // Muestra un mensaje de éxito
-      this.clearCart(); // Limpia el carrito después de la compra
-    } else {
-      alert('El carrito está vacío.'); // Mensaje si el carrito está vacío
+  // Verificar si el descuento ya ha sido aplicado
+  checkDiscountStatus(): void {
+    const storedDiscountCode = localStorage.getItem('discountCode');
+    if (storedDiscountCode === this.validDiscountCode) {
+      this.discountApplied = true;
+      this.discountRate = this.discountPercentage;
+      this.calculateTotals(); // Recalcular totales si el descuento está aplicado
     }
+  }
+
+  // Aplicar el descuento solo si no se ha aplicado previamente
+  applyDiscount(): void {
+    if (this.discountApplied) {
+      alert("Este código de descuento ya se ha aplicado y no se puede usar nuevamente.");
+      return;
+    }
+
+    if (this.discountCode === this.validDiscountCode) {
+      this.discountRate = this.discountPercentage;
+      this.discountApplied = true;
+      this.calculateTotals();
+      localStorage.setItem('discountCode', this.discountCode); // Guardar el código en localStorage
+    } else {
+      alert("Código de descuento inválido");
+      this.discountRate = 0;
+      this.calculateTotals();
+    }
+  }
+
+  // Limpiar el carrito
+  clearCart(): void {
+    this.cartService.clearCart();
+    this.loadCart(); // Recargar los productos del carrito
+  }
+
+  // Realizar la compra
+  buy(): void {
+    this.clearDiscount(); // Limpiar el descuento después de la compra
+  }
+
+  // Limpiar el código de descuento después de la compra
+  clearDiscount(): void {
+    localStorage.removeItem('discountCode');
+    this.discountApplied = false;
+    this.discountRate = 0;
+  }
+
+  // Agregar un producto al carrito
+  addProductToCart(product: CartItem): void {
+    this.cartService.addToCart(product); // Añadir el producto al carrito
+    this.loadCart(); // Recargar los productos del carrito
+    this.calculateTotals(); // Recalcular los totales después de agregar el producto
+  }
+
+  // Calcular los totales (con descuento aplicado)
+  calculateTotals(): void {
+    // Subtotal: solo los precios originales (sin descuento)
+    this.subtotal = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+
+    // Total: aplicar el descuento solo aquí
+    this.total = this.cartProducts.reduce((total, item) => {
+      const discountedPrice = item.product.price - (item.product.price * this.discountRate); // Precio con descuento
+      return total + (discountedPrice * item.quantity); // Sumar el precio con descuento de cada producto
+    }, 0);
   }
 }

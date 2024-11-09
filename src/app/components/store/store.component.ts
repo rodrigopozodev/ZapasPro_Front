@@ -250,21 +250,6 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showFilters = !this.showFilters;
   }
 
-  addToCart(product: Product): void {
-    this.cartService.addToCart(product);
-  }
-
-  buyNow() {
-    const productToBuy = this.products.find(product => product.imageUrl === this.carouselImages[this.currentSlideIndex]);
-    
-    if (productToBuy) {
-      this.cartService.addToCart(productToBuy);
-      this.router.navigate(['/cart']);
-    } else {
-      console.error('Producto no encontrado');
-    }
-  }
-
   ngOnDestroy(): void {
     clearInterval(this.carouselInterval); // Detener el carrusel al destruir el componente
   }
