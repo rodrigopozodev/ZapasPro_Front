@@ -17,7 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
   imports: [CommonModule, FormsModule]
 })
 export class ProductDetailComponent implements OnInit {
-  product: Product | null = null;
+  product: Product = {} as Product;
   stock: any[] = [];
   cartProducts: CartItem[] = [];
   cartVisible: boolean = false;
@@ -30,6 +30,7 @@ export class ProductDetailComponent implements OnInit {
 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
+  private readonly userKeyPrefix: string = 'user_'; // Definir el prefijo para la clave de usuario
 
   constructor(
     private route: ActivatedRoute,
@@ -81,23 +82,38 @@ export class ProductDetailComponent implements OnInit {
     console.log(`Talla seleccionada: ${talla}`);
   }
 
-  // Agregar al carrito
   addToCart(): void {
+    // Verificar si el producto y la talla seleccionada no son nulos
     if (this.product && this.selectedSize) {
       const selectedStock = this.stock.find(item => item.talla === this.selectedSize);
+      
       if (selectedStock) {
-        const cartItem: CartItem = {
-          product: this.product,
-          quantity: 1,
-          stock: selectedStock
-        };
-        this.cartService.addToCart(cartItem);
-        this.loadCart();
-        this.cartVisible = true;
+        // Comprobar si ya existe un artículo con el mismo producto y talla en el carrito
+        const existingCartItem = this.cartProducts.find(item => 
+          item.product.id === this.product.id && item.selectedSize === this.selectedSize);
+    
+        if (existingCartItem) {
+          // Si ya existe un producto con la misma talla, solo mostramos un mensaje
+          console.log('El producto con esta talla ya está en el carrito.');
+        } else {
+          // Si no existe, agregamos el producto con la talla seleccionada al carrito como un nuevo artículo
+          const cartItem: CartItem = {
+            product: this.product,
+            quantity: 1,
+            stock: selectedStock,
+            selectedSize: this.selectedSize  // Agregamos la talla seleccionada
+          };
+          
+          // Añadir el artículo al carrito
+          this.cartService.addToCart(cartItem);
+          this.loadCart();  // Actualizamos el carrito después de agregar el nuevo producto
+          this.cartVisible = true;  // Mostramos el carrito
+        }
       } else {
         console.log('Stock no encontrado para la talla seleccionada');
       }
     } else {
+      // Si no hay un producto seleccionado o una talla, mostrar un mensaje de error
       console.log('Selecciona un producto y una talla antes de agregar al carrito');
     }
   }
@@ -115,12 +131,21 @@ export class ProductDetailComponent implements OnInit {
     this.loadCart();
   }
 
-  // Cargar el carrito y calcular los totales
   loadCart(): void {
-    this.cartProducts = this.cartService.getCart();
+    const username = this.getUsername(); // Aquí se puede obtener el nombre de usuario
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      const savedCart = localStorage.getItem(`${this.userKeyPrefix}${username}`);
+      if (savedCart) {
+        this.cartProducts = JSON.parse(savedCart);
+      } else {
+        this.cartProducts = this.cartService.getCart(); // Si no hay datos, se carga el carrito normal
+      }
+    } else {
+      this.cartProducts = this.cartService.getCart(); // En caso de no estar en un entorno de navegador
+    }
     this.calculateTotals();
   }
-
+  
   // Cargar el código de descuento si ya se ha aplicado en una sesión anterior
   loadDiscountCode(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -171,5 +196,23 @@ export class ProductDetailComponent implements OnInit {
       const discountedPrice = item.product.price - (item.product.price * this.discountRate);
       return total + (discountedPrice * item.quantity);
     }, 0);
+  }
+
+  // Método que obtiene el nombre de usuario (para ser implementado)
+  private getUsername(): string {
+    // Implementa la lógica de cómo obtener el nombre de usuario
+    return 'usuario'; // Puedes obtener esto desde un servicio de usuario, como un UserService
+  }
+
+  // Verificar si el almacenamiento local está disponible
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = 'test';
+      localStorage.setItem(testKey, 'test');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

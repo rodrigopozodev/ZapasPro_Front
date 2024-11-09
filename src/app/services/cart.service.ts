@@ -23,22 +23,30 @@ export class CartService {
     }
   }
 
-  // Agregar producto al carrito
   addToCart(cartItem: CartItem): void {
     const user = this.userService.getCurrentUser();
     if (user) {
       this.cart = this.loadCart(user.username);
-      const existingProduct = this.cart.find(item => item.product.id === cartItem.product.id);
+      
+      // Buscar si el mismo producto con la misma talla ya existe
+      const existingProduct = this.cart.find(item =>
+        item.product.id === cartItem.product.id && item.selectedSize === cartItem.selectedSize
+      );
+      
+      // Si ya existe, incrementamos la cantidad
       if (existingProduct) {
         existingProduct.quantity += cartItem.quantity;
       } else {
+        // Si no existe, agregamos el producto con esa talla
         this.cart.push(cartItem);
       }
+  
+      // Guardamos el carrito y actualizamos el contador
       this.saveCart(user.username);
       this.cartCountSubject.next(this.getTotalItems());
     }
   }
-
+  
   // Eliminar producto del carrito
   removeItem(productId: number): void {
     const user = this.userService.getCurrentUser();

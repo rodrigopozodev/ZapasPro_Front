@@ -58,24 +58,30 @@
       <p class="text-lg text-gray-500">El carrito está vacío</p>
     </div>
 
-   <!-- Lista de productos en el carrito -->
-   <div *ngFor="let cartProduct of cartProducts" class="cart-product flex items-center border-b border-gray-200 py-4">
-    <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
-    <div class="product-info ml-6">
-      <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
-      
-      <!-- Precio original tachado y precio con descuento si aplica -->
-      <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
-      <p class="product-price text-xl font-semibold text-yellow-500">
-        {{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €
-      </p>
-      
-      <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
-    </div>
-  </div>
+   <!-- product-detail.component.html -->
 
-     <!-- Resumen del pedido -->
-     <div class="order-summary mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+<!-- Lista de productos en el carrito -->
+<div *ngFor="let cartProduct of cartProducts" class="cart-product flex items-center border-b border-gray-200 py-4">
+  <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
+  <div class="product-info ml-6">
+    <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
+
+    <!-- Mostrar la talla seleccionada en el carrito -->
+    <p *ngIf="cartProduct.selectedSize" class="text-sm text-gray-700">Talla {{ cartProduct.selectedSize }}</p>
+    
+    <!-- Precio original tachado y precio con descuento si aplica -->
+    <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
+    <p class="product-price text-xl font-semibold text-yellow-500">
+      {{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €
+    </p>
+
+    <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
+  </div>
+</div>
+
+
+    <!-- Resumen del pedido -->
+    <div class="order-summary mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
       <p class="text-xl font-semibold text-gray-700">Subtotal: {{ subtotal.toFixed(2) }} €</p>
       <p *ngIf="discountRate > 0" class="discount text-green-500">Descuento aplicado: -{{ (subtotal * discountRate).toFixed(2) }} €</p>
       <p class="total text-2xl font-semibold text-yellow-600">Total: {{ total.toFixed(2) }} €</p>
