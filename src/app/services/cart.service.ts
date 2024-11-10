@@ -26,26 +26,27 @@ export class CartService {
   addToCart(cartItem: CartItem): void {
     const user = this.userService.getCurrentUser();
     if (user) {
-      this.cart = this.loadCart(user.username);
-      
+      this.cart = this.loadCart(user.username);  // Recargamos el carrito actual antes de añadir
+  
       // Buscar si el mismo producto con la misma talla ya existe
       const existingProduct = this.cart.find(item =>
         item.product.id === cartItem.product.id && item.selectedSize === cartItem.selectedSize
       );
-      
-      // Si ya existe, incrementamos la cantidad
+  
       if (existingProduct) {
-        existingProduct.quantity += cartItem.quantity;
+        // Solo incrementa la cantidad en 1, no en 3 o más
+        existingProduct.quantity += 1;
       } else {
         // Si no existe, agregamos el producto con esa talla
         this.cart.push(cartItem);
       }
   
-      // Guardamos el carrito y actualizamos el contador
+      // Guardamos el carrito actualizado
       this.saveCart(user.username);
       this.cartCountSubject.next(this.getTotalItems());
     }
   }
+  
   
   // Eliminar producto del carrito
   removeItem(productId: number): void {
@@ -68,7 +69,7 @@ export class CartService {
   }
 
   // Guardar carrito en localStorage
-  private saveCart(username: string): void {
+  public saveCart(username: string): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(`cart_${username}`, JSON.stringify(this.cart));
     }
@@ -120,4 +121,24 @@ export class CartService {
       localStorage.removeItem(`cart_${user.username}`);
     }
   }
+  updateCart(updatedCartItem: CartItem): void {
+    const user = this.userService.getCurrentUser(); // Obtén el usuario actual
+    if (user) {
+      const cart = this.getCart(); // Obtienes el carrito actual
+      const index = cart.findIndex(item => item.product.id === updatedCartItem.product.id && item.selectedSize === updatedCartItem.selectedSize);
+  
+      if (index !== -1) {
+        if (updatedCartItem.quantity === 0) {
+          // Si la cantidad es 0, eliminamos el producto del carrito
+          cart.splice(index, 1);
+        } else {
+          // Si la cantidad es mayor que 0, actualizamos el producto
+          cart[index] = updatedCartItem;
+        }
+  
+        this.saveCart(user.username); // Guarda el carrito actualizado usando el nombre de usuario
+      }
+    }
+  }
+    
 }

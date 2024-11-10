@@ -1,57 +1,96 @@
 <div class="cart-container w-full h-screen bg-[#f3e8d5] flex items-center justify-center">
-  <div class="cart w-full max-w-3xl p-6 bg-white rounded-lg shadow-lg">
+  <div class="cart w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
     
-    <!-- Mensaje cuando el carrito está vacío -->
-    <div *ngIf="cartProducts.length === 0" class="empty-cart text-center py-10">
-      <p class="text-lg text-gray-500">El carrito está vacío</p>
-    </div>
+    <!-- Columna 1: Cesta con scroll -->
+    <div class="cesta w-full">
+      <!-- Contenedor fijo para el título con posición sticky -->
+      <div class="sticky top-0 bg-white z-10 py-2">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cesta</h2>
+      </div>
 
-    <!-- Lista de productos en el carrito -->
-    <div *ngFor="let cartProduct of cartProducts" class="cart-product flex items-center border-b border-gray-200 py-4">
-      <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
-      <div class="product-info ml-6">
-        <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
-        
-        <!-- Precio original tachado y precio con descuento si aplica -->
-        <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
-        <p class="product-price text-xl font-semibold text-yellow-500">
-          {{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €
-        </p>
-        
-        <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
+      <!-- Contenedor desplazable para la lista de productos -->
+      <div class="scrollable-products w-full max-h-[calc(100vh-200px)] overflow-y-auto">
+        <!-- Mensaje cuando el carrito está vacío -->
+        <div *ngIf="cartProducts.length === 0" class="empty-cart text-center py-10">
+          <p class="text-lg text-gray-500">El carrito está vacío</p>
+        </div>
+
+        <!-- Lista de productos en el carrito -->
+        <div *ngFor="let cartProduct of getVisibleProducts()" class="cart-product flex items-center border-b border-gray-200 py-4">
+          <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
+          <div class="product-info ml-6">
+            <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
+            <p *ngIf="cartProduct.selectedSize" class="text-sm text-gray-700">Talla {{ cartProduct.selectedSize }}</p>
+            <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
+            <p class="product-price text-xl font-semibold text-yellow-500">{{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €</p>
+
+            <div class="quantity-control mt-2 flex items-center">
+              <button *ngIf="cartProduct.quantity > 1" (click)="decrementQuantity(cartProduct)"
+                class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200">
+                -
+              </button>
+              <button *ngIf="cartProduct.quantity === 1" (click)="removeFromCart(cartProduct)"
+                      class="px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                🗑️
+              </button>
+              <span class="mx-4 text-lg font-semibold">{{ cartProduct.quantity }}</span>
+              <button (click)="incrementQuantity(cartProduct)" class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200" [disabled]="cartProduct.quantity >= cartProduct.stock.cantidad">+</button>
+            </div>
+            <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
+          </div>
+        </div>
+
+        <!-- Botón para ver más productos -->
+        <div *ngIf="cartProducts.length > 5 && !showAllProducts" class="text-center py-4">
+          <button (click)="viewMore()" class="w-full py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">
+            Ver más productos
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Campo para ingresar el código de descuento -->
-    <div class="discount-code mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
-      <input type="text" [(ngModel)]="discountCode" placeholder="Introduce el código de descuento" 
-             class="w-full p-2 border rounded-lg" />
-      <button (click)="applyDiscount()" 
-              class="mt-2 w-full py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">
-        Aplicar Descuento
-      </button>
-    </div>
+    <!-- Columna 2: Resumen -->
+    <div class="resumen w-full">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-6">Resumen</h2> <!-- Título de la columna "Resumen" -->
 
-    <!-- Resumen del pedido -->
-    <div class="order-summary mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
-      <p class="text-xl font-semibold text-gray-700">Subtotal: {{ subtotal.toFixed(2) }} €</p>
-      <p *ngIf="discountRate > 0" class="discount text-green-500">Descuento aplicado: -{{ (subtotal * discountRate).toFixed(2) }} €</p>
-      <p class="total text-2xl font-semibold text-yellow-600">Total: {{ total.toFixed(2) }} €</p>
-    </div>
-    
+      <!-- Pregunta sobre código promocional -->
+      <div class="discount-code-toggle flex items-center justify-between mb-4">
+        <p class="text-gray-700">¿Tienes un código promocional?</p>
+        <button (click)="toggleDiscountCode()" class="text-yellow-500 text-xl">
+          <i class="fas" [ngClass]="discountCodeVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </button>
+      </div>
 
-    <!-- Botones de acciones -->
-    <div class="actions mt-6 flex justify-between">
-      <button 
-        (click)="buy()" 
-        class="buy-btn px-6 py-3 bg-yellow-500 text-white font-semibold rounded-xl shadow-md hover:bg-yellow-600 transition duration-300">
-        Comprar
-      </button>
-      <button 
-        (click)="clearCart()" 
-        class="clear-cart-btn px-6 py-3 bg-gray-300 text-black font-semibold rounded-xl shadow-md hover:bg-gray-400 transition duration-300">
-        Vaciar Carrito
-      </button>
+      <!-- Campo para ingresar el código de descuento -->
+      <div *ngIf="discountCodeVisible" class="discount-code mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+        <input type="text" [(ngModel)]="discountCode" placeholder="Introduce el código de descuento" 
+               class="w-full p-2 border rounded-lg" />
+        <button (click)="applyDiscount()" 
+                class="mt-2 w-full py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">
+          Aplicar Descuento
+        </button>
+      </div>
+
+      <!-- Resumen del pedido -->
+      <div class="order-summary mt-6 p-4 bg-gray-100 rounded-lg shadow-sm">
+        <p class="text-xl font-semibold text-gray-700">Subtotal: {{ subtotal.toFixed(2) }} €</p>
+        <p *ngIf="discountRate > 0" class="discount text-green-500">Descuento aplicado: -{{ (subtotal * discountRate).toFixed(2) }} €</p>
+        <p class="total text-2xl font-semibold text-yellow-600">Total: {{ total.toFixed(2) }} €</p>
+      </div>
+
+      <!-- Botones de acciones -->
+      <div class="actions mt-6 flex justify-between">
+        <button 
+          (click)="buy()" 
+          class="buy-btn px-6 py-3 bg-yellow-500 text-white font-semibold rounded-xl shadow-md hover:bg-yellow-600 transition duration-300">
+          Comprar
+        </button>
+        <button 
+          (click)="clearCart()" 
+          class="clear-cart-btn px-6 py-3 bg-gray-300 text-black font-semibold rounded-xl shadow-md hover:bg-gray-400 transition duration-300">
+          Vaciar Carrito
+        </button>
+      </div>
     </div>
   </div>
 </div>
