@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { GalleryImage } from '../../../interfaces/gallery-image.interface';  // Asegúrate de importar bien la interfaz
 
 @Component({
   selector: 'app-product-detail',
@@ -27,6 +28,9 @@ export class ProductDetailComponent implements OnInit {
   selectedSize: string = '';
   discountCode: string = '';
   discountRate: number = 0;
+  mainImage: string = '';
+  
+  galleryImages: GalleryImage[] = [];
 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
@@ -54,20 +58,149 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getProductById(id).subscribe(response => {
       if (response.success) {
         const productData = response.product;
+
         if (productData.imageUrl && !productData.imageUrl.startsWith('http')) {
           productData.imageUrl = `${productData.imageUrl}`;
         }
+
         this.product = productData;
+        this.mainImage = productData.imageUrl || this.mainImage;
+        this.loadGalleryImages(productData.imageUrl);
       }
     });
   }
 
-  getStock(productoId: string) {
-    this.productService.getStockByProductoId(productoId).subscribe(response => {
+  loadGalleryImages(productImageUrl: string) {
+    // Suponemos que la galería se genera a partir de un array de productos
+    // y que se incluyen múltiples imágenes asociadas a cada producto por su `imageUrl`
+    const galleryImagesMap: { [key: string]: GalleryImage[] } = {
+      '/img/Nike Air Max Plus Drift azul.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift azul 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift azul 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift blanco.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift blanco(1).png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift gris.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 3.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 3.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 6.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 6.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift gris(1).png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift marron.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 6.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 6.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift negro.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift rojo.png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 6.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 6.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 7.png' }
+      ],
+      '/img/Nike Air Max Plus Drift negro(1).png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 7.png' }
+      ]
+    
+    };
+    
+    if (galleryImagesMap[productImageUrl]) {
+      this.galleryImages = [
+        { thumbnail: productImageUrl, fullImage: productImageUrl }, // Imagen principal
+        ...galleryImagesMap[productImageUrl]
+      ];
+    } else {
+      this.galleryImages = [{ thumbnail: productImageUrl, fullImage: productImageUrl }];
+    }
+  }
+
+  getStock(productId: string) {
+    this.productService.getStockByProductoId(productId).subscribe(response => {
       if (response) {
         this.stock = response;
       }
     });
+  }
+
+  getProductImages(productName: string): { imageUrl: string, productId: number }[] { 
+    if (productName === "Nike Air Max Plus Drift") {
+      return [
+        { imageUrl: 'img/Nike Air Max Plus Drift rojo.png', productId: 1 },
+        { imageUrl: 'img/Nike Air Max Plus Drift negro(1).png', productId: 2 },
+        { imageUrl: 'img/Nike Air Max Plus Drift negro.png', productId: 3 },
+        { imageUrl: 'img/Nike Air Max Plus Drift marron.png', productId: 4 },
+        { imageUrl: 'img/Nike Air Max Plus Drift gris(1).png', productId: 5 },
+        { imageUrl: 'img/Nike Air Max Plus Drift gris.png', productId: 6 },
+        { imageUrl: 'img/Nike Air Max Plus Drift blanco(1).png', productId: 7 },
+        { imageUrl: 'img/Nike Air Max Plus Drift blanco.png', productId: 8 },
+        { imageUrl: 'img/Nike Air Max Plus Drift azul.png', productId: 9 }
+      ];
+    }
+    return [];
+  }
+  
+  selectColorway(productId: number) {
+    // Redirige a la página del producto usando su id
+    window.location.href = `/product/${productId}`;
+  }
+  
+
+  onThumbnailHover(fullImage: string): void {
+    this.mainImage = fullImage;
   }
 
   isTallaDisponible(talla: string): boolean {
@@ -82,20 +215,15 @@ export class ProductDetailComponent implements OnInit {
   addToCart(): void {
     if (this.product && this.selectedSize) {
       const selectedStock = this.stock.find(item => item.talla === this.selectedSize);
-  
       if (selectedStock) {
         const existingCartItem = this.cartProducts.find(item => 
           item.product.id === this.product.id && item.selectedSize === this.selectedSize
         );
-  
-        let cartItem: CartItem;  // Declaramos la variable cartItem fuera del if
-  
+        let cartItem: CartItem;
         if (existingCartItem) {
-          // Si ya existe, solo incrementa la cantidad en 1
           existingCartItem.quantity += 1;
-          cartItem = existingCartItem;  // Asignamos el item existente a cartItem
+          cartItem = existingCartItem;
         } else {
-          // Si no existe, agrega un nuevo producto con cantidad 1
           cartItem = {
             product: this.product,
             quantity: 1,
@@ -104,9 +232,7 @@ export class ProductDetailComponent implements OnInit {
           };
           this.cartProducts.push(cartItem);
         }
-  
-        // Aquí ya tenemos cartItem correctamente definido
-        this.cartService.addToCart(cartItem);  // Pasa el producto actualizado
+        this.cartService.addToCart(cartItem);
         this.loadCart();
         this.cartVisible = true;
       } else {
@@ -116,8 +242,6 @@ export class ProductDetailComponent implements OnInit {
       console.log('Selecciona un producto y una talla antes de agregar al carrito');
     }
   }
-  
-  
 
   closeCart(): void {
     this.cartVisible = false;
@@ -142,10 +266,9 @@ export class ProductDetailComponent implements OnInit {
     } else {
       this.cartProducts = this.cartService.getCart();
     }
-    this.calculateTotals();  // Asegúrate de calcular los totales después de cargar el carrito
+    this.calculateTotals();
   }
-  
-  
+
   loadDiscountCode(): void {
     if (isPlatformBrowser(this.platformId)) {
       const discountUsedStatus = localStorage.getItem(`${this.userKeyPrefix}${this.getUsername()}_discountUsed`);
@@ -192,7 +315,6 @@ export class ProductDetailComponent implements OnInit {
 
   calculateTotals(): void {
     this.subtotal = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-    
     this.total = this.cartProducts.reduce((total, item) => {
       const discountedPrice = item.product.price - (item.product.price * this.discountRate);
       return total + (discountedPrice * item.quantity);
@@ -206,13 +328,14 @@ export class ProductDetailComponent implements OnInit {
   private isLocalStorageAvailable(): boolean {
     try {
       const testKey = 'test';
-      localStorage.setItem(testKey, 'test');
+      localStorage.setItem(testKey, '1');
       localStorage.removeItem(testKey);
       return true;
     } catch (e) {
       return false;
     }
   }
+
 
   // Método para incrementar la cantidad de un producto en el carrito
   incrementQuantity(cartProduct: CartItem): void {
@@ -248,4 +371,10 @@ export class ProductDetailComponent implements OnInit {
       this.calculateTotals(); // Recalcula los totales después de eliminar el producto
     }
   }
+
+  changeMainImage(newImage: string) {
+    this.mainImage = newImage;
+  }
 }
+
+

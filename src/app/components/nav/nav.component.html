@@ -38,8 +38,6 @@
             <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/purchase-history')">Mi historial de compras</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/orders')">Mis pedidos</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/returns')">Mis devoluciones</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/return-item')">Devolver un artículo</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/favorites')">Favoritos</li>
             </ul>
           </div>
@@ -48,9 +46,7 @@
           <div class="section-dropdown">
             <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('cuenta')">Cuenta</h5>
             <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'cuenta'}" *ngIf="currentSubmenu === 'cuenta'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/personal-info')">Información personal</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/brands')">Mis marcas</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/gift-cards')">Tarjetas regalo</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/contact-preferences')">Preferencias de contacto</li>

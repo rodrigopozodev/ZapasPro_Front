@@ -54,3 +54,25 @@
     }
   }
   
+/* Estilos para las miniaturas */
+.thumbnail-container {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.thumbnail {
+  width: 70px; /* Tamaño pequeño */
+  height: 70px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail:hover {
+  transform: scale(1.1); /* Efecto hover en las miniaturas */
+}
+
+/* Estilo para la imagen principal */
+#main-product-image {
+  transition: opacity 0.3s ease;
+}

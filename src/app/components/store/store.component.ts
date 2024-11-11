@@ -47,9 +47,9 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   private carouselInterval?: any;
   private isReversed: boolean = false;
   carouselImages: string[] = [
-    "/img/Nike Air Max Plus Drift.png",
+    "/img/Nike Air Max Plus Drift sin fondo.png",
     "",
-    "/img/Jordan Air Jordan 4 Retro Fear.png"
+    "/img/Jordan Air Jordan 4 Retro Fear sin fondo.png"
   ];
 
   constructor(
