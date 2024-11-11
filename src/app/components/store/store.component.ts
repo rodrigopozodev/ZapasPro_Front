@@ -58,10 +58,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
     private stockService: StockService,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object,
-    private router: Router,
-    private favoritesService: FavoritesService, // Se inyecta el servicio de favoritos
-    private userService: UserService
-  ) {}
+    private favoritesService: FavoritesService  ) {}
 
 
   ngOnInit(): void {

@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { GalleryImage } from '../../../interfaces/gallery-image.interface';  // Asegúrate de importar bien la interfaz
+import { FavoritesService } from '../../../services/favorites.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -41,6 +42,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService,
+    private favoritesService: FavoritesService ,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -374,6 +376,16 @@ export class ProductDetailComponent implements OnInit {
 
   changeMainImage(newImage: string) {
     this.mainImage = newImage;
+  }
+
+  // Toggle de favoritos
+  toggleFavorite(product: Product) {
+    this.favoritesService.toggleFavorite(product);
+  }
+
+  // Verifica si un producto es favorito
+  isFavorite(product: Product): boolean {
+    return this.favoritesService.isFavorite(product);
   }
 }
 

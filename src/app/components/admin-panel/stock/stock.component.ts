@@ -105,6 +105,10 @@ export class StockComponent {
   
 
   public editStock(stock: Stock) {
+    // Cerrar el formulario de movimiento si está abierto
+    this.showMovementForm = false;
+
+    // Abrir el formulario de edición
     this.selectedStock = { ...stock };
     this.isEditing = true; 
   }
@@ -149,6 +153,9 @@ export class StockComponent {
   }
 
   public registerMovement(): void {
+    // Cerrar el formulario de edición si está abierto
+    this.isEditing = false;
+
     const { fecha, productoId, talla, cantidad, movimiento } = this.newMovement;
     const newStockEntry: Stock = {
       id: 0,

@@ -44,6 +44,41 @@
     </form>
   </div>
 
+  <!-- Formulario de edición de stock -->
+  <div *ngIf="isEditing && selectedStock" class="mt-4 bg-gray-100 p-4 rounded-lg">
+    <h3 class="text-xl font-semibold text-yellow-800 mb-2 text-center">Editar Stock</h3>
+    <form (ngSubmit)="updateStock(selectedStock.id)">
+      <input type="hidden" [(ngModel)]="selectedStock.id" name="id" />
+      <div class="mb-2">
+        <label class="block mb-1" for="fecha">Fecha</label>
+        <input id="fecha" type="date" [(ngModel)]="selectedStock.fecha" name="fecha" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="producto">Producto ID</label>
+        <input id="producto" type="text" [(ngModel)]="selectedStock.productoId" name="producto" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="talla">Talla</label>
+        <input id="talla" type="text" [(ngModel)]="selectedStock.talla" name="talla" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="cantidad">Cantidad</label>
+        <input id="cantidad" type="number" [(ngModel)]="selectedStock.cantidad" name="cantidad" required class="border border-yellow-300 p-2 rounded-lg w-full" />
+      </div>
+      <div class="mb-2">
+        <label class="block mb-1" for="movimiento">Movimiento</label>
+        <select id="movimiento" [(ngModel)]="selectedStock.movimiento" name="movimiento" class="border border-yellow-300 p-2 rounded-lg w-full" required>
+          <option value="compra">Compra</option>
+          <option value="venta">Venta</option>
+          <option value="ajuste">Ajuste</option>
+        </select>
+      </div>
+      <div class="flex justify-center mt-4">
+        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+        <button (click)="cancelStock()" type="button" class="bg-red-500 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
+    </form>
+  </div>
    <!-- Paginación para stock -->
    <div class="mt-4 flex justify-center">
     <button (click)="previousStockPage()" 
@@ -101,41 +136,7 @@
     </tbody>
   </table>
 
-  <!-- Formulario de edición de stock -->
-  <div *ngIf="isEditing && selectedStock" class="mt-4 bg-gray-100 p-4 rounded-lg">
-    <h3 class="text-xl font-semibold text-yellow-800 mb-2 text-center">Editar Stock</h3>
-    <form (ngSubmit)="updateStock(selectedStock.id)">
-      <input type="hidden" [(ngModel)]="selectedStock.id" name="id" />
-      <div class="mb-2">
-        <label class="block mb-1" for="fecha">Fecha</label>
-        <input id="fecha" type="date" [(ngModel)]="selectedStock.fecha" name="fecha" required class="border border-yellow-300 p-2 rounded-lg w-full" />
-      </div>
-      <div class="mb-2">
-        <label class="block mb-1" for="producto">Producto ID</label>
-        <input id="producto" type="text" [(ngModel)]="selectedStock.productoId" name="producto" required class="border border-yellow-300 p-2 rounded-lg w-full" />
-      </div>
-      <div class="mb-2">
-        <label class="block mb-1" for="talla">Talla</label>
-        <input id="talla" type="text" [(ngModel)]="selectedStock.talla" name="talla" required class="border border-yellow-300 p-2 rounded-lg w-full" />
-      </div>
-      <div class="mb-2">
-        <label class="block mb-1" for="cantidad">Cantidad</label>
-        <input id="cantidad" type="number" [(ngModel)]="selectedStock.cantidad" name="cantidad" required class="border border-yellow-300 p-2 rounded-lg w-full" />
-      </div>
-      <div class="mb-2">
-        <label class="block mb-1" for="movimiento">Movimiento</label>
-        <select id="movimiento" [(ngModel)]="selectedStock.movimiento" name="movimiento" class="border border-yellow-300 p-2 rounded-lg w-full" required>
-          <option value="compra">Compra</option>
-          <option value="venta">Venta</option>
-          <option value="ajuste">Ajuste</option>
-        </select>
-      </div>
-      <div class="flex justify-center mt-4">
-        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
-        <button (click)="cancelStock()" type="button" class="bg-red-500 text-white hover:bg-gray-500 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
-      </div>
-    </form>
-  </div>
+  
 <!-- Paginación para stock -->
 <div class="mt-4 flex justify-center">
   <button (click)="previousStockPage()" 
