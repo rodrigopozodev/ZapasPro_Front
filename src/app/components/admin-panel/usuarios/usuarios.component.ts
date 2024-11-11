@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+  styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent {
   private apiUrlUsers = 'http://localhost:3000/api/users';
@@ -34,15 +34,14 @@ export class UsuariosComponent {
   searchTerm: string = '';
   roleFilter: string = ''; // 'admin', 'client' o ''
   itemsPerPage: number = 20; // Items por página
-  
+
   constructor(private http: HttpClient, private userService: UserService, private router: Router) {
     this.loadUsers(); // Carga los usuarios al inicializar
-   }
+  }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.showUsers = true; // Asegúrate de que los usuarios se muestren al inicializar
     this.loadUsers();
-    // No cargar productos al inicializar, solo usuarios
   }
 
   // Método para cargar usuarios
@@ -68,7 +67,9 @@ export class UsuariosComponent {
   }
 
   public editUser(user: User): void {
+    this.isEditing = true;
     this.currentUser = { ...user };
+    this.showRegisterForm = false; // Cierra el formulario de registro si se abre el de edición
   }
 
   public updateUser(): void {
@@ -78,6 +79,7 @@ export class UsuariosComponent {
           console.log('Usuario actualizado:', response);
           this.loadUsers();
           this.currentUser = null;
+          this.isEditing = false; // Cierra el formulario de edición
         },
         (error: any) => {
           console.error('Error al actualizar el usuario:', error);
@@ -93,6 +95,7 @@ export class UsuariosComponent {
           alert(response.message);
           this.loadUsers();
           this.currentUser = null;
+          this.isEditing = false; // Cierra el formulario de edición
         },
         (error: any) => {
           alert('Error al eliminar el usuario');
@@ -184,8 +187,11 @@ export class UsuariosComponent {
   }
 
   toggleRegisterForm() {
-    this.showRegisterForm = !this.showRegisterForm;
     if (this.showRegisterForm) {
+      this.showRegisterForm = false; // Si ya está abierto, ciérralo
+    } else {
+      this.showRegisterForm = true;
+      this.isEditing = false; // Cierra el formulario de edición al abrir el de registro
       this.clearForm(); // Limpiar el formulario al abrir
     }
   }
@@ -194,6 +200,4 @@ export class UsuariosComponent {
     this.showRegisterForm = false;
     this.clearForm(); // Limpiar el formulario al cancelar
   }
-
-
 }

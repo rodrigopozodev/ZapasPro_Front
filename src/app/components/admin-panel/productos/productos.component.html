@@ -10,87 +10,83 @@
   </div>
 
   <!-- Formulario de registro de producto -->
-<div *ngIf="showProductForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
-  <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Registrar Nuevo Producto</h3>
-  <form (ngSubmit)="registerProduct()">
-    <label for="productName" class="block mb-2">Nombre del Producto:</label>
-    <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+  <div *ngIf="showProductForm" class="p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+    <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Registrar Nuevo Producto</h3>
+    <form #productForm="ngForm">
+      <label for="productName" class="block mb-2">Nombre del Producto:</label>
+      <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
 
-    <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
-    <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
+      <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
+      <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
 
-    <label for="productPrice" class="block mb-2">Precio del Producto:</label>
-    <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+      <label for="productPrice" class="block mb-2">Precio del Producto:</label>
+      <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
 
-    <label for="productGender" class="block mb-2">Género:</label>
-    <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-      <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
-    </select>
+      <label for="productGender" class="block mb-2">Género:</label>
+      <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
+      </select>
 
-    <!-- Campo para el color -->
-    <label for="productColor" class="block mb-2">Color:</label>
-    <select id="productColor" [(ngModel)]="newProduct.color" name="productColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-      <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
-    </select>
+      <!-- Campo para el color -->
+      <label for="productColor" class="block mb-2">Color:</label>
+      <select id="productColor" [(ngModel)]="newProduct.color" name="productColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
+      </select>
 
-<!-- Campo para la marca -->
-<label for="productBrand" class="block mb-2">Marca:</label>
-<select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" (change)="onBrandChange($event)" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-  <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
-  <option value="newBrand">Registrar Nueva Marca</option>
-</select>
+      <!-- Campo para la marca en el formulario de registro de nuevo producto -->
+      <label for="productBrand" class="block mb-2">Marca:</label>
+      <select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+        <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option> <!-- Opciones dinámicas -->
+      </select>
 
-<!-- Campo para registrar una nueva marca -->
-<div *ngIf="showNewBrandInput" class="mb-4">
-  <label for="newBrand" class="block mb-2">Ingresa una nueva marca:</label>
-  <input type="text" id="newBrand" [(ngModel)]="newBrand" placeholder="Ingresa una nueva marca" class="border border-yellow-300 p-2 w-full rounded-lg" />
-  <button type="button" (click)="addBrand()" class="mt-2 bg-blue-500 text-white p-2 rounded-lg">Agregar Marca</button>
-</div>
+      <!-- Campo para escribir una nueva marca -->
+      <label for="newBrand" class="block mb-2">Escribir nueva marca:</label>
+      <input type="text" id="newBrand" [(ngModel)]="newBrand" name="newBrand" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" (keydown.enter)="addBrand()"/>
 
-    <!-- URL de la imagen (opcional, solo para referencia) -->
-    <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-    <input type="text" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
+      <!-- URL de la imagen (opcional, solo para referencia) -->
+      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
+      <input type="text" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
 
-    <label for="productImageName" class="block mb-2">Nombre de la Imagen:</label>
-    <input type="text" id="productImageName" [(ngModel)]="newProduct.imageName" name="productImageName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
+      <label for="productImageName" class="block mb-2">Nombre de la Imagen:</label>
+      <input type="text" id="productImageName" [(ngModel)]="newProduct.imageName" name="productImageName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
 
-    <div class="flex mb-4">
-      <button (click)="navigateToImageSelection()" type="button" class="border border-blue-500 p-2 rounded-lg mr-2">Utilizar Imagen</button>
-      <button (click)="handleUploadImage()" type="button" class="border border-blue-500 p-2 rounded-lg">Subir Imagen</button>
-    </div>
-
-    <!-- Opciones para subir imagen -->
-    <div *ngIf="showUploadOptions" class="mb-4">
-      <div class="flex mb-2">
-        <button (click)="showUrlInput = true; showUploadImageInput = false" class="border border-green-500 p-2 rounded-lg mr-2">Usar URL de imagen</button>
-        <button (click)="showUploadImageInput = true; showUrlInput = false" class="border border-green-500 p-2 rounded-lg">Subir Imagen (PNG sin fondo)</button>
+      <div class="flex mb-4">
+        <button (click)="navigateToImageSelection()" type="button" class="border border-blue-500 p-2 rounded-lg mr-2">Utilizar Imagen</button>
+        <button (click)="handleUploadImage()" type="button" class="border border-blue-500 p-2 rounded-lg">Subir Imagen</button>
       </div>
 
-      <!-- Input para usar URL de imagen -->
-      <div *ngIf="showUrlInput">
-        <label for="customImageUrl" class="block mb-2">Ingresa una URL personalizada de la imagen:</label>
-        <input type="url" id="customImageUrl" [(ngModel)]="customImageUrl" [ngModelOptions]="{standalone: true}" placeholder="Ingresa la URL de la imagen" class="border border-yellow-300 p-2 w-full rounded-lg mb-2" name="customImageUrl" (input)="updateImageUrl(customImageUrl)">
+      <!-- Opciones para subir imagen -->
+      <div *ngIf="showUploadOptions" class="mb-4">
+        <div class="flex mb-2">
+          <button (click)="showUrlInput = true; showUploadImageInput = false" class="border border-green-500 p-2 rounded-lg mr-2">Usar URL de imagen</button>
+          <button (click)="showUploadImageInput = true; showUrlInput = false" class="border border-green-500 p-2 rounded-lg">Subir Imagen (PNG sin fondo)</button>
+        </div>
+
+        <!-- Input para usar URL de imagen -->
+        <div *ngIf="showUrlInput">
+          <label for="customImageUrl" class="block mb-2">Ingresa una URL personalizada de la imagen:</label>
+          <input type="url" id="customImageUrl" [(ngModel)]="customImageUrl" [ngModelOptions]="{standalone: true}" placeholder="Ingresa la URL de la imagen" class="border border-yellow-300 p-2 w-full rounded-lg mb-2" name="customImageUrl" (input)="updateImageUrl(customImageUrl)">
+        </div>
+
+        <!-- Input para subir imagen -->
+        <div *ngIf="showUploadImageInput">
+          <label for="imageUpload" class="block mb-2">Sube una imagen (PNG sin fondo):</label>
+          <input type="file" id="imageUpload" accept="image/png" (change)="onFileSelected($event)" class="border border-yellow-300 p-2 w-full rounded-lg" name="imageUpload">
+        </div>
       </div>
 
-      <!-- Input para subir imagen -->
-      <div *ngIf="showUploadImageInput">
-        <label for="imageUpload" class="block mb-2">Sube una imagen (PNG sin fondo):</label>
-        <input type="file" id="imageUpload" accept="image/png" (change)="onFileSelected($event)" class="border border-yellow-300 p-2 w-full rounded-lg" name="imageUpload">
+      <!-- Vista previa de la imagen -->
+      <div id="imagePreviewContainer" class="mt-4">
+        <img *ngIf="newProduct.imageUrl" [src]="newProduct.imageUrl" alt="Vista previa de la imagen" class="w-48 h-auto rounded-lg border border-gray-300" />
       </div>
-    </div>
 
-    <!-- Vista previa de la imagen -->
-    <div id="imagePreviewContainer" class="mt-4">
-      <img *ngIf="newProduct.imageUrl" [src]="newProduct.imageUrl" alt="Vista previa de la imagen" class="w-48 h-auto rounded-lg border border-gray-300" />
-    </div>
-
-    <!-- Botones de registro y cancelación -->
-    <div class="flex justify-center">
-      <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
-      <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
-    </div>
-  </form>
-</div>
+      <!-- Botones de registro y cancelación -->
+      <div class="flex justify-center">
+        <button (click)="registerProduct()" type="button" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Registrar Producto</button>
+        <button type="button" (click)="cancelProduct()" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      </div>
+    </form>
+  </div>
 
   <!-- Paginación para productos -->
   <div class="mt-4 flex justify-center mb-4">
@@ -108,6 +104,7 @@
         Siguiente
     </button>
   </div>
+
 
   <!-- Formulario de edición de producto -->
   <div *ngIf="isEditing" class="mt-4 p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
@@ -237,7 +234,7 @@
               Editar
             </button>
             <button 
-              (click)="deleteProduct(product.id)" 
+              (click)="deleteProduct(product)" 
               class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200"
             >
               Eliminar

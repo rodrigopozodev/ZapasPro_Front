@@ -10,45 +10,9 @@ export class FormStateService {
   private selectedImageUrl: string | null = null; // Almacena la URL de la imagen seleccionada
   private selectedImageName: string | null = null; // Almacena el nombre de la imagen seleccionada
 
-  // Método para establecer el estado del formulario
-  setShowProductForm(show: boolean): void {
-    this.showProductForm = show;
-  }
-
-  // Método para obtener el estado del formulario
-  getShowProductForm(): boolean {
-    return this.showProductForm;
-  }
-
-  // Método para establecer el producto actual
-  setProduct(product: Product): void {
-    this.product = product;
-  }
-
-  // Método para obtener el producto actual
-  getProduct(): Product | null {
-    return this.product;
-  }
-
   // Método para reiniciar el producto
   resetProduct(): void {
     this.product = null; // Reinicia el estado del producto
-  }
-
-  // Método para establecer la imagen seleccionada
-  setSelectedImage(imageUrl: string): void {
-    this.selectedImageUrl = imageUrl; // Almacena la URL de la imagen
-    this.selectedImageName = this.extractImageName(imageUrl); // Establece el nombre de la imagen
-  }
-
-  // Método para obtener la imagen seleccionada
-  getSelectedImage(): string | null {
-    return this.selectedImageUrl; // Devuelve la URL de la imagen seleccionada
-  }
-
-  // Método para obtener el nombre de la imagen seleccionada
-  getSelectedImageName(): string | null {
-    return this.selectedImageName; // Devuelve el nombre de la imagen seleccionada
   }
 
   // Método para extraer el nombre de la imagen de la URL
@@ -57,4 +21,40 @@ export class FormStateService {
     const fileName = parts[parts.length - 1]; // Obtiene el último segmento de la URL
     return fileName.replace('.png', ''); // Retorna el nombre sin la extensión
   }
+
+  // Asegúrate de que los métodos en formStateService gestionen todos los datos del formulario
+setProduct(product: any) {
+  localStorage.setItem('productForm', JSON.stringify(product)); // Guardar todos los datos
+}
+
+getProduct(): any {
+  const product = localStorage.getItem('productForm');
+  return product ? JSON.parse(product) : {}; // Devolver el objeto del producto guardado
+}
+
+setShowProductForm(show: boolean) {
+  localStorage.setItem('showProductForm', JSON.stringify(show));
+}
+
+getShowProductForm(): boolean {
+  const show = localStorage.getItem('showProductForm');
+  return show ? JSON.parse(show) : false;
+}
+
+setSelectedImage(imageUrl: string) {
+  localStorage.setItem('selectedImageUrl', imageUrl);
+}
+
+getSelectedImage(): string {
+  return localStorage.getItem('selectedImageUrl') || ''; // Obtener la URL de la imagen guardada
+}
+
+setSelectedImageName(imageName: string) {
+  localStorage.setItem('selectedImageName', imageName);
+}
+
+getSelectedImageName(): string {
+  return localStorage.getItem('selectedImageName') || ''; // Obtener el nombre de la imagen guardada
+}
+
 }
