@@ -43,13 +43,11 @@
       <label for="newBrand" class="block mb-2">Escribir nueva marca:</label>
       <input type="text" id="newBrand" [(ngModel)]="newBrand" name="newBrand" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" (keydown.enter)="addBrand()"/>
 
-      <!-- URL de la imagen (opcional, solo para referencia) -->
-      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-      <input type="text" id="productImageUrl" [(ngModel)]="newProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
+      <!-- Campo para escribir un nuevo color -->
+      <label for="newColor" class="block mb-2">Escribir nuevo color:</label>
+      <input type="text" id="newColor" [(ngModel)]="newColor" name="newColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" (keydown.enter)="addColor()"/>
 
-      <label for="productImageName" class="block mb-2">Nombre de la Imagen:</label>
-      <input type="text" id="productImageName" [(ngModel)]="newProduct.imageName" name="productImageName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" readonly />
-
+    
       <div class="flex mb-4">
         <button (click)="navigateToImageSelection()" type="button" class="border border-blue-500 p-2 rounded-lg mr-2">Utilizar Imagen</button>
         <button (click)="handleUploadImage()" type="button" class="border border-blue-500 p-2 rounded-lg">Subir Imagen</button>
@@ -105,66 +103,84 @@
     </button>
   </div>
 
+<!-- Formulario de edición de producto -->
+<div *ngIf="isEditing" class="mt-4 p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
+  <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Editar Producto</h3>
+  <form (ngSubmit)="updateProduct(newProduct); closeForm()">
+    <label for="productName" class="block mb-2">Nombre del Producto:</label>
+      <input type="text" id="productName" [(ngModel)]="newProduct.name" name="productName" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
 
-  <!-- Formulario de edición de producto -->
-  <div *ngIf="isEditing" class="mt-4 p-4 border border-yellow-300 rounded-lg bg-yellow-50 mb-6">
-    <h3 class="text-xl font-bold text-yellow-600 mb-2 text-center">Editar Producto</h3>
-    <form (ngSubmit)="updateProduct(selectedProduct?.id)">
-      <input type="hidden" [(ngModel)]="selectedProduct.id" name="id" />
-      <label class="block mb-2" for="name">Nombre</label>
-      <input id="name" type="text" [(ngModel)]="selectedProduct.name" name="name" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
-      
-      <label class="block mb-2" for="description">Descripción</label>
-      <input id="description" type="text" [(ngModel)]="selectedProduct.description" name="description" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
-      
-      <label class="block mb-2" for="price">Precio</label>
-      <input id="price" type="number" [(ngModel)]="selectedProduct.price" name="price" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4" />
-      
-      <label class="block mb-2" for="gender">Género</label>
-      <select id="gender" [(ngModel)]="selectedProduct.gender" name="gender" class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+      <label for="productDescription" class="block mb-2">Descripción del Producto:</label>
+      <textarea id="productDescription" [(ngModel)]="newProduct.description" name="productDescription" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required></textarea>
+
+      <label for="productPrice" class="block mb-2">Precio del Producto:</label>
+      <input type="number" id="productPrice" [(ngModel)]="newProduct.price" name="productPrice" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required />
+
+      <label for="productGender" class="block mb-2">Género:</label>
+      <select id="productGender" [(ngModel)]="newProduct.gender" name="productGender" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
         <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
       </select>
 
-      <!-- Campo para el color en el formulario de edición -->
-      <label for="color" class="block mb-2">Color</label>
-      <select id="color" [(ngModel)]="selectedProduct.color" name="color" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
-          <option value="negro">Negro</option>
-          <option value="azul">Azul</option>
-          <option value="marron">Marrón</option>
-          <option value="verde">Verde</option>
-          <option value="gris">Gris</option>
-          <option value="naranja">Naranja</option>
-          <option value="rosa">Rosa</option>
-          <option value="morado">Morado</option>
-          <option value="rojo">Rojo</option>
-          <option value="blanco">Blanco</option>
-          <option value="amarillo">Amarillo</option>
-          <option value="multicolor">Multicolor</option>
+      <!-- Campo para el color -->
+      <label for="productColor" class="block mb-2">Color:</label>
+      <select id="productColor" [(ngModel)]="newProduct.color" name="productColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
+        <option *ngFor="let color of colors" [value]="color">{{ color }}</option>
       </select>
 
-      <!-- Campo para la marca en el formulario de edición -->
-      <label for="marca" class="block mb-2">Marca</label>
-      <select id="marca" [(ngModel)]="selectedProduct.marca" name="marca" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
-          <option value="Nike">Nike</option>
-          <option value="Adidas">Adidas</option>
-          <option value="Puma">Puma</option>
-          <option value="Reebok">Reebok</option>
-          <option value="Converse">Converse</option>
-          <option value="New Balance">New Balance</option>
+      <!-- Campo para la marca en el formulario de registro de nuevo producto -->
+      <label for="productBrand" class="block mb-2">Marca:</label>
+      <select id="productBrand" [(ngModel)]="newProduct.marca" name="productBrand" required class="border border-yellow-300 p-2 rounded-lg w-full mb-4">
+        <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option> <!-- Opciones dinámicas -->
       </select>
 
-      <!-- Campo para la URL de la imagen en el formulario de edición -->
-      <label for="productImageUrl" class="block mb-2">URL de la Imagen:</label>
-      <select id="productImageUrl" [(ngModel)]="selectedProduct.imageUrl" name="productImageUrl" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" required>
-          <option *ngFor="let imageUrl of imageUrls" [value]="imageUrl">{{ imageUrl }}</option>
-      </select>
+      <!-- Campo para escribir una nueva marca -->
+      <label for="newBrand" class="block mb-2">Escribir nueva marca:</label>
+      <input type="text" id="newBrand" [(ngModel)]="newBrand" name="newBrand" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" (keydown.enter)="addBrand()"/>
 
-      <div class="flex justify-center">
-        <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
-        <button (click)="cancelEdit()" type="button" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+      <!-- Campo para escribir un nuevo color -->
+      <label for="newColor" class="block mb-2">Escribir nuevo color:</label>
+      <input type="text" id="newColor" [(ngModel)]="newColor" name="newColor" class="border border-yellow-300 p-2 w-full rounded-lg mb-4" (keydown.enter)="addColor()"/>
+  
+    
+     
+      <div class="flex mb-4">
+        <button (click)="navigateToImageSelection()" type="button" class="border border-blue-500 p-2 rounded-lg mr-2">Utilizar Imagen</button>
+        <button (click)="handleUploadImage()" type="button" class="border border-blue-500 p-2 rounded-lg">Subir Imagen</button>
       </div>
-    </form>
-  </div>
+
+      <!-- Opciones para subir imagen -->
+      <div *ngIf="showUploadOptions" class="mb-4">
+        <div class="flex mb-2">
+          <button (click)="showUrlInput = true; showUploadImageInput = false" class="border border-green-500 p-2 rounded-lg mr-2">Usar URL de imagen</button>
+          <button (click)="showUploadImageInput = true; showUrlInput = false" class="border border-green-500 p-2 rounded-lg">Subir Imagen (PNG sin fondo)</button>
+        </div>
+
+        <!-- Input para usar URL de imagen -->
+        <div *ngIf="showUrlInput">
+          <label for="customImageUrl" class="block mb-2">Ingresa una URL personalizada de la imagen:</label>
+          <input type="url" id="customImageUrl" [(ngModel)]="customImageUrl" [ngModelOptions]="{standalone: true}" placeholder="Ingresa la URL de la imagen" class="border border-yellow-300 p-2 w-full rounded-lg mb-2" name="customImageUrl" (input)="updateImageUrl(customImageUrl)">
+        </div>
+
+        <!-- Input para subir imagen -->
+        <div *ngIf="showUploadImageInput">
+          <label for="imageUpload" class="block mb-2">Sube una imagen (PNG sin fondo):</label>
+          <input type="file" id="imageUpload" accept="image/png" (change)="onFileSelected($event)" class="border border-yellow-300 p-2 w-full rounded-lg" name="imageUpload">
+        </div>
+      </div>
+
+      <!-- Vista previa de la imagen -->
+      <div id="imagePreviewContainer" class="mt-4">
+        <img *ngIf="newProduct.imageUrl" [src]="newProduct.imageUrl" alt="Vista previa de la imagen" class="w-48 h-auto rounded-lg border border-gray-300" />
+      </div>
+
+
+    <div class="flex justify-center">
+      <button type="submit" class="bg-yellow-500 text-white hover:bg-yellow-600 p-2 rounded-lg transition duration-200">Guardar Cambios</button>
+      <button (click)="cancelEdit()" type="button" class="bg-red-500 text-white hover:bg-red-600 p-2 rounded-lg transition duration-200 ml-2">Cancelar</button>
+    </div>
+  </form>
+</div>
+
 
   <!-- Barra de búsqueda y filtros -->
   <div class="flex items-center mb-4">

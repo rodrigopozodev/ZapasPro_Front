@@ -34,7 +34,8 @@ export class ProductosComponent implements OnInit {
   itemsPerPage: number = 5;
   showEditForm = false;
   selectedColorFilter: string = '';
-  colors: string[] = [];
+  colors: string[] = ['Negro', 'Azul', 'Marrón', 'Verde', 'Gris', 'Naranja', 'Rosa', 'Morado', 'Rojo', 'Blanco', 'Amarillo', 'Multicolor'];
+  newColor: string = ''; // Para almacenar el nuevo color escrito
   marcas: string[] = ['Nike', 'Adidas', 'Puma', 'Reebok', 'Converse', 'New Balance']; // Marcas predeterminadas
   newProduct: any = { id: 0, name: '', description: '', price: '', gender: '', color: '', marca: '', imageUrl: '', imageName: '' };
   previewImageUrl: string | ArrayBuffer | null | undefined = null;
@@ -85,7 +86,6 @@ export class ProductosComponent implements OnInit {
         this.products = response;
         this.filteredProducts = this.products;
         this.extractUniqueBrands();
-        this.extractUniqueColors();
         this.filterProducts();
         this.showProducts = true;
       },
@@ -108,14 +108,7 @@ export class ProductosComponent implements OnInit {
     this.marcas = Array.from(uniqueBrandsSet); // Asignar marcas únicas a la propiedad
   }
 
-  // Extraer colores únicos
-  private extractUniqueColors(): void {
-    const uniqueColorsSet = new Set<string>();
-    this.products.forEach(product => {
-      uniqueColorsSet.add(product.color);
-    });
-    this.colors = Array.from(uniqueColorsSet); // Asignar colores únicos a la propiedad
-  }
+ 
 
   // Filtrar productos
   filterProducts() {
@@ -187,9 +180,10 @@ export class ProductosComponent implements OnInit {
 
   // Método para cancelar la edición
   cancelEdit(): void {
-    this.currentProduct = null;
-    this.isEditing = false;
+    this.newProduct = { id: 0, name: '', description: '', price: '', gender: '', color: '', marca: '', imageUrl: '', imageName: '' }; // Limpiar `newProduct`
+    this.isEditing = false;  // Cierra el formulario de edición
   }
+  
 
   // Método para registrar el producto
   registerProduct() {
@@ -213,9 +207,11 @@ export class ProductosComponent implements OnInit {
   }
 
   public editProduct(product: Product) {
-    this.newProduct = { ...product }; // Crea una copia del producto
-    this.isEditing = true;
+    this.newProduct = { ...product };  // Se utiliza newProduct para editar
+    this.selectedProduct = product;    // Guarda el producto seleccionado para posterior edición
+    this.isEditing = true;             // Cambia el estado a edición
   }
+  
 
   deleteProduct(product: Product) {
     const confirmation = confirm('¿Estás seguro de que deseas eliminar este producto?');
@@ -274,11 +270,12 @@ export class ProductosComponent implements OnInit {
   }
   
   updateProduct(product: Product): void {
+    // Asegúrate de que `newProduct` tenga los valores del formulario
     this.http.put(`${this.apiUrlProducts}/${product.id}`, product).subscribe(
       (response) => {
         console.log('Producto actualizado:', response);
-        this.loadProducts();
-        this.cancelProduct();
+        this.loadProducts(); // Recarga la lista de productos después de actualizar
+        this.resetForm(); // Restablece el formulario
       },
       (error) => {
         console.error('Error al actualizar el producto:', error);
@@ -292,5 +289,21 @@ export class ProductosComponent implements OnInit {
   
   filterColorsByBrand(brand: string): void {
     this.filteredProducts = this.products.filter(product => product.marca === brand);
-  }  
+  }
+
+  closeForm() {
+    this.isEditing = false;
+  }
+
+   // Método para agregar el nuevo color
+   addColor() {
+    if (this.newColor && !this.colors.includes(this.newColor)) {
+      this.colors.push(this.newColor);
+      this.newColor = ''; // Limpiar el campo de entrada
+    } else {
+      // Opcionalmente, puedes mostrar un mensaje de error si el color ya existe o está vacío
+      console.error('El color ya existe o está vacío');
+    }
+  }
+  
 }
