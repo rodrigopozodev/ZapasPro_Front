@@ -5,13 +5,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { FavoritesService } from '../../services/favorites.service';
+import { Product } from '../../interfaces/product.interface';
+import { Subscription } from 'rxjs';
+import { UserService } from '../../services/user.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class CartComponent implements OnInit {
   cartProducts: CartItem[] = [];
@@ -23,19 +28,34 @@ export class CartComponent implements OnInit {
   discountUsed: boolean = false;
   showAllProducts: boolean = false;
   discountCodeVisible: boolean = false;
-
+  favorites: Product[] = [];
+  
+  private userChangedSubscription: Subscription = new Subscription();
+  private favoritesSubscription: Subscription = new Subscription(); // Suscripción a favoritos
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
   private readonly userKeyPrefix: string = 'userCart_';
 
   constructor(
     private cartService: CartService, 
+    private favoritesService: FavoritesService,
+    private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
     this.loadCart();
     this.checkDiscountStatus();
+
+     // Suscribirse al stream de productos favoritos
+     this.favoritesSubscription = this.favoritesService.favoriteProducts$.subscribe(favorites => {
+      this.favorites = favorites;
+    });
+
+    // Suscribirse a los cambios de usuario para actualizar los favoritos
+    this.userChangedSubscription = this.userService.userChanged$.subscribe(() => {
+      this.favoritesService.loadFavorites(); // Actualizar los favoritos al cambiar de usuario
+    });
   }
 
   loadCart(): void {
@@ -181,5 +201,25 @@ export class CartComponent implements OnInit {
       this.cartService.updateCart(cartProduct);  // Usa cartProduct, no cartItem
       this.calculateTotals(); // Recalcula los totales después de eliminar el producto
     }
+  }
+
+  ngOnDestroy(): void {
+    // Cancelar las suscripciones para evitar memory leaks
+    this.userChangedSubscription.unsubscribe();
+    this.favoritesSubscription.unsubscribe();
+  }
+
+  toggleFavorite(product: Product): void {
+    // Cambiar el estado de favorito de un producto
+    this.favoritesService.toggleFavorite(product);
+  }
+
+  isFavorite(product: Product): boolean {
+    return this.favoritesService.isFavorite(product);
+  }
+
+  clearFavorites(): void {
+    // Limpiar los favoritos
+    this.favoritesService.clearFavorites();
   }
 }
