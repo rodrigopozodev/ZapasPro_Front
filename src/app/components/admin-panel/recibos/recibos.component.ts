@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PurchaseService, Receipt } from '../../../services/purchase.service';  // Asegúrate de importar la interfaz Receipt
-import { CartItem } from '../../../interfaces/cart.interface';  // Importar la interfaz CartItem
+import { PurchaseService, Receipt } from '../../../services/purchase.service';
+import { CartItem } from '../../../interfaces/cart.interface';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-recibos',
@@ -11,18 +12,25 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class RecibosComponent implements OnInit {
-  purchasedReceipts: Receipt[] = [];  // Array para almacenar los recibos
+  purchasedReceipts: Receipt[] = [];
+  showAllUsersReceipts: boolean = false; // Indica si se están viendo recibos de todos los usuarios
 
-  constructor(private purchaseService: PurchaseService) {}
+  constructor(
+    private purchaseService: PurchaseService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
-    // Llamar a la función que carga los recibos desde el localStorage o el servicio
-    this.purchaseService.loadReceiptsFromLocalStorage();
-    this.purchasedReceipts = this.purchaseService.getPurchasedReceipts();  // Obtener los recibos
+    this.loadAllReceipts();
+  }
+
+  loadAllReceipts(): void {
+    this.purchaseService.loadAllReceiptsFromLocalStorage();
+    this.purchasedReceipts = this.purchaseService.getAllPurchasedReceipts();
+    this.showAllUsersReceipts = true; // Indicador de que estamos viendo todos los recibos
   }
 
   calculateReceiptTotal(receipt: Receipt): number {
-    // Ahora 'price' es un número, así que no necesitamos parseFloat
     return receipt.products.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   }
 }

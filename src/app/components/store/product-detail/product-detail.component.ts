@@ -10,6 +10,8 @@ import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { GalleryImage } from '../../../interfaces/gallery-image.interface';  // Asegúrate de importar bien la interfaz
 import { FavoritesService } from '../../../services/favorites.service';
+import { UserService } from '../../../services/user.service';
+import { PurchaseService } from '../../../services/purchase.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -30,7 +32,7 @@ export class ProductDetailComponent implements OnInit {
   discountCode: string = '';
   discountRate: number = 0;
   mainImage: string = '';
-  
+  discountApplied: boolean = false;
   galleryImages: GalleryImage[] = [];
 
   private readonly validDiscountCode: string = 'ZapasProMola';
@@ -39,7 +41,9 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private purchaseService: PurchaseService, // Inyectar el servicio
     private route: ActivatedRoute,
+    private userService: UserService,
     private productService: ProductService,
     private cartService: CartService,
     private favoritesService: FavoritesService ,
@@ -250,10 +254,32 @@ export class ProductDetailComponent implements OnInit {
   }
 
   buy(): void {
-    alert("Compra realizada con éxito");
-    this.clearDiscount();
+    const userId = this.getCurrentUserName();
+    const totalAmount = this.calculateTotal();
+    const productDetails: CartItem[] = this.cartProducts.map(cartProduct => ({
+      product: { ...cartProduct.product },
+      selectedSize: cartProduct.selectedSize,
+      quantity: cartProduct.quantity,
+      stock: cartProduct.stock,
+    }));
+  
+    // Guardar el recibo en `PurchaseService`
+    this.purchaseService.setPurchasedReceipt(userId, productDetails, totalAmount);
+  
+    // Limpiar el carrito después de la compra
     this.cartService.clearCart();
+    this.discountApplied = false;
+    this.discountRate = 0;
     this.loadCart();
+  }
+
+  private calculateTotal(): number {
+    return this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  }
+
+  private getCurrentUserName(): string {
+    const user = this.userService.getStoredUser();
+    return user ? user.username : ''; // Retornamos una cadena vacía si no se encuentra el usuario
   }
 
   loadCart(): void {

@@ -1,35 +1,39 @@
-<div class="container">
-    <div class="order-block">
-      <!-- Fila con el número de pedido y estado -->
-      <div class="order-header">
-        <h5>Número de pedido: 123456</h5>
-        <div class="order-status">
-        <!-- Icono de estado: Entregado, En proceso, Devuelto -->
-          <!-- Alternativa en entregado -->
-          <!-- <i class="bi bi-check-circle"></i> Entregado -->
-          <!-- Alternativa en proceso -->
-          <!-- <i class="bi bi-hourglass-split text-warning"></i> En proceso -->
-          <!-- Alternativa devuelto -->
-          <i class="bi bi-box"></i> Devuelto
-        </div>
+<div *ngIf="purchasedReceipts.length > 0" class="p-6 space-y-6">
+  <h2 class="text-3xl font-semibold text-center text-gray-800">Recibos de compras</h2>
+  <ul class="space-y-4">
+    <li *ngFor="let receipt of purchasedReceipts" class="bg-white p-4 rounded-lg shadow-md">
+      <!-- Detalles del recibo -->
+      <div class="mb-4">
+        <p class="text-lg font-medium text-gray-700">Usuario: <span class="font-normal text-gray-500">{{ receipt.userId }}</span></p>
+        <p class="text-lg font-medium text-gray-700">Fecha: <span class="font-normal text-gray-500">{{ receipt.date }}</span> - Hora: <span class="font-normal text-gray-500">{{ receipt.time }}</span></p>
       </div>
-  
-      <!-- Columnas con los detalles del pedido -->
-      <div class="order-columns">
-        <!-- Columna 1: Información del pedido -->
-        <div class="order-column">
-          <p><strong>Fecha del pedido:</strong> 12/10/2024</p>
-          <p><strong>Subtotal de entrega:</strong> 15/10/2024</p>
-          <p><strong>Total:</strong> 100.00 €</p>
-        </div>
-  
-        <!-- Columna 2: Botones de acciones -->
-        <div class="order-column">
-          <button class="btn-primary">Detalles del pedido</button>
-          <button class="btn-secondary">Escribir una opinión</button>
-          <button class="btn-danger">Devolver o cambiar artículo</button>
-        </div>
+      
+      <!-- Lista de productos en el recibo -->
+      <ul class="space-y-4">
+        <li *ngFor="let product of receipt.products" class="flex space-x-4 items-center">
+          <!-- Imagen del producto -->
+          <div class="w-20 h-20 overflow-hidden rounded-lg shadow-sm">
+            <img [src]="product.product.imageUrl" alt="{{ product.product.name }}" class="w-full h-full object-cover" />
+          </div>
+
+          <!-- Información del producto -->
+          <div class="flex-1">
+            <p class="text-lg font-medium text-gray-800">{{ product.product.name }}</p>
+            <p class="text-sm text-gray-600">Talla: <span class="font-medium text-gray-800">{{ product.selectedSize }}</span></p>
+            <p class="text-sm text-gray-600">Precio: <span class="font-medium text-gray-800">{{ product.product.price | currency }}</span></p>
+            <p class="text-sm text-gray-600">Cantidad: <span class="font-medium text-gray-800">{{ product.quantity }}</span></p>
+          </div>
+        </li>
+      </ul>
+      
+      <!-- Total de la compra -->
+      <div class="mt-4 text-right">
+        <p class="text-xl font-semibold text-gray-900">Total: <span class="font-bold text-gray-800">{{ calculateReceiptTotal(receipt) | currency }}</span></p>
       </div>
-    </div>
-  </div>
-  
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="purchasedReceipts.length === 0" class="p-6">
+  <p class="text-center text-lg text-gray-600">No hay recibos disponibles.</p>
+</div>

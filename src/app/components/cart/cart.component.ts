@@ -43,25 +43,34 @@ export class CartComponent implements OnInit {
     private purchaseService: PurchaseService, // Inyectar el servicio
     private favoritesService: FavoritesService,
     private userService: UserService,
-    private router: Router, // Inyectar Router
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  ngOnInit(): void {
-    this.loadCart();
-    this.checkDiscountStatus();
+  // Cargar recibos al inicializar la sesión
+ngOnInit(): void {
+  this.purchaseService.loadAllReceiptsFromLocalStorage();
+  this.loadCart();
+  this.checkDiscountStatus();
 
-    this.favoritesSubscription = this.favoritesService.favoriteProducts$.subscribe(favorites => {
-      this.favorites = favorites;
-    });
+  this.favoritesSubscription = this.favoritesService.favoriteProducts$.subscribe(favorites => {
+    this.favorites = favorites;
+  });
 
-    this.userChangedSubscription = this.userService.userChanged$.subscribe(() => {
-      this.favoritesService.loadFavorites();
-    });
-  }
+  this.userChangedSubscription = this.userService.userChanged$.subscribe(() => {
+    this.favoritesService.loadFavorites();
+    this.getReceiptsForCurrentUser(); // Cargar recibos del usuario actual al cambiar de cuenta
+  });
+}
+
+// Método para cargar recibos por usuario y mostrar en el frontend si se necesita
+getReceiptsForCurrentUser(): void {
+  const userId = this.getCurrentUserName();
+  const userReceipts = this.purchaseService.getPurchasedReceipts(userId);
+  console.log(`Recibos para ${userId}:`, userReceipts);
+}
 
   loadCart(): void {
-    const username = this.getUsername();
+    const username = this.getCurrentUserName();
     if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
       const savedCart = localStorage.getItem(`${this.userKeyPrefix}${username}`);
       if (savedCart) {
@@ -77,7 +86,7 @@ export class CartComponent implements OnInit {
 
   checkDiscountStatus(): void {
     if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getUsername();
+      const username = this.getCurrentUserName();
       const discountUsedStatus = localStorage.getItem(`${this.userKeyPrefix}${username}_discountUsed`);
       
       if (discountUsedStatus === 'true') {
@@ -110,14 +119,14 @@ export class CartComponent implements OnInit {
 
   private saveDiscountStatus(): void {
     if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getUsername();
+      const username = this.getCurrentUserName();
       localStorage.setItem(`${this.userKeyPrefix}${username}_discountApplied`, 'true');
     }
   }
 
   private markDiscountAsUsed(): void {
     if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getUsername();
+      const username = this.getCurrentUserName();
       localStorage.setItem(`${this.userKeyPrefix}${username}_discountUsed`, 'true');
       localStorage.removeItem(`${this.userKeyPrefix}${username}_discountApplied`);
       this.discountUsed = true;
@@ -125,23 +134,16 @@ export class CartComponent implements OnInit {
   }
 
   buy(): void {
-    const userId = this.getUsername(); // Obtener el ID del usuario
-    const totalAmount = this.calculateTotal(); // Calcular el total de la compra
-  
-    // Crear un arreglo con los detalles de los productos
+    const userId = this.getCurrentUserName();
+    const totalAmount = this.calculateTotal();
     const productDetails: CartItem[] = this.cartProducts.map(cartProduct => ({
-      product: {
-        ...cartProduct.product,  // Incluye todas las propiedades originales de product
-        imageUrl: cartProduct.product.imageUrl, // Agregar detalles extra
-        name: cartProduct.product.name,
-        price: cartProduct.product.price,  // 'price' ya es de tipo 'number'
-      },
+      product: { ...cartProduct.product },
       selectedSize: cartProduct.selectedSize,
       quantity: cartProduct.quantity,
-      stock: cartProduct.stock,  // Mantener la propiedad stock
+      stock: cartProduct.stock,
     }));
   
-    // Guardar el recibo en el servicio con los detalles de cada producto
+    // Guardar el recibo en `PurchaseService`
     this.purchaseService.setPurchasedReceipt(userId, productDetails, totalAmount);
   
     // Limpiar el carrito después de la compra
@@ -150,20 +152,23 @@ export class CartComponent implements OnInit {
     this.discountRate = 0;
     this.loadCart();
   }
+
+  private savePurchasedProducts(productDetails: CartItem[], totalAmount: number): void {
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      const username = this.getCurrentUserName();
+      const receipt = { date: new Date().toISOString(), products: productDetails, totalAmount: totalAmount };
   
+      // Cargar recibos previos, si existen, y añadir el nuevo recibo al historial
+      const storedReceipts = localStorage.getItem(`${this.userKeyPrefix}${username}_purchasedProducts`);
+      const receipts = storedReceipts ? JSON.parse(storedReceipts) : [];
   
-  
+      receipts.push(receipt); // Añadir el nuevo recibo al historial
+      localStorage.setItem(`${this.userKeyPrefix}${username}_purchasedProducts`, JSON.stringify(receipts));
+    }
+  }
   
   private calculateTotal(): number {
     return this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-  }
-
-  private savePurchasedProducts(): void {
-    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getUsername();
-      // Guardar los productos comprados en localStorage o en el backend
-      localStorage.setItem(`${this.userKeyPrefix}${username}_purchasedProducts`, JSON.stringify(this.cartProducts));
-    }
   }
 
   calculateTotals(): void {
@@ -186,12 +191,13 @@ export class CartComponent implements OnInit {
     }
   }
 
-  private getUsername(): string {
-    return 'user123';  // Reemplaza con la lógica para obtener el nombre de usuario real
+  private getCurrentUserName(): string {
+    const user = this.userService.getStoredUser();
+    return user ? user.username : ''; // Retornamos una cadena vacía si no se encuentra el usuario
   }
 
   clearCart(): void {
-    const username = this.getUsername();
+    const username = this.getCurrentUserName(); // Usar getCurrentUserName() aquí también
     this.cartService.clearCart();
     if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
       localStorage.removeItem(`${this.userKeyPrefix}${username}`);

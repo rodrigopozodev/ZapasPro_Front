@@ -100,8 +100,8 @@ export class UserService {
     return this.getStoredUser();
   }
 
-  // Método para obtener el nombre del usuario actual desde el localStorage
-  getCurrentUserName(): string | null {
+   // Método para obtener solo el nombre de usuario (opcional)
+   public getCurrentUserName(): string | null {
     const user = this.getStoredUser();
     return user ? user.username : null;
   }
@@ -137,7 +137,7 @@ export class UserService {
   }
 
   // Método privado para obtener el usuario almacenado si localStorage está disponible
-  private getStoredUser(): any {
+  public getStoredUser(): any {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;

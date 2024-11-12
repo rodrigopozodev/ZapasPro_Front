@@ -1,37 +1,40 @@
-<div *ngIf="purchasedReceipts.length > 0">
-    <h2>Recibos de compras</h2>
-    <ul>
-      <li *ngFor="let receipt of purchasedReceipts">
-        <p>Usuario: {{ receipt.userId }}</p>
-        <p>Fecha: {{ receipt.date }} - Hora: {{ receipt.time }}</p>
-        <ul>
-          <li *ngFor="let product of receipt.products">
-            <div>
-              <!-- Imagen del producto -->
-              <img [src]="product.product.imageUrl" alt="{{ product.product.name }}" width="50" height="50"/>
+<div *ngIf="purchasedReceipts.length > 0" class="p-6 space-y-6">
+    <h2 class="text-3xl font-semibold text-center text-gray-800">Recibos de compras</h2>
+    <ul class="space-y-4">
+      <li *ngFor="let receipt of purchasedReceipts" class="bg-white p-4 rounded-lg shadow-md">
+        <!-- Detalles del recibo -->
+        <div class="mb-4">
+          <p class="text-lg font-medium text-gray-700">Usuario: <span class="font-normal text-gray-500">{{ receipt.userId }}</span></p>
+          <p class="text-lg font-medium text-gray-700">Fecha: <span class="font-normal text-gray-500">{{ receipt.date }}</span> - Hora: <span class="font-normal text-gray-500">{{ receipt.time }}</span></p>
+        </div>
+        
+        <!-- Lista de productos en el recibo -->
+        <ul class="space-y-4">
+          <li *ngFor="let product of receipt.products" class="flex space-x-4 items-center">
+            <!-- Imagen del producto -->
+            <div class="w-20 h-20 overflow-hidden rounded-lg shadow-sm">
+              <img [src]="product.product.imageUrl" alt="{{ product.product.name }}" class="w-full h-full object-cover" />
             </div>
-            <div>
-              <!-- Nombre del producto -->
-              <p>{{ product.product.name }}</p>
-              <!-- Talla seleccionada -->
-              <p>Talla: {{ product.selectedSize }}</p>
-              <!-- Precio original y precio con descuento -->
-              <p>Precio: {{ product.product.price | currency }}</p>
-              <!-- <p *ngIf="product.product.price !== (product.product.price * (1 - discountRate))">
-                Precio con descuento: {{ (product.product.price * (1 - discountRate)) | currency }}
-              </p> -->
-              <!-- Cantidad -->
-              <p>Cantidad: {{ product.quantity }}</p>
+  
+            <!-- Información del producto -->
+            <div class="flex-1">
+              <p class="text-lg font-medium text-gray-800">{{ product.product.name }}</p>
+              <p class="text-sm text-gray-600">Talla: <span class="font-medium text-gray-800">{{ product.selectedSize }}</span></p>
+              <p class="text-sm text-gray-600">Precio: <span class="font-medium text-gray-800">{{ product.product.price | currency }}</span></p>
+              <p class="text-sm text-gray-600">Cantidad: <span class="font-medium text-gray-800">{{ product.quantity }}</span></p>
             </div>
           </li>
         </ul>
+        
         <!-- Total de la compra -->
-        <p>Total: {{ calculateReceiptTotal(receipt) | currency }}</p>
+        <div class="mt-4 text-right">
+          <p class="text-xl font-semibold text-gray-900">Total: <span class="font-bold text-gray-800">{{ calculateReceiptTotal(receipt) | currency }}</span></p>
+        </div>
       </li>
     </ul>
   </div>
   
-  <div *ngIf="purchasedReceipts.length === 0">
-    <p>No hay recibos disponibles.</p>
+  <div *ngIf="purchasedReceipts.length === 0" class="p-6">
+    <p class="text-center text-lg text-gray-600">No hay recibos disponibles.</p>
   </div>
   
