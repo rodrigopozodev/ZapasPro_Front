@@ -1,1 +1,37 @@
-<p>recibos works!</p>
+<div *ngIf="purchasedReceipts.length > 0">
+    <h2>Recibos de compras</h2>
+    <ul>
+      <li *ngFor="let receipt of purchasedReceipts">
+        <p>Usuario: {{ receipt.userId }}</p>
+        <p>Fecha: {{ receipt.date }} - Hora: {{ receipt.time }}</p>
+        <ul>
+          <li *ngFor="let product of receipt.products">
+            <div>
+              <!-- Imagen del producto -->
+              <img [src]="product.product.imageUrl" alt="{{ product.product.name }}" width="50" height="50"/>
+            </div>
+            <div>
+              <!-- Nombre del producto -->
+              <p>{{ product.product.name }}</p>
+              <!-- Talla seleccionada -->
+              <p>Talla: {{ product.selectedSize }}</p>
+              <!-- Precio original y precio con descuento -->
+              <p>Precio: {{ product.product.price | currency }}</p>
+              <!-- <p *ngIf="product.product.price !== (product.product.price * (1 - discountRate))">
+                Precio con descuento: {{ (product.product.price * (1 - discountRate)) | currency }}
+              </p> -->
+              <!-- Cantidad -->
+              <p>Cantidad: {{ product.quantity }}</p>
+            </div>
+          </li>
+        </ul>
+        <!-- Total de la compra -->
+        <p>Total: {{ calculateReceiptTotal(receipt) | currency }}</p>
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="purchasedReceipts.length === 0">
+    <p>No hay recibos disponibles.</p>
+  </div>
+  

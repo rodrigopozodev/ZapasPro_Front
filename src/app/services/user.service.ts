@@ -171,4 +171,11 @@ export class UserService {
 
     return this.http.put(`${this.apiUrl}/update`, userUpdate); // Asegúrate de que la URL sea correcta
   }
+
+   getUserId(): string | null {
+    // Aquí se supone que el ID de usuario se guarda en el localStorage tras el login
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return user?.id || null;  // Devolver el ID del usuario si está logueado
+  }
+
 }

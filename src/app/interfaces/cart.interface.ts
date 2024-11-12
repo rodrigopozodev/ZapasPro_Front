@@ -6,4 +6,5 @@ export interface CartItem {
   quantity: number;
   stock: any;
   selectedSize: string;  // Asegúrate de tener esta propiedad
-}
+};
+

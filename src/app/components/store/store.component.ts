@@ -38,7 +38,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Variables de paginación
   currentPage: number = 1;
-  itemsPerPage: number = 16;
+  itemsPerPage: number = 8;
   totalPages: number = 1;
   paginatedProducts: Product[] = [];
 
@@ -47,7 +47,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   private carouselInterval?: any;
   private isReversed: boolean = false;
   carouselImages: string[] = [
-    "/img/Nike Air Max Plus Drift sin fondo.png",
+    "/img/nike sin fondo.png",
     "",
     "/img/Jordan Air Jordan 4 Retro Fear sin fondo.png"
   ];

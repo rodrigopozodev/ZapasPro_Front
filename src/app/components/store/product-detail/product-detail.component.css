@@ -76,3 +76,22 @@
 #main-product-image {
   transition: opacity 0.3s ease;
 }
+
+.custom-line-through {
+  position: relative;
+  display: inline-block; /* Asegura que el pseudo-elemento se posicione correctamente */
+}
+
+.custom-line-through::after {
+  content: '';
+  position: absolute;
+  left: 50%; /* Centra la línea desde el medio del contenedor */
+  bottom: 50%; /* Coloca la línea en el medio del texto verticalmente */
+  width: 50%; /* Hace que la línea sea más larga que el texto (ajusta según lo necesites) */
+  height: 3px; /* Grosor de la línea */
+  background-color: black; /* Color de la línea */
+  transform: translateX(-50%) translateY(50%); /* Centra la línea horizontalmente y ajusta verticalmente */
+}
+
+
+

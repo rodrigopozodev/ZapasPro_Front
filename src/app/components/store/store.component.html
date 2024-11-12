@@ -13,9 +13,6 @@
   </div>
   <div *ngIf="currentSlideIndex === 0" class="absolute bottom-0 w-full bg-opacity-60  text-center py-6 px-4">
     <h2 class="text-3xl font-bold text-yellow-600 mb-4">Nuestra zapatilla más vendida</h2>
-    <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform transition duration-300 ease-in-out hover:scale-105 focus:outline-none">
-      ¡Cómprala ya!
-    </button>
   </div>
 </div>
 
@@ -43,12 +40,12 @@
         </div>
       </div>
     <!-- Flechas de navegación -->
-    <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full" (click)="previousSlide()">
+    <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full ml-4" (click)="previousSlide()">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path d="M15 19l-7-7 7-7" />
       </svg>
     </button>
-    <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full" (click)="nextSlide()">
+    <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full mr-4" (click)="nextSlide()">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path d="M9 5l7 7-7 7" />
       </svg>
@@ -155,11 +152,6 @@
     <button (click)="resetFilters()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-xl mt-2 w-full transition duration-200 ease-in-out">
       Reiniciar Filtros
     </button>
-    <!-- Logo con animación de pulso -->
-  <div class="flex justify-center mb-8 mt-16"> 
-    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png"
-    alt="ZP Logo" class="w-28 h-28 animate-zoom">
-  </div>
   </aside>
 
 <!-- Mensaje si no hay productos filtrados -->
@@ -191,12 +183,12 @@
           
           <!-- Botón de Favoritos con SVG -->
           <button 
-            (click)="toggleFavorite(product)" 
+            
             [ngClass]="{'text-orange-500': isFavorite(product), 'hover:text-yellow-500': !isFavorite(product)}" 
             class="favorite-btn mt-2 text-xl"
             aria-label="Añadir a favoritos"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6" 
+            <svg (click)="toggleFavorite(product)"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6" 
                 [ngClass]="{
                   'stroke-yellow-600 fill-yellow-600': isFavorite(product), 
                   'stroke-orange-600 fill-none hover:fill-orange-400': !isFavorite(product)

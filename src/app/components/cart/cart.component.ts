@@ -9,7 +9,9 @@ import { FavoritesService } from '../../services/favorites.service';
 import { Product } from '../../interfaces/product.interface';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';  // Importar Router
+import { PurchaseService } from '../../services/purchase.service'; // Importa el servicio
+
 
 @Component({
   selector: 'app-cart',
@@ -31,15 +33,17 @@ export class CartComponent implements OnInit {
   favorites: Product[] = [];
   
   private userChangedSubscription: Subscription = new Subscription();
-  private favoritesSubscription: Subscription = new Subscription(); // Suscripción a favoritos
+  private favoritesSubscription: Subscription = new Subscription(); 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
   private readonly userKeyPrefix: string = 'userCart_';
 
   constructor(
     private cartService: CartService, 
+    private purchaseService: PurchaseService, // Inyectar el servicio
     private favoritesService: FavoritesService,
     private userService: UserService,
+    private router: Router, // Inyectar Router
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -47,14 +51,12 @@ export class CartComponent implements OnInit {
     this.loadCart();
     this.checkDiscountStatus();
 
-     // Suscribirse al stream de productos favoritos
-     this.favoritesSubscription = this.favoritesService.favoriteProducts$.subscribe(favorites => {
+    this.favoritesSubscription = this.favoritesService.favoriteProducts$.subscribe(favorites => {
       this.favorites = favorites;
     });
 
-    // Suscribirse a los cambios de usuario para actualizar los favoritos
     this.userChangedSubscription = this.userService.userChanged$.subscribe(() => {
-      this.favoritesService.loadFavorites(); // Actualizar los favoritos al cambiar de usuario
+      this.favoritesService.loadFavorites();
     });
   }
 
@@ -123,11 +125,45 @@ export class CartComponent implements OnInit {
   }
 
   buy(): void {
+    const userId = this.getUsername(); // Obtener el ID del usuario
+    const totalAmount = this.calculateTotal(); // Calcular el total de la compra
+  
+    // Crear un arreglo con los detalles de los productos
+    const productDetails: CartItem[] = this.cartProducts.map(cartProduct => ({
+      product: {
+        ...cartProduct.product,  // Incluye todas las propiedades originales de product
+        imageUrl: cartProduct.product.imageUrl, // Agregar detalles extra
+        name: cartProduct.product.name,
+        price: cartProduct.product.price,  // 'price' ya es de tipo 'number'
+      },
+      selectedSize: cartProduct.selectedSize,
+      quantity: cartProduct.quantity,
+      stock: cartProduct.stock,  // Mantener la propiedad stock
+    }));
+  
+    // Guardar el recibo en el servicio con los detalles de cada producto
+    this.purchaseService.setPurchasedReceipt(userId, productDetails, totalAmount);
+  
+    // Limpiar el carrito después de la compra
     this.cartService.clearCart();
-    this.markDiscountAsUsed();
     this.discountApplied = false;
     this.discountRate = 0;
     this.loadCart();
+  }
+  
+  
+  
+  
+  private calculateTotal(): number {
+    return this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  }
+
+  private savePurchasedProducts(): void {
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      const username = this.getUsername();
+      // Guardar los productos comprados en localStorage o en el backend
+      localStorage.setItem(`${this.userKeyPrefix}${username}_purchasedProducts`, JSON.stringify(this.cartProducts));
+    }
   }
 
   calculateTotals(): void {
@@ -180,7 +216,7 @@ export class CartComponent implements OnInit {
     if (cartProduct.quantity < cartProduct.stock.cantidad) {
       cartProduct.quantity += 1;
       this.cartService.updateCart(cartProduct);
-      this.calculateTotals(); // Recalcular totales sin recargar el carrito completo
+      this.calculateTotals();
     } else {
       console.log('No hay suficiente stock para aumentar la cantidad');
     }
@@ -190,7 +226,7 @@ export class CartComponent implements OnInit {
     if (cartProduct.quantity > 1) {
       cartProduct.quantity -= 1;
       this.cartService.updateCart(cartProduct);
-      this.calculateTotals(); // Recalcular totales sin recargar el carrito completo
+      this.calculateTotals();
     }
   }
 
@@ -198,19 +234,17 @@ export class CartComponent implements OnInit {
     const index = this.cartProducts.indexOf(cartProduct);
     if (index > -1) {
       this.cartProducts.splice(index, 1);
-      this.cartService.updateCart(cartProduct);  // Usa cartProduct, no cartItem
-      this.calculateTotals(); // Recalcula los totales después de eliminar el producto
+      this.cartService.updateCart(cartProduct);
+      this.calculateTotals();
     }
   }
 
   ngOnDestroy(): void {
-    // Cancelar las suscripciones para evitar memory leaks
     this.userChangedSubscription.unsubscribe();
     this.favoritesSubscription.unsubscribe();
   }
 
   toggleFavorite(product: Product): void {
-    // Cambiar el estado de favorito de un producto
     this.favoritesService.toggleFavorite(product);
   }
 
@@ -219,7 +253,6 @@ export class CartComponent implements OnInit {
   }
 
   clearFavorites(): void {
-    // Limpiar los favoritos
     this.favoritesService.clearFavorites();
   }
 }

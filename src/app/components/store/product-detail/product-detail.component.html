@@ -46,17 +46,18 @@
       <p class="text-lg font-semibold text-yellow-600">Selecciona tu talla</p>
       <div class="grid grid-cols-4 gap-2 mt-2">
         <div 
-          *ngFor="let talla of ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48']" 
-          class="py-2 px-4 text-center border rounded-lg cursor-pointer"
-          [ngClass]="{
-            'text-gray-500 line-through': !isTallaDisponible(talla), 
-            'bg-yellow-100': talla === selectedSize && isTallaDisponible(talla), 
-            'bg-yellow-200 hover:bg-yellow-300': isTallaDisponible(talla) && talla !== selectedSize
-          }"
-          (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
-        >
-          EU {{ talla }}
-        </div>
+        *ngFor="let talla of ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48']" 
+        class="py-2 px-4 text-center border rounded-lg cursor-pointer"
+        [ngClass]="{
+          'text-white bg-gray-500 cursor-not-allowed custom-line-through': !isTallaDisponible(talla), 
+          'border-orange-500 border-2': talla === selectedSize && isTallaDisponible(talla), 
+          'bg-white hover:bg-yellow-400-600': isTallaDisponible(talla) && talla !== selectedSize,                                      
+        }"
+        (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
+      >
+      {{ talla }}
+</div>
+
       </div>
       
       <!-- Mostrar la talla seleccionada debajo del nombre -->
