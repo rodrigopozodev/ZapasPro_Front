@@ -7,7 +7,7 @@ import { NavComponent } from './components/nav/nav.component'; // Asegúrate de 
 @Component({
   selector: 'app-root', // Define el selector del componente, que se usará en el HTML
   standalone: true, // Indica que este componente es autónomo y no necesita un módulo NgModule
-  imports: [RouterOutlet, NavComponent], // Importa el RouterOutlet y el NavComponent
+  imports: [RouterOutlet], // Importa el RouterOutlet y el NavComponent
   templateUrl: './app.component.html', // Ruta al archivo HTML que define la plantilla del componente
   styleUrls: ['./app.component.css'] // Ruta a los estilos CSS del componente
 })

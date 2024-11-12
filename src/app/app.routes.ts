@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
 import { StoreComponent } from './components/store/store.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component'; 
-import { HomeComponent } from './components/home/home.component'; 
 import { CartComponent } from './components/cart/cart.component'; 
 import { MainLayoutComponent } from './components/main-layout/main-layout.component'; 
 import { PurchaseHistoryComponent } from './components/perfil/purchase-history/purchase-history.component';
@@ -28,12 +26,12 @@ import { StockComponent } from './components/admin-panel/stock/stock.component';
 // Importa el componente de detalle del producto
 import { ProductDetailComponent } from './components/store/product-detail/product-detail.component'; // Asegúrate de que la ruta sea correcta
 import { ImageSelectionComponent } from './components/admin-panel/productos/image-selection/image-selection.component';
+import { LoginSignupComponent } from './components/login-signup/login-signup.component';
 
 // Define las rutas de la aplicación
 export const routes: Routes = [
-  { path: '', component: LoginComponent }, // Ruta inicial
-  { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
+  { path: '', component: LoginSignupComponent }, // Ruta inicial
+  { path: 'login-signup', component: LoginSignupComponent },
   {
     path: '', // Agrupando rutas con el layout
     component: MainLayoutComponent,
