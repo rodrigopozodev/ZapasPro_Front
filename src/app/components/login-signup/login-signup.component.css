@@ -1,5 +1,3 @@
-/* Created by Tivotal */
-
 /* Google Fonts(Poppins) */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
@@ -24,7 +22,6 @@ body {
   height: 450px;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 0 25px #000;
   overflow: hidden;
 }
 
@@ -146,9 +143,6 @@ body {
   transition: 0.5s;
 }
 
-.btn:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-}
 
 .link {
   font-size: 14px;
@@ -284,7 +278,233 @@ body {
 }
 
 /* Estilo para los íconos dentro de los campos de entrada */
-input:focus ~ svg {
+input:focus ~ i {
   color: #4070f4; /* Cambia a azul cuando el input está enfocado */
   transition: color 0.3s ease-in-out; /* Transición suave */
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #000;
+  pointer-events: none;
+  transition: 0.3s ease;  /* Transición más suave */
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -5px;
+  color: #4070f4;
+}
+
+
+/* Estilo común para los íconos dentro de los campos de entrada */
+.input-box i {
+  position: absolute;
+  top: 50%;
+  right: 3px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  transition: 0.5s;
+}
+
+/* Cambiar color de los íconos cuando el input está enfocado o cuando se escribe */
+.input-box input:focus ~ i,
+.input-box input:valid ~ i {
+  color: #4070f4; /* Cambia a azul cuando el input está enfocado o tiene valor */
+  transition: color 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Para el ícono del ojo, cambiarlo a azul cuando se está escribiendo */
+.input-box input:focus ~ button i {
+  color: #4070f4;
+}
+
+/* Mantenemos el estilo para el ícono cuando el password está visible */
+input:focus ~ button i {
+  color: #4070f4;
+}
+
+/* Estilo para el icono del ojo, asegurándonos de que se alinee a la extrema derecha */
+.eye-icon {
+  right: 0px; /* Ajuste para mover el icono del ojo más a la derecha */
+}
+
+
+* {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3e8d5; /* Fondo de la página - tono crema */
+}
+
+.wrapper {
+  position: relative;
+  width: 750px;
+  height: 450px;
+  background: #ffffff; /* Fondo blanco */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.wrapper .bg1 {
+  position: absolute;
+  width: 850px;
+  height: 600px;
+  background: rgba(234, 179, 8, 0.8); /* Fondo oscuro con opacidad */
+  top: -4px;
+  right: 0;
+  transform: rotate(10deg) skewY(40deg);
+  transform-origin: bottom right;
+  transition: 1.5s ease;
+  transition-delay: 1.6s;
+}
+
+.title {
+  position: relative;
+  margin-bottom: 10px;
+  font-size: 32px;
+  color: #000; /* Negro para el título */
+  text-align: center;
+}
+
+.title::after {
+  position: absolute;
+  content: "";
+  width: 40px;
+  height: 4px;
+  background: #ffb74d; /* Amarillo medio */
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #ff9800; /* Negro */
+  color: #000; /* Texto negro */
+  font-size: 16px;
+  font-weight: 500;
+  padding-right: 23px;
+  transition: 0.5s;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+  border-color: #ffd54f; /* Amarillo medio para focus */
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #000; /* Etiqueta en negro */
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -5px;
+  color: #ffd54f; /* Amarillo medio */
+}
+
+.btn {
+  width: 100%;
+  height: 45px;
+  background: #ffffff; /* Amarillo medio */
+  outline: none;
+  border: 2px solid #ff9800; /* Borde negro */
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000; /* Texto negro */
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+
+.link {
+  font-size: 14px;
+  text-align: center;
+  color: #000; /* Texto negro */
+  margin: 20px 0 10px;
+}
+
+.link a {
+  color: #fb8c00; /* Naranja medio */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.wrapper .info-wrapper {
+  color: #ffffff; /* Texto blanco */
+}
+
+.wrapper .info-wrapper h2 {
+  font-size: 36px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.wrapper .info-wrapper p {
+  font-size: 16px;
+}
+
+.wrapper .bg2 {
+  position: absolute;
+  top: 100%;
+  left: 250px;
+  width: 850px;
+  height: 700px;
+  background: #fff;
+  transform: rotate(0) skewY(0);
+  transform-origin: bottom left;
+  transition: 1.5s ease;
+  transition-delay: 0.5s;
+}
+
+.input-box i {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #ff9800; /* Naranja claro */
+  transition: 0.5s;
+}
+
+.input-box input:focus ~ i,
+.input-box input:valid ~ i {
+  color: #ff9800; /* Naranja claro */
+}
+
+.eye-icon {
+  right: 0px; /* Ajuste para mover el icono del ojo más a la derecha */
+}
+
+/* Adicionales para el estilo hover en íconos y enlaces */
+.link a:hover {
+  color: #fb8c00; /* Naranja claro */
+}
+
+.input-box input:focus ~ button i {
+  color: #ff9800; /* Naranja claro para el ícono del ojo al enfocarse */
 }

@@ -20,7 +20,7 @@ export class LoginSignupComponent {
   loginError: string = '';
   passwordRecoveryMessage: string = '';
   passwordVisible: boolean = false;
-  isFormActive: boolean = false;
+  isFormActive: boolean = false;  // Controla el estado entre login y registro
   username: string = '';
   role: string = 'client';
   usernameError: string = '';
@@ -38,6 +38,7 @@ export class LoginSignupComponent {
     this.router.navigate(['/recover-password']);
   }
 
+  // Método que maneja el formulario de login
   onSubmit(): void {
     this.emailError = '';
     this.passwordError = '';
@@ -75,11 +76,12 @@ export class LoginSignupComponent {
     );
   }
 
-   // Nueva función para registrar y cambiar de formulario
-   toggleFormRegister(): void {
+  // Función que cambia de formulario y llama al registro
+  toggleFormRegister(): void {
     this.register(); // Llama al método de registro
   }
 
+  // Manejo de error de login y recuperación de contraseña después de varios intentos fallidos
   private handleLoginFailure(): void {
     this.failedAttempts++;
     this.loginError = 'Correo o contraseña incorrecto.';
@@ -93,14 +95,28 @@ export class LoginSignupComponent {
     }
   }
 
+  // Función para alternar la visibilidad de la contraseña
   togglePasswordVisibility(): void {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  toggleForm(): void {
+  // Función para alternar entre el formulario de login y el de registro
+  toggleForm() {
     this.isFormActive = !this.isFormActive;
+  
+    // Limpiar errores al cambiar entre formularios
+    this.emailError = '';
+    this.passwordError = '';
+    this.loginError = '';
+    this.usernameError = '';
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.username = '';
+    this.email = '';
+    this.password = '';
   }
-
+  
+  // Cambiar color del icono al enfocar el input
   onInputFocus() {
     const icons = document.querySelectorAll('.eye-icon');
     icons.forEach(icon => {
@@ -108,6 +124,7 @@ export class LoginSignupComponent {
     });
   }
 
+  // Cambiar color del icono al desenfocar el input
   onInputBlur() {
     const icons = document.querySelectorAll('.eye-icon');
     icons.forEach(icon => {
@@ -115,6 +132,7 @@ export class LoginSignupComponent {
     });
   }
 
+  // Método para registrar un nuevo usuario
   register() {
     this.emailError = '';
     this.passwordError = '';
@@ -160,13 +178,13 @@ export class LoginSignupComponent {
       this.passwordValid = true;
     }
 
-    // Si los campos son válidos, procede con el registro
+    // Si los campos son válidos, proceder con el registro
     if (this.usernameValid && this.emailValid && this.passwordValid) {
       this.userService.register(this.username, this.email, this.password, this.role).subscribe(
         response => {
           this.successMessage = 'Usuario registrado con éxito';
           
-          // Limpiar campos después de un registro exitoso
+          // Limpiar los campos después de un registro exitoso
           this.clearRegisterFormFields();
           
           // Cambiar al formulario de inicio de sesión
@@ -179,8 +197,8 @@ export class LoginSignupComponent {
     }
   }
 
+  // Limpiar los campos del formulario de registro
   private clearRegisterFormFields(): void {
-    // Limpiar los campos del formulario de registro
     this.username = '';
     this.email = '';
     this.password = '';

@@ -1,7 +1,10 @@
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
+<div class="flex items-center justify-center min-h-screen bg-[#f3e8d5]">
   <div class="wrapper max-w-[750px] w-full bg-white rounded-lg shadow-lg p-8 relative overflow-hidden" [ngClass]="{'active': isFormActive}">
-    <!-- Fondo de la sección activa -->
-    <span class="bg1 absolute top-[-4px] right-0 w-[850px] h-[600px] bg-black transform rotate-12 skew-y-[40deg] origin-bottom-right transition-all duration-1500 ease-in-out" [ngClass]="{'active': isFormActive}"></span>
+   <!-- Fondo de la sección activa con logo centrado en grande -->
+   <span class="bg1 absolute top-[-4px] right-0 w-[850px] h-[600px] bg-black transform rotate-12 skew-y-[40deg] origin-bottom-right transition-all duration-1500 ease-in-out" [ngClass]="{'active': isFormActive}">
+   
+  </span>
+
 
     <!-- Formulario de Login -->
     <div class="form-wrapper login absolute top-0 left-0 w-[50%] h-full flex flex-col justify-center px-[40px] pr-[60px] mb-8 transition-all ease-in-out" [ngClass]="{'active': !isFormActive}">
@@ -9,32 +12,16 @@
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         
         <!-- Input de Correo -->
-        <div class="input-box relative mb-6">
-          <input
-            type="email"
-            id="email"
-            [(ngModel)]="email"
-            name="email"
-            
-            class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500"
-            required
-          />
+        <div class="input-box relative mb-6 flex flex-col">
+          <input type="text" [(ngModel)]="email" name="email" required
+                 class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
           <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500">
-            <path d="M2 4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V20C22 21.1046 21.1046 22 20 22H4C2.89543 22 2 21.1046 2 20V4Z" />
-            <path d="M21 4L12 13L3 4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>  
+          <i class="fas fa-envelope absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
+          <!-- Error de correo (espacio reservado para que no mueva los elementos) -->
+          <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="emailError">{{ emailError }}</div>
         </div>
 
-        <!-- Mensaje de error de correo -->
-        <p *ngIf="emailError" class="text-red-500 flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0 blink" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span class="flex-1">{{ emailError }}</span>
-        </p>
-
-          <!-- Input de Contraseña con Icono de Ojo -->
+        <!-- Input de Contraseña con Icono de Ojo -->
         <div class="input-box relative mb-6 flex items-center">
           <input
             [type]="passwordVisible ? 'text' : 'password'"
@@ -48,37 +35,19 @@
           />
           <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
 
-          <button type="button" (click)="togglePasswordVisibility()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none">
-            <svg *ngIf="passwordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <svg *ngIf="!passwordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-            </svg>
+          <!-- Icono de ojo -->
+          <button type="button" (click)="togglePasswordVisibility()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none eye-icon">
+            <i class="fas" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
           </button>
+          <!-- Error de contraseña (espacio reservado) -->
+          <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="passwordError" style="white-space: nowrap;">
+            {{ passwordError }}</div>
         </div>
 
-        <!-- Mensaje de error de contraseña -->
-        <p *ngIf="passwordError" class="text-red-500 flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0 blink" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span class="flex-1">{{ passwordError }}</span>
-        </p>
-
         <!-- Error general de login -->
-        <p *ngIf="loginError" class="text-red-500 flex items-start">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0 blink" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span class="flex-1">{{ loginError }}</span>
-        </p>
-
-        <!-- Mensaje de recuperación de contraseña -->
-        <p *ngIf="passwordRecoveryMessage" class="text-yellow-600 text-center mt-4">
-          <span [innerHTML]="passwordRecoveryMessage"></span>
-        </p>
+        <div *ngIf="loginError" class="error-message text-red-500 mt-4 text-sm">
+          {{ loginError }}
+        </div>
 
         <!-- Botón de Login -->
         <button
@@ -95,87 +64,107 @@
       </form>
     </div>
 
-
     <!-- Información de Login -->
     <div class="info-wrapper login absolute top-0 right-0 w-[50%] h-full flex flex-col justify-center text-white text-right px-[150px] pb-[60px] transform translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': !isFormActive}">
       <h2 class="text-3xl font-semibold">¿Estas de vuelta?</h2>
       <p class="text-base">Inicia sesión para sumergirte en una experiencia unica</p>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo1" class="logo1" />
     </div>
+  
+
+<style>
+  .logo1 {
+    position: absolute; /* Permite posicionar el logo de forma específica */
+    top: 80%; /* Mueve el logo hacia el centro vertical */
+    left: 10%; /* Mueve el logo hacia el centro horizontal */
+    transform: translate(-50%, -50%); /* Ajusta el logo para que esté perfectamente centrado */
+    width: 150px; /* Ajusta el tamaño del logo */
+    transition: all 0.3s ease-in-out; /* Agrega transición para suavizar el movimiento */
+  }
+</style>
+
 
     <span class="bg2 absolute top-full left-[250px] w-[850px] h-[700px] bg-white transform rotate-0 skew-y-0 origin-bottom-left transition-all duration-1500 ease-in-out" [ngClass]="{'active': isFormActive}"></span>
 
     <!-- Formulario de Registro -->
-    <div class="form-wrapper register absolute top-0 right-0 w-[50%] h-full flex flex-col justify-center px-[60px] pl-[40px] pointer-events-none transform translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" 
-    [ngClass]="{'active': isFormActive}">
+    <div class="form-wrapper register absolute top-0 right-0 w-[50%] h-full flex flex-col justify-center px-[60px] pl-[40px] pointer-events-none transform translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': isFormActive}">
       <h2 class="title text-2xl font-semibold text-center mb-6">Regístrate</h2>
-
       <form (ngSubmit)="register()" #registerForm="ngForm" class="space-y-4 animate-slideUp">
 
-        <!-- Campo de Email -->
-        <div class="input-box relative mb-6 flex flex-col">
-          <input type="email" [(ngModel)]="email" name="email" required
-                  class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-          <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500">
-            <path d="M2 4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V20C22 21.1046 21.1046 22 20 22H4C2.89543 22 2 21.1046 2 20V4Z" />
-            <path d="M21 4L12 13L3 4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <p *ngIf="emailError" class="text-red-500 mt-1">{{ emailError }}</p>
-        </div>
+        <!-- Campo de Email en el formulario de Registro -->
+<div class="input-box relative mb-6 flex flex-col pb-10"> <!-- Se añadió padding-bottom -->
+  <input type="text" [(ngModel)]="email" name="email" required
+         class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
+  <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
+  <i class="fas fa-envelope absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
+  <!-- Error de correo (espacio reservado para que no mueva los elementos) -->
+  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="emailError">{{ emailError }}</div>
+</div>
 
-        <!-- Campo de Nombre de Usuario -->
-        <div class="input-box relative mb-6 flex flex-col">
-          <input type="text" [(ngModel)]="username" name="username" required
-                  class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-          <label for="username" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Nombre de Usuario</label>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-          </svg>  
-          <p *ngIf="usernameError" class="text-red-500 mt-1">{{ usernameError }}</p>
-        </div>
+<!-- Campo de Nombre de Usuario en el formulario de Registro -->
+<div class="input-box relative mb-6 flex flex-col pb-10"> <!-- Se añadió padding-bottom -->
+  <input type="text" [(ngModel)]="username" name="username" required
+         class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
+  <label for="username" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Nombre de Usuario</label>
+  <i class="fas fa-user absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
+  <!-- Error de nombre de usuario (espacio reservado) -->
+  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="usernameError" style="white-space: nowrap;">{{ usernameError }}</div>
+</div>
 
-        <!-- Campo de Contraseña -->
-        <div class="input-box relative mb-6 flex flex-col">
-          <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" required
-                  class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-          <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
-          <button type="button" (click)="togglePasswordVisibility()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-black hover:text-yellow-800 focus:outline-none">
-            <svg *ngIf="passwordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
-            </svg>
-            <svg *ngIf="!passwordVisible" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
-            </svg>
-          </button>
-          <p *ngIf="passwordError" class="text-red-500 mt-1">{{ passwordError }}</p>
-        </div>
+<!-- Input de Contraseña con Icono de Ojo en el formulario de Registro -->
+<div class="input-box relative mb-6 flex items-center pb-10"> <!-- Se añadió padding-bottom -->
+  <input
+    [type]="passwordVisible ? 'text' : 'password'"
+    id="password"
+    [(ngModel)]="password"
+    name="password"
+    class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500"
+    required
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
+  />
+  <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
 
-        <!-- Botón de Registro -->
-        <button 
-        type="submit" 
-        class="btn w-full py-3 bg-transparent border-2 border-black rounded-[40px] text-black font-semibold cursor-pointer hover:shadow-xl transition duration-500"
-        (click)="toggleFormRegister()"> <!-- Usa la nueva función toggleFormRegister() -->
-        Registrar
-        </button>
+  <!-- Icono de ojo -->
+  <button type="button" (click)="togglePasswordVisibility()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none eye-icon">
+    <i class="fas" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+  </button>
+  <!-- Error de contraseña (espacio reservado) -->
+  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="passwordError">{{ passwordError }}</div>
+</div>
 
-        <!-- Link para cambiar a formulario de inicio de sesión -->
-        <div class="link mt-4 text-center text-sm">
-          <p>¿Ya tienes cuenta? 
-            <a href="#" 
-              class="text-[#4070f4] hover:text-[#4070f4]" 
-              (click)="toggleForm()"> <!-- Ya estaba agregado el (click)="toggleForm()" aquí -->
-              Inicia Sesión
-            </a>
-          </p>
-        </div>
+<!-- Botón de Registro -->
+<button type="submit" class="btn w-full py-3 bg-transparent border-2 border-black rounded-[40px] text-black font-semibold cursor-pointer hover:shadow-xl transition duration-500">
+  Regístrate
+</button>
+
+<!-- Enlace a Iniciar Sesión -->
+<div class="link mt-4 text-center text-sm">
+  <p>¿Ya tienes cuenta? <a href="#" class="text-[#4070f4]" (click)="toggleForm()">Inicia sesión aquí</a></p>
+</div>
       </form>
     </div>
 
-    <!-- Información de Registrate -->
-    <div class="info-wrapper register absolute top-0 left-0 w-[50%] h-full flex flex-col justify-center text-white px-[40px] pb-[60px] transform translate-x-[-120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': isFormActive}">
-      <h2 class="text-3xl font-semibold">¡Bienbenido a ZapasPro!</h2>
-      <p class="text-base">Crea tu cuenta y sumergete en esta nueva aventura</p>
+    <!-- Información de Registro -->
+    <div class="info-wrapper register absolute top-0 left-0 w-[50%] h-full flex flex-col justify-center text-white text-left px-[150px] pb-[60px] transform -translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': isFormActive}">
+      <h2 class="text-3xl font-semibold">¡Bienvenido a la Familia!</h2>
+      <p class="text-base">¡Únete a nosotros creando una cuenta en tan solo unos clics!</p>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="logo2" />
     </div>
+    
+
+    <style>
+      .logo2 {
+        position: absolute; /* Permite posicionar el logo de forma específica */
+        top: 80%; /* Mueve el logo hacia el centro vertical */
+        left: 85%; /* Mueve el logo hacia el centro horizontal */
+        transform: translate(-50%, -50%); /* Ajusta el logo para que esté perfectamente centrado */
+        width: 150px; /* Ajusta el tamaño del logo */
+        transition: all 0.3s ease-in-out; /* Agrega transición para suavizar el movimiento */
+      }
+    </style>
   </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
