@@ -12,6 +12,7 @@ import { GalleryImage } from '../../../interfaces/gallery-image.interface';  // 
 import { FavoritesService } from '../../../services/favorites.service';
 import { UserService } from '../../../services/user.service';
 import { PurchaseService } from '../../../services/purchase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -38,26 +39,43 @@ export class ProductDetailComponent implements OnInit {
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
   private readonly userKeyPrefix: string = 'user_';
+  // Definir cartSubscription como una propiedad de la clase
+  private cartSubscription: Subscription = new Subscription();  // Aquí se declara correctamente
 
   constructor(
     private router: Router,
-    private purchaseService: PurchaseService, // Inyectar el servicio
+    private purchaseService: PurchaseService, 
     private route: ActivatedRoute,
     private userService: UserService,
     private productService: ProductService,
     private cartService: CartService,
-    private favoritesService: FavoritesService ,
+    private favoritesService: FavoritesService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // Cargar producto, stock, y carrito al iniciar
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.getProduct(id);
-      this.getStock(id);
+      this.getProduct(id);  // Obtener los detalles del producto
+      this.getStock(id);     // Obtener el stock del producto
     }
-    this.loadDiscountCode();
+    
+    this.loadDiscountCode();  // Cargar el código de descuento
+  
+    // Cargar el carrito
     this.loadCart();
+  
+    // Suscribirse a los cambios en el carrito
+    this.cartSubscription = this.cartService.getCartUpdates().subscribe((updatedCart: CartItem[]) => {
+      this.cartProducts = updatedCart;  // Actualizamos el carrito con los nuevos datos
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();  // Limpia la suscripción
+    }
   }
 
   getProduct(id: string) {
@@ -238,8 +256,10 @@ export class ProductDetailComponent implements OnInit {
           };
           this.cartProducts.push(cartItem);
         }
+        
         this.cartService.addToCart(cartItem);
-        this.loadCart();
+        this.saveCartToLocalStorage();
+        this.calculateTotals(); // Actualizar totales después de agregar un producto
         this.cartVisible = true;
       } else {
         console.log('Stock no encontrado para la talla seleccionada');
@@ -249,13 +269,20 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+  private saveCartToLocalStorage(): void {
+    const username = this.getUsername();
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      localStorage.setItem(`${this.userKeyPrefix}${username}`, JSON.stringify(this.cartProducts));
+    }
+  }
+
   closeCart(): void {
     this.cartVisible = false;
   }
 
   buy(): void {
     const userId = this.getCurrentUserName();
-    const totalAmount = this.calculateTotal();
+    const totalAmount = this.total;
     const productDetails: CartItem[] = this.cartProducts.map(cartProduct => ({
       product: { ...cartProduct.product },
       selectedSize: cartProduct.selectedSize,
@@ -263,18 +290,15 @@ export class ProductDetailComponent implements OnInit {
       stock: cartProduct.stock,
     }));
   
-    // Guardar el recibo en `PurchaseService`
     this.purchaseService.setPurchasedReceipt(userId, productDetails, totalAmount);
-  
-    // Limpiar el carrito después de la compra
+    
+    // Vaciar el carrito y restablecer valores después de la compra
     this.cartService.clearCart();
+    this.cartProducts = [];
+    this.selectedSize = '';
     this.discountApplied = false;
     this.discountRate = 0;
-    this.loadCart();
-  }
-
-  private calculateTotal(): number {
-    return this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    this.calculateTotals(); // Asegurarse de que los totales se actualicen a cero
   }
 
   private getCurrentUserName(): string {
@@ -294,7 +318,7 @@ export class ProductDetailComponent implements OnInit {
     } else {
       this.cartProducts = this.cartService.getCart();
     }
-    this.calculateTotals();
+    this.calculateTotals();  // Calcular totales después de cargar el carrito
   }
 
   loadDiscountCode(): void {
@@ -310,20 +334,19 @@ export class ProductDetailComponent implements OnInit {
           this.discountRate = this.discountPercentage;
         }
       }
-      this.calculateTotals();
+      this.calculateTotals();  // Asegurar que el descuento sea aplicado en el total
     }
   }
 
+  // Método para aplicar un descuento
   applyDiscount(): void {
     if (this.discountCode === this.validDiscountCode) {
       this.discountRate = this.discountPercentage;
       this.calculateTotals();
-      this.saveDiscountCode();
+      localStorage.setItem(`${this.userKeyPrefix}${this.getUsername()}_discountUsed`, 'true');
     } else {
-      alert("Código de descuento inválido");
       this.discountRate = 0;
       this.calculateTotals();
-      localStorage.removeItem('discountCode');
     }
   }
 
@@ -341,19 +364,19 @@ export class ProductDetailComponent implements OnInit {
     this.discountCode = '';
   }
 
-  calculateTotals(): void {
-    this.subtotal = this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-    this.total = this.cartProducts.reduce((total, item) => {
-      const discountedPrice = item.product.price - (item.product.price * this.discountRate);
-      return total + (discountedPrice * item.quantity);
-    }, 0);
+  private calculateTotals(): void {
+    // Actualizar subtotal, descuento y total
+    this.subtotal = this.cartProducts.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    this.total = this.subtotal * (1 - this.discountRate);
   }
 
-  private getUsername(): string {
-    return 'usuario';
+   // Método para obtener el nombre de usuario actual (si es necesario)
+   getUsername(): string {
+    const user = this.userService.getStoredUser();
+    return user ? user.username : ''; // Retorna un string vacío si no hay usuario
   }
 
-  private isLocalStorageAvailable(): boolean {
+  isLocalStorageAvailable(): boolean {
     try {
       const testKey = 'test';
       localStorage.setItem(testKey, '1');
@@ -363,42 +386,52 @@ export class ProductDetailComponent implements OnInit {
       return false;
     }
   }
+  
 
 
   // Método para incrementar la cantidad de un producto en el carrito
-  incrementQuantity(cartProduct: CartItem): void {
-    const selectedStock = this.stock.find(item => item.talla === cartProduct.selectedSize);
-    if (selectedStock && cartProduct.quantity < selectedStock.cantidad) {
-      cartProduct.quantity += 1;
-      this.cartService.updateCart(cartProduct);  // Método para actualizar el carrito en el servicio
-      this.loadCart();
+  incrementQuantity(cartItem: CartItem): void {
+    const selectedStock = this.stock.find(item => item.talla === cartItem.selectedSize);
+    if (selectedStock && cartItem.quantity < selectedStock.cantidad) {
+      cartItem.quantity += 1;
+      this.cartService.updateCart(cartItem);  // Assuming this method exists for updating the cart
+      this.calculateTotals();  // Recalculate totals
     } else {
-      console.log('No hay suficiente stock para aumentar la cantidad');
+      alert('No hay suficiente stock para incrementar la cantidad');
     }
   }
+  
 
   // Método para decrementar la cantidad de un producto en el carrito
-  decrementQuantity(cartProduct: CartItem): void {
-    if (cartProduct.quantity > 1) {
-      cartProduct.quantity -= 1;
-      this.cartService.updateCart(cartProduct);  // Método para actualizar el carrito en el servicio
-      this.loadCart();
+  decrementQuantity(cartItem: CartItem): void {
+    if (cartItem.quantity > 1) {
+      cartItem.quantity -= 1;
+      this.cartService.updateCart(cartItem);  // Assuming this method exists for updating the cart
+    } else {
+      this.removeFromCart(cartItem);
     }
+    this.calculateTotals();  // Recalculate totals
   }
+  
 
   goToCart() {
     // Si estás utilizando Angular Router para navegar a la página del carrito
     this.router.navigate(['/cart']);
   }
 
-  removeFromCart(cartProduct: CartItem): void {
-    const index = this.cartProducts.indexOf(cartProduct);
-    if (index > -1) {
-      this.cartProducts.splice(index, 1);
-      this.cartService.updateCart(cartProduct);  // Usa cartProduct, no cartItem
-      this.calculateTotals(); // Recalcula los totales después de eliminar el producto
-    }
+  removeFromCart(cartItem: CartItem): void {
+    // Filtrar el carrito para eliminar el ítem
+    this.cartProducts = this.cartProducts.filter(item => 
+      !(item.product.id === cartItem.product.id && item.selectedSize === cartItem.selectedSize)
+    );
+  
+    // Actualizar carrito en el servicio y en localStorage
+    this.cartService.removeFromCart(cartItem);  // Asegúrate de tener este método en el servicio
+    this.saveCartToLocalStorage();  // Guardamos el carrito actualizado en localStorage
+  
+    this.calculateTotals();  // Recalcular los totales después de eliminar el producto
   }
+  
 
   changeMainImage(newImage: string) {
     this.mainImage = newImage;

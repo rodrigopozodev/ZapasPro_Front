@@ -124,14 +124,6 @@ getReceiptsForCurrentUser(): void {
     }
   }
 
-  private markDiscountAsUsed(): void {
-    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getCurrentUserName();
-      localStorage.setItem(`${this.userKeyPrefix}${username}_discountUsed`, 'true');
-      localStorage.removeItem(`${this.userKeyPrefix}${username}_discountApplied`);
-      this.discountUsed = true;
-    }
-  }
 
   buy(): void {
     const userId = this.getCurrentUserName();
@@ -153,19 +145,6 @@ getReceiptsForCurrentUser(): void {
     this.loadCart();
   }
 
-  private savePurchasedProducts(productDetails: CartItem[], totalAmount: number): void {
-    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
-      const username = this.getCurrentUserName();
-      const receipt = { date: new Date().toISOString(), products: productDetails, totalAmount: totalAmount };
-  
-      // Cargar recibos previos, si existen, y añadir el nuevo recibo al historial
-      const storedReceipts = localStorage.getItem(`${this.userKeyPrefix}${username}_purchasedProducts`);
-      const receipts = storedReceipts ? JSON.parse(storedReceipts) : [];
-  
-      receipts.push(receipt); // Añadir el nuevo recibo al historial
-      localStorage.setItem(`${this.userKeyPrefix}${username}_purchasedProducts`, JSON.stringify(receipts));
-    }
-  }
   
   private calculateTotal(): number {
     return this.cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
@@ -236,13 +215,28 @@ getReceiptsForCurrentUser(): void {
     }
   }
 
-  removeFromCart(cartProduct: CartItem): void {
-    const index = this.cartProducts.indexOf(cartProduct);
-    if (index > -1) {
-      this.cartProducts.splice(index, 1);
-      this.cartService.updateCart(cartProduct);
-      this.calculateTotals();
+  removeFromCart(cartItem: CartItem): void {
+    // Filtrar el carrito para eliminar el ítem
+    this.cartProducts = this.cartProducts.filter(item => 
+      !(item.product.id === cartItem.product.id && item.selectedSize === cartItem.selectedSize)
+    );
+  
+    // Actualizar carrito en el servicio y en localStorage
+    this.cartService.removeFromCart(cartItem);  // Asegúrate de tener este método en el servicio
+    this.saveCartToLocalStorage();  // Guardamos el carrito actualizado en localStorage
+  
+    this.calculateTotals();  // Recalcular los totales después de eliminar el producto
+  }
+
+  private saveCartToLocalStorage(): void {
+    const username = this.getUsername();
+    if (isPlatformBrowser(this.platformId) && this.isLocalStorageAvailable()) {
+      localStorage.setItem(`${this.userKeyPrefix}${username}`, JSON.stringify(this.cartProducts));
     }
+  }
+
+  private getUsername(): string {
+    return 'usuario';
   }
 
   ngOnDestroy(): void {
