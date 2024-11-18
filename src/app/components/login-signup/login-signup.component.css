@@ -1,6 +1,7 @@
-/* Google Fonts(Poppins) */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+/* Google Fonts (Poppins) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
 
+/* Configuración básica para todos los elementos */
 * {
   font-family: "Poppins", sans-serif;
   margin: 0;
@@ -8,14 +9,23 @@
   box-sizing: border-box;
 }
 
+/* Estilo general del cuerpo */
 body {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f2f2f2;
+  background: #fffbeb; /* Fondo claro (Amber 50) */
 }
 
+/* Estilo para las imágenes dentro del contenedor */
+img {
+  width: 50%; /* Imagen ocupa el 50% del contenedor */
+  max-width: 400px; /* Tamaño máximo de la imagen */
+  height: auto; /* Mantiene la relación de aspecto */
+}
+
+/* Contenedor principal */
 .wrapper {
   position: relative;
   width: 750px;
@@ -23,41 +33,32 @@ body {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
+  margin: 0 20px;
 }
 
-.wrapper .bg1 {
-  position: absolute;
-  width: 850px;
-  height: 600px;
-  background: #000;
-  top: -4px;
-  right: 0;
-  transform: rotate(10deg) skewY(40deg);
-  transform-origin: bottom right;
-  transition: 1.5s ease;
-  transition-delay: 1.6s;
-}
-
+/* Sección de los formularios */
 .wrapper .form-wrapper {
   position: absolute;
   top: 0;
-  width: 50%;
+  width: 60%; /* Ancho del formulario */
   height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
 }
 
+/* Configuración específica del formulario de inicio de sesión */
 .wrapper .form-wrapper.login {
   left: 0;
-  padding: 0 60px 0 40px;
+  padding: 0 20px;
 }
 
+/* Título de los formularios */
 .title {
   position: relative;
   margin-bottom: 10px;
   font-size: 32px;
-  color: #000;
+  color: #b45309; /* Amber 700 */
   text-align: center;
 }
 
@@ -66,12 +67,13 @@ body {
   content: "";
   width: 40px;
   height: 4px;
-  background: #000;
+  background: #f59e0b; /* Subrayado Amber 500 */
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
 }
 
+/* Campos de entrada */
 .input-box {
   position: relative;
   width: 100%;
@@ -85,26 +87,26 @@ body {
   background: none;
   border: none;
   outline: none;
-  border-bottom: 2px solid #000;
-  color: #000;
+  border-bottom: 2px solid #fbbf24; /* Borde Amber 400 */
+  color: #78350f; /* Amber 900 */
   font-size: 16px;
   font-weight: 500;
-  padding-right: 23px;
   transition: 0.5s;
 }
 
 .input-box input:focus,
 .input-box input:valid {
-  border-color: #4070f4;
+  border-color: #b45309; /* Borde Amber 700 al enfocar */
 }
 
+/* Etiquetas dentro de los campos */
 .input-box label {
   position: absolute;
   top: 50%;
   left: 0;
   transform: translateY(-50%);
   font-size: 16px;
-  color: #000;
+  color: #92400e; /* Amber 800 */
   pointer-events: none;
   transition: 0.5s;
 }
@@ -112,140 +114,108 @@ body {
 .input-box input:focus ~ label,
 .input-box input:valid ~ label {
   top: -5px;
-  color: #4070f4;
+  color: #d97706; /* Amber 600 */
 }
 
+/* Íconos dentro de los campos */
 .input-box i {
   position: absolute;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  font-size: 18px;
+  font-size: 20px; /* Tamaño de íconos */
+  color: #fbbf24; /* Amber 400 */
   transition: 0.5s;
 }
 
 .input-box input:focus ~ i,
 .input-box input:valid ~ i {
-  color: #4070f4;
+  color: #d97706; /* Amber 600 */
 }
 
+
+.btnRegistro {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  outline: none;
+  border: 2px solid #f59e0b; /* Borde Amber 500 */
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f59e0b; /* Texto Amber 500 */
+  cursor: pointer;
+  transition: 0.5s;
+ /* margin-top: 25px !important;  Forzar el margen superior */
+}
+
+
+
+/* Botón principal */
 .btn {
   width: 100%;
   height: 45px;
   background: transparent;
   outline: none;
-  border: 2px solid #000;
+  border: 2px solid #f59e0b; /* Borde Amber 500 */
   border-radius: 40px;
   font-size: 16px;
   font-weight: 600;
-  color: #000;
+  color: #f59e0b; /* Texto Amber 500 */
   cursor: pointer;
   transition: 0.5s;
 }
 
+.btn:hover {
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.8); /* Sombra Amber 500 al pasar el cursor */
+}
 
+/* Enlaces */
 .link {
   font-size: 14px;
   text-align: center;
-  color: #000;
+  color: #78350f; /* Amber 900 */
   margin: 20px 0 10px;
 }
 
 .link a {
-  color: #4070f4;
+  color: #f59e0b; /* Enlace Amber 500 */
   text-decoration: none;
   font-weight: 600;
 }
 
+/* Sección de información (fondo Amber) */
 .wrapper .info-wrapper {
   position: absolute;
   top: 0;
-  width: 50%;
+  width: 40%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #fff;
+  align-items: center;
+  background: #f59e0b; /* Fondo Amber 500 */
+  color: #fff; /* Texto blanco */
+  padding: 0 20px;
+  text-align: center;
 }
 
-.wrapper .info-wrapper.login {
-  right: 0;
-  text-align: right;
-  padding: 0 40px 60px 150px;
-}
-
+/* Títulos dentro de las secciones de información */
 .info-wrapper h2 {
-  font-size: 36px;
+  font-size: 22px;
   line-height: 1.3;
   text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
+/* Texto dentro de las secciones de información */
 .info-wrapper p {
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
-.wrapper .form-wrapper.register {
-  padding: 0 40px 0 60px;
-  right: 0;
-  pointer-events: none;
-  transform: translateX(120%);
-  opacity: 0;
-  filter: blur(10px);
-  transition: 0.7s ease;
-  transition-delay: 0s;
-}
-
-.wrapper .info-wrapper.register {
-  left: 0;
-  text-align: left;
-  padding: 0 150px 60px 40px;
-  pointer-events: none;
-  transform: translateX(-120%);
-  opacity: 0;
-  filter: blur(10px);
-  transition: 0.7s ease;
-  transition-delay: 0s;
-}
-
-.wrapper .form-wrapper.login {
-  transform: translateX(0);
-  opacity: 1;
-  filter: blur(0);
-  transition: 0.7s ease;
-  transition-delay: 2.5s;
-}
-
-.wrapper .info-wrapper.login {
-  transform: translateX(0);
-  opacity: 1;
-  filter: blur(0);
-  transition: 0.7s ease;
-  transition-delay: 2.5s;
-}
-
-.wrapper.active .bg1 {
-  transform: rotate(0) skewY(0);
-  transition-delay: 0.5s;
-}
-
-.wrapper .bg2 {
-  position: absolute;
-  top: 100%;
-  left: 250px;
-  width: 850px;
-  height: 700px;
-  background: #fff;
-  transform: rotate(0) skewY(0);
-  transform-origin: bottom left;
-  transition: 1.5s ease;
-  transition-delay: 0.5s;
-}
-
-.wrapper.active .bg2 {
-  transform: rotate(-11deg) skewY(-40deg);
-  transition-delay: 1.2s;
-}
-
+/* Transiciones para el estado "active" */
 .wrapper.active .form-wrapper.login {
   transform: translateX(-120%);
   opacity: 0;
@@ -257,7 +227,7 @@ body {
   transform: translateX(120px);
   opacity: 0;
   filter: blur(10px);
-  transition: 0.7s ease;
+  transition: 0.5s ease;
   transition-delay: 0s;
 }
 
@@ -266,7 +236,7 @@ body {
   opacity: 1;
   filter: blur(0);
   pointer-events: auto;
-  transition-delay: 2s;
+  transition-delay: 0.5s;
 }
 
 .wrapper.active .info-wrapper.register {
@@ -274,237 +244,273 @@ body {
   opacity: 1;
   filter: blur(0);
   pointer-events: auto;
-  transition-delay: 2s;
-}
-
-/* Estilo para los íconos dentro de los campos de entrada */
-input:focus ~ i {
-  color: #4070f4; /* Cambia a azul cuando el input está enfocado */
-  transition: color 0.3s ease-in-out; /* Transición suave */
-}
-
-.input-box label {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #000;
-  pointer-events: none;
-  transition: 0.3s ease;  /* Transición más suave */
-}
-
-.input-box input:focus ~ label,
-.input-box input:valid ~ label {
-  top: -5px;
-  color: #4070f4;
-}
-
-
-/* Estilo común para los íconos dentro de los campos de entrada */
-.input-box i {
-  position: absolute;
-  top: 50%;
-  right: 3px;
-  transform: translateY(-50%);
-  font-size: 18px;
-  transition: 0.5s;
-}
-
-/* Cambiar color de los íconos cuando el input está enfocado o cuando se escribe */
-.input-box input:focus ~ i,
-.input-box input:valid ~ i {
-  color: #4070f4; /* Cambia a azul cuando el input está enfocado o tiene valor */
-  transition: color 0.3s ease-in-out; /* Transición suave */
-}
-
-/* Para el ícono del ojo, cambiarlo a azul cuando se está escribiendo */
-.input-box input:focus ~ button i {
-  color: #4070f4;
-}
-
-/* Mantenemos el estilo para el ícono cuando el password está visible */
-input:focus ~ button i {
-  color: #4070f4;
-}
-
-/* Estilo para el icono del ojo, asegurándonos de que se alinee a la extrema derecha */
-.eye-icon {
-  right: 0px; /* Ajuste para mover el icono del ojo más a la derecha */
-}
-
-
-* {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f3e8d5; /* Fondo de la página - tono crema */
-}
-
-.wrapper {
-  position: relative;
-  width: 750px;
-  height: 450px;
-  background: #ffffff; /* Fondo blanco */
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.wrapper .bg1 {
-  position: absolute;
-  width: 850px;
-  height: 600px;
-  background: rgba(234, 179, 8, 0.8); /* Fondo oscuro con opacidad */
-  top: -4px;
-  right: 0;
-  transform: rotate(10deg) skewY(40deg);
-  transform-origin: bottom right;
-  transition: 1.5s ease;
-  transition-delay: 1.6s;
-}
-
-.title {
-  position: relative;
-  margin-bottom: 10px;
-  font-size: 32px;
-  color: #000; /* Negro para el título */
-  text-align: center;
-}
-
-.title::after {
-  position: absolute;
-  content: "";
-  width: 40px;
-  height: 4px;
-  background: #ffb74d; /* Amarillo medio */
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.input-box input {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border: none;
-  outline: none;
-  border-bottom: 2px solid #ff9800; /* Negro */
-  color: #000; /* Texto negro */
-  font-size: 16px;
-  font-weight: 500;
-  padding-right: 23px;
-  transition: 0.5s;
-}
-
-.input-box input:focus,
-.input-box input:valid {
-  border-color: #ffd54f; /* Amarillo medio para focus */
-}
-
-.input-box label {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #000; /* Etiqueta en negro */
-  pointer-events: none;
-  transition: 0.5s;
-}
-
-.input-box input:focus ~ label,
-.input-box input:valid ~ label {
-  top: -5px;
-  color: #ffd54f; /* Amarillo medio */
-}
-
-.btn {
-  width: 100%;
-  height: 45px;
-  background: #ffffff; /* Amarillo medio */
-  outline: none;
-  border: 2px solid #ff9800; /* Borde negro */
-  border-radius: 40px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #000; /* Texto negro */
-  cursor: pointer;
-  transition: 0.5s;
-}
-
-
-.link {
-  font-size: 14px;
-  text-align: center;
-  color: #000; /* Texto negro */
-  margin: 20px 0 10px;
-}
-
-.link a {
-  color: #fb8c00; /* Naranja medio */
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.wrapper .info-wrapper {
-  color: #ffffff; /* Texto blanco */
-}
-
-.wrapper .info-wrapper h2 {
-  font-size: 36px;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-.wrapper .info-wrapper p {
-  font-size: 16px;
-}
-
-.wrapper .bg2 {
-  position: absolute;
-  top: 100%;
-  left: 250px;
-  width: 850px;
-  height: 700px;
-  background: #fff;
-  transform: rotate(0) skewY(0);
-  transform-origin: bottom left;
-  transition: 1.5s ease;
   transition-delay: 0.5s;
 }
 
-.input-box i {
+/* Configuración específica de la sección de información para el estado "login" */
+.wrapper .info-wrapper.login {
+  right: 0; /* Ubica la sección de información en el extremo derecho */
+  text-align: center; /* Centra el texto dentro de la sección */
+}
+
+/* Configuración inicial para el formulario de registro (no visible al cargar la página) */
+.wrapper .form-wrapper.register {
+  padding: 0 20px 0 20px; /* Espaciado interno del formulario */
+  right: 0; /* Ubica el formulario en el extremo derecho */
+  pointer-events: none; /* Desactiva la interacción del usuario */
+  transform: translateX(120%); /* Mueve el formulario fuera de la vista hacia la derecha */
+  opacity: 0; /* Lo hace completamente transparente */
+  filter: blur(10px); /* Aplica un efecto de desenfoque */
+  transition: 0.5s ease; /* Añade una transición suave de 0.5s para transformaciones */
+  transition-delay: 0s; /* Sin retraso en el inicio de la transición */
+}
+
+/* Configuración inicial de la sección de información para el estado "register" */
+.wrapper .info-wrapper.register {
+  position: absolute; /* Posiciona la sección en relación al contenedor principal */
+  top: 0; /* Alinea la sección en la parte superior del contenedor */
+  width: 40%; /* Ocupa el 40% del ancho del contenedor */
+  height: 100%; /* Ocupa toda la altura del contenedor */
+  display: flex; /* Activa el modelo de caja flexible */
+  flex-direction: column; /* Coloca los elementos hijos en una columna */
+  justify-content: center; /* Centra los elementos hijos verticalmente */
+  align-items: center; /* Centra los elementos hijos horizontalmente */
+  color: #ffffff; /* Texto negro */
+  padding: 0 20px; /* Espaciado interno lateral */
+  text-align: center; /* Centra el texto dentro de la sección */
+  pointer-events: none; /* Desactiva la interacción del usuario */
+  transform: translateX(120%); /* Desplaza la sección fuera de la vista hacia la derecha */
+  opacity: 0; /* Lo hace completamente transparente */
+  filter: blur(10px); /* Aplica un efecto de desenfoque */
+  transition: 0.5s ease; /* Añade una transición suave de 0.5s para transformaciones */
+  transition-delay: 0s; /* Sin retraso en el inicio de la transición */
+}
+
+/* Configuración inicial del formulario de inicio de sesión */
+.wrapper .form-wrapper.login {
+  transform: translateX(0); /* Coloca el formulario en su posición inicial (visible) */
+  opacity: 1; /* Totalmente visible */
+  filter: blur(0); /* Sin desenfoque */
+  transition: 0.5s ease; /* Transición suave para transformaciones */
+  transition-delay: 0.5s; /* Retrasa el inicio de la transición 0.5s */
+}
+
+/* Configuración inicial de la sección de información para el estado "login" */
+.wrapper .info-wrapper.login {
+  transform: translateX(0); /* Coloca la sección en su posición inicial (visible) */
+  opacity: 1; /* Totalmente visible */
+  filter: blur(0); /* Sin desenfoque */
+  transition: 0.5s ease; /* Transición suave para transformaciones */
+  transition-delay: 0.5s; /* Retrasa el inicio de la transición 0.5s */
+}
+
+
+/* Eliminar info-wrapper en pantallas pequeñas */
+@media (max-width: 799px) {
+  .wrapper .info-wrapper {
+    display: none; /* Ocultar el info-wrapper */
+  }
+
+  .wrapper .info-wrapper.register {
+    display: none; /* Ocultar el info-wrapper */
+  }
+
+  .wrapper .form-wrapper {
+    width: 100%; /* Asegurar que el formulario ocupe todo el ancho */
+  }
+
+  /* Ajustar el formulario y centrado en pantallas pequeñas */
+  .title {
+    font-size: 28px; /* Ajustar tamaño de título */
+  }
+
+  .username-input {
+    margin-bottom: 30px; /* Espacio adicional para el campo de nombre */
+  }
+
+  .email-input {
+    margin-bottom: 30px; /* Espacio adicional para el campo de email */
+  }
+  
+  .password-input {
+    margin-bottom: 20px; /* Espacio adicional para el campo de contraseña */
+  }
+
+  
+
+
+}
+
+/* Ajuste para pantallas en horizontal con altura menor a 450px */
+@media (max-height: 450px) and (orientation: landscape) {
+
+  
+  .wrapper {
+    height: 400px;
+  }
+
+ /* Cambiar tamaño del ícono de usuario */
+.input-box i.fa-user {
+  font-size: 15px; /* Tamaño personalizado */
+}
+
+/* Cambiar tamaño del ícono de la cerradura */
+.input-box i.fa-lock {
+  font-size: 15px; /* Tamaño personalizado */
+}
+
+/* Cambiar tamaño del ícono del correo */
+.input-box i.fa-envelope {
+  font-size: 15px; /* Tamaño personalizado */
+}
+
+.eye-icon i {
+  font-size: 15px; /* Ajusta el tamaño según lo necesites */
+}
+
+  .input-box {
+    margin: 15px 0;
+  }
+  
+  
+  /* Ajuste de la altura de .form-wrapper */
+  .wrapper .form-wrapper {
+    height: 100%; /* Asegurar que el formulario ocupe el 100% del alto disponible */
+  }
+
+  /* Reducir el tamaño del título */
+  .title {
+    font-size: 18px; /* Reducir tamaño del título */
+  }
+
+  .input-box label {
+    font-size: 15px;
+  }
+
+  /* Reducir tamaño de los inputs */
+  .input-box input {
+    font-size: 15px; /* Reducir tamaño de texto en los inputs */
+  }
+
+  /* Reducir tamaño del botón */
+  .btn {
+    font-size: 15px; /* Reducir tamaño del botón */
+  }
+
+  /* Reducir tamaño de los enlaces */
+  .link {
+    font-size: 12px; /* Reducir tamaño de los enlaces */
+  }
+
+  /* Ocultar la sección .info-wrapper */
+  .wrapper .info-wrapper {
+    display: none; /* Ocultar la sección de info para ahorrar espacio */
+  }
+
+  .email-input-login {
+    margin-bottom: 30px; /* Espacio adicional para el campo de email */
+  }
+  
+  .password-input-login {
+    margin-bottom: 20px; /* Espacio adicional para el campo de contraseña */
+  }
+}
+
+/* Ajuste para pantallas en horizontal con altura menor a 350px */
+@media (max-height: 400px) and (orientation: landscape) {
+
+
+  .input-box {
+    margin: 10px 0;
+  }
+
+  .wrapper {
+    height: 350px;
+  }
+  
+  /* Ajuste de la altura de .form-wrapper */
+  .wrapper .form-wrapper {
+    height: 100%; /* Asegurar que el formulario ocupe el 100% del alto disponible */
+  }
+
+   /* Cambiar tamaño del ícono de usuario */
+.input-box i.fa-user {
+  font-size: 10px; /* Tamaño personalizado */
+}
+
+/* Cambiar tamaño del ícono de la cerradura */
+.input-box i.fa-lock {
+  font-size: 10px; /* Tamaño personalizado */
+}
+
+/* Cambiar tamaño del ícono del correo */
+.input-box i.fa-envelope {
+  font-size: 10px; /* Tamaño personalizado */
+}
+
+.eye-icon i {
+  font-size: 10px; /* Ajusta el tamaño según lo necesites */
+}
+  /* Reducir aún más el tamaño del título */
+  .title {
+    font-size: 10px; /* Reducir tamaño del título */
+  }
+
+  .input-box label {
+    font-size: 10px;
+  }
+
+  /* Reducir tamaño de los inputs */
+  .input-box input {
+    font-size: 10px; /* Reducir tamaño de texto en los inputs */
+  }
+
+  /* Reducir tamaño del botón */
+  .btn {
+    font-size: 10px; /* Reducir tamaño del botón */
+  }
+
+  /* Reducir tamaño de los enlaces */
+  .link {
+    font-size: 8px; /* Reducir tamaño de los enlaces */
+  }
+
+  /* Ocultar la sección .info-wrapper */
+  .wrapper .info-wrapper {
+    display: none; /* Ocultar la sección de info para ahorrar espacio */
+  }
+}
+
+
+.error-message {
   position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #ff9800; /* Naranja claro */
-  transition: 0.5s;
+  font-size: 12px;
+  color: red;
 }
 
-.input-box input:focus ~ i,
-.input-box input:valid ~ i {
-  color: #ff9800; /* Naranja claro */
+/* Ajustes para los diferentes campos (email, username, password) */
+.email-input {
+  margin-bottom: 30px; /* Espacio adicional para el campo de email */
 }
 
-.eye-icon {
-  right: 0px; /* Ajuste para mover el icono del ojo más a la derecha */
+.username-input {
+  margin-bottom: 30px; /* Espacio adicional para el campo de nombre */
 }
 
-/* Adicionales para el estilo hover en íconos y enlaces */
-.link a:hover {
-  color: #fb8c00; /* Naranja claro */
+.password-input {
+  margin-bottom: 20px; /* Espacio adicional para el campo de contraseña */
 }
 
-.input-box input:focus ~ button i {
-  color: #ff9800; /* Naranja claro para el ícono del ojo al enfocarse */
+.error-login{
+  margin-bottom: 15px; /* Añade un margen inferior de 15px */
+}
+
+/* Margen superior específico para el campo de Correo */
+.email-input-login {
+  margin-bottom: 40px; /* Ajusta el valor según tus necesidades */
+}
+
+/* Margen superior específico para el campo de Contraseña */
+.password-input-login {
+  margin-bottom: 35px; /* Ajusta el valor según tus necesidades */
 }

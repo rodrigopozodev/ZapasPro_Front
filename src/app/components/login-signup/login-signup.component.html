@@ -1,10 +1,5 @@
-<div class="flex items-center justify-center min-h-screen bg-[#f3e8d5]">
+<div class="flex items-center justify-center min-h-screen bg-[#fffbeb]">
   <div class="wrapper max-w-[750px] w-full bg-white rounded-lg shadow-lg p-8 relative overflow-hidden" [ngClass]="{'active': isFormActive}">
-   <!-- Fondo de la sección activa con logo centrado en grande -->
-   <span class="bg1 absolute top-[-4px] right-0 w-[850px] h-[600px] bg-black transform rotate-12 skew-y-[40deg] origin-bottom-right transition-all duration-1500 ease-in-out" [ngClass]="{'active': isFormActive}">
-   
-  </span>
-
 
     <!-- Formulario de Login -->
     <div class="form-wrapper login absolute top-0 left-0 w-[50%] h-full flex flex-col justify-center px-[40px] pr-[60px] mb-8 transition-all ease-in-out" [ngClass]="{'active': !isFormActive}">
@@ -12,42 +7,44 @@
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         
         <!-- Input de Correo -->
-        <div class="input-box relative mb-6 flex flex-col">
-          <input type="text" [(ngModel)]="email" name="email" required
-                 class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-          <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
-          <i class="fas fa-envelope absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
-          <!-- Error de correo (espacio reservado para que no mueva los elementos) -->
-          <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="emailError">{{ emailError }}</div>
-        </div>
+<div class="input-box email-input-login relative mb-6 flex flex-col">
+  <input type="text" [(ngModel)]="email" name="email" required
+         class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
+  <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
+  <i class="fas fa-envelope absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
+  <!-- Error de correo -->
+  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="emailError">{{ emailError }}</div>
+</div>
 
-        <!-- Input de Contraseña con Icono de Ojo -->
-        <div class="input-box relative mb-6 flex items-center">
-          <input
-            [type]="passwordVisible ? 'text' : 'password'"
-            id="password"
-            [(ngModel)]="password"
-            name="password"
-            class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500"
-            required
-            (focus)="onInputFocus()"
-            (blur)="onInputBlur()"
-          />
-          <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
+<!-- Input de Contraseña con Icono de Ojo -->
+<div class="input-box password-input-login relative mb-6 flex items-center">
+  <input
+    [type]="passwordVisible ? 'text' : 'password'"
+    id="password"
+    [(ngModel)]="password"
+    name="password"
+    class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500"
+    required
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
+  />
+  <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
 
-          <!-- Icono de ojo -->
-          <button type="button" (click)="togglePasswordVisibility()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none eye-icon">
-            <i class="fas" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
-          </button>
-          <!-- Error de contraseña (espacio reservado) -->
-          <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="passwordError" style="white-space: nowrap;">
-            {{ passwordError }}</div>
-        </div>
+  <!-- Icono de ojo -->
+  <button type="button" (click)="togglePasswordVisibility()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none eye-icon">
+    <i class="fas" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+  </button>
+  <!-- Error de contraseña -->
+  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="passwordError" style="white-space: nowrap;">
+    {{ passwordError }}</div>
+</div>
+
 
         <!-- Error general de login -->
-        <div *ngIf="loginError" class="error-message text-red-500 mt-4 text-sm">
+        <div *ngIf="loginError" class="text-red-500 text-sm error-login">
           {{ loginError }}
         </div>
+        
 
         <!-- Botón de Login -->
         <button
@@ -70,101 +67,63 @@
       <p class="text-base">Inicia sesión para sumergirte en una experiencia unica</p>
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo1" class="logo1" />
     </div>
-  
-
-<style>
-  .logo1 {
-    position: absolute; /* Permite posicionar el logo de forma específica */
-    top: 80%; /* Mueve el logo hacia el centro vertical */
-    left: 10%; /* Mueve el logo hacia el centro horizontal */
-    transform: translate(-50%, -50%); /* Ajusta el logo para que esté perfectamente centrado */
-    width: 150px; /* Ajusta el tamaño del logo */
-    transition: all 0.3s ease-in-out; /* Agrega transición para suavizar el movimiento */
-  }
-</style>
-
 
     <span class="bg2 absolute top-full left-[250px] w-[850px] h-[700px] bg-white transform rotate-0 skew-y-0 origin-bottom-left transition-all duration-1500 ease-in-out" [ngClass]="{'active': isFormActive}"></span>
 
     <!-- Formulario de Registro -->
+    <div class="info-wrapper register">
+      <h2 class="text-3xl font-semibold">¡Bienvenido a la Familia!</h2>
+      <p>¡Únete rapidamente a nosotros que las ofertas no esperan!</p>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo">
+    </div>
     <div class="form-wrapper register absolute top-0 right-0 w-[50%] h-full flex flex-col justify-center px-[60px] pl-[40px] pointer-events-none transform translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': isFormActive}">
       <h2 class="title text-2xl font-semibold text-center mb-6">Regístrate</h2>
-      <form (ngSubmit)="register()" #registerForm="ngForm" class="space-y-4 animate-slideUp">
-
-        <!-- Campo de Email en el formulario de Registro -->
-<div class="input-box relative mb-6 flex flex-col pb-10"> <!-- Se añadió padding-bottom -->
+      <form (ngSubmit)="register()" #registerForm="ngForm" class="animate-slideUp">
+        
+<!-- Campo de Email en el formulario de Registro -->
+<div class="input-box email-input relative">
   <input type="text" [(ngModel)]="email" name="email" required
-         class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-  <label for="email" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Correo Electrónico</label>
-  <i class="fas fa-envelope absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
-  <!-- Error de correo (espacio reservado para que no mueva los elementos) -->
-  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="emailError">{{ emailError }}</div>
+         class="input-field" />
+  <label for="email" class="label">Correo Electrónico</label>
+  <i class="fas fa-envelope icon"></i>
+  <div class="error-message" *ngIf="emailError">{{ emailError }}</div>
 </div>
 
 <!-- Campo de Nombre de Usuario en el formulario de Registro -->
-<div class="input-box relative mb-6 flex flex-col pb-10"> <!-- Se añadió padding-bottom -->
+<div class="input-box username-input relative">
   <input type="text" [(ngModel)]="username" name="username" required
-         class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500" />
-  <label for="username" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Nombre de Usuario</label>
-  <i class="fas fa-user absolute top-1/2 right-3 transform -translate-y-1/2 text-black transition duration-500"></i>
-  <!-- Error de nombre de usuario (espacio reservado) -->
-  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="usernameError" style="white-space: nowrap;">{{ usernameError }}</div>
+         class="input-field" />
+  <label for="username" class="label">Nombre</label>
+  <i class="fas fa-user icon"></i>
+  <div class="error-message" *ngIf="usernameError">{{ usernameError }}</div>
 </div>
 
 <!-- Input de Contraseña con Icono de Ojo en el formulario de Registro -->
-<div class="input-box relative mb-6 flex items-center pb-10"> <!-- Se añadió padding-bottom -->
-  <input
-    [type]="passwordVisible ? 'text' : 'password'"
-    id="password"
-    [(ngModel)]="password"
-    name="password"
-    class="w-full h-full bg-none border-b-2 border-black focus:border-[#4070f4] text-black font-medium px-3 transition duration-500"
-    required
-    (focus)="onInputFocus()"
-    (blur)="onInputBlur()"
-  />
-  <label for="password" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black transition-all duration-500">Contraseña</label>
-
-  <!-- Icono de ojo -->
-  <button type="button" (click)="togglePasswordVisibility()" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black hover:text-[#4070f4] focus:outline-none eye-icon">
+<div class="input-box password-input relative">
+  <input [type]="passwordVisible ? 'text' : 'password'" id="password" [(ngModel)]="password"
+         name="password" class="input-field" required (focus)="onInputFocus()" (blur)="onInputBlur()" />
+  <label for="password" class="label">Contraseña</label>
+  <button type="button" (click)="togglePasswordVisibility()" class="eye-icon">
     <i class="fas" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
   </button>
-  <!-- Error de contraseña (espacio reservado) -->
-  <div class="error-message absolute left-0 right-0 top-full mt-1 text-sm text-red-500" *ngIf="passwordError">{{ passwordError }}</div>
+  <div class="error-message" *ngIf="passwordError">{{ passwordError }}</div>
 </div>
 
-<!-- Botón de Registro -->
-<button type="submit" class="btn w-full py-3 bg-transparent border-2 border-black rounded-[40px] text-black font-semibold cursor-pointer hover:shadow-xl transition duration-500">
-  Regístrate
-</button>
 
-<!-- Enlace a Iniciar Sesión -->
-<div class="link mt-4 text-center text-sm">
-  <p>¿Ya tienes cuenta? <a href="#" class="text-[#4070f4]" (click)="toggleForm()">Inicia sesión aquí</a></p>
-</div>
+        <!-- Botón de Registro -->
+        <button type="submit" class="btnRegistro">
+          Regístrate
+        </button>
+        
+        <div class="link mt-4 text-center text-sm">
+          <p>¿Ya tienes cuenta?  <a href="#" class="text-[#4070f4] hover:text-[#4070f4]" (click)="toggleForm()">Inicia sesión aquí</a></p>
+        </div>
       </form>
-    </div>
 
-    <!-- Información de Registro -->
-    <div class="info-wrapper register absolute top-0 left-0 w-[50%] h-full flex flex-col justify-center text-white text-left px-[150px] pb-[60px] transform -translate-x-[120%] opacity-0 filter blur-[10px] transition-all ease-in-out" [ngClass]="{'active': isFormActive}">
-      <h2 class="text-3xl font-semibold">¡Bienvenido a la Familia!</h2>
-      <p class="text-base">¡Únete a nosotros creando una cuenta en tan solo unos clics!</p>
-      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFHSQ-LAKogbkNtKMa6_cuSlKdETJNjqcqyTIG9t_3d9Sn3kP9IzcKTsesfHR_eb5ndsbkg6JkNy_FGAm5XlIfr2bcjewYc8fbWn-orT1YBwiLLg0VYs7qvbfbvS7paqzsA8FiN70WgA6wIlIyV1EIrkYmgqn03_TN07cyVPfkFcd6frsGMNqHlBG_Aoga/s320/DALL%C2%B7E%202024-10-26%2011.31.56%20-%20A%20modern%20and%20minimalistic%20logo%20for%20'ZP'%20featuring%20a%20stylish%20sneaker%20icon%20integrated%20within%20the%20design.%20Use%20cream%20and%20warm%20yellow%20colors%20with%20a%20light%20c-fotor-20241026113825.png" alt="Logo" class="logo2" />
+      <span class="bg3 absolute top-full right-[250px] w-[850px] h-[700px] bg-white transform rotate-0 skew-y-0 origin-bottom-left transition-all duration-1500 ease-in-out" [ngClass]="{'active': !isFormActive}"></span>
     </div>
-    
-
-    <style>
-      .logo2 {
-        position: absolute; /* Permite posicionar el logo de forma específica */
-        top: 80%; /* Mueve el logo hacia el centro vertical */
-        left: 85%; /* Mueve el logo hacia el centro horizontal */
-        transform: translate(-50%, -50%); /* Ajusta el logo para que esté perfectamente centrado */
-        width: 150px; /* Ajusta el tamaño del logo */
-        transition: all 0.3s ease-in-out; /* Agrega transición para suavizar el movimiento */
-      }
-    </style>
   </div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<!-- Font Awesome (para iconos) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />

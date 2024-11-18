@@ -145,13 +145,13 @@ export class LoginSignupComponent {
 
     // Validación de campos
     if (!this.username) {
-      this.usernameError = 'Por favor, ingrese un nombre de usuario.';
+      this.usernameError = 'Por favor, ingrese un nombre.';
     } else if (/\s/.test(this.username)) {
-      this.usernameError = 'El nombre de usuario no debe contener espacios.';
+      this.usernameError = 'El nombre de usuario no debe tener espacios.';
     } else if (!/^[A-Z]/.test(this.username)) {
-      this.usernameError = 'El nombre de usuario debe comenzar con una letra mayúscula.';
+      this.usernameError = 'El nombre debe comenzar con mayúscula.';
     } else if (!/^[A-Za-z]+$/.test(this.username)) {
-      this.usernameError = 'El nombre de usuario solo debe contener letras sin números ni signos.';
+      this.usernameError = 'El nombre no puede tener números ni signos.';
     } else {
       this.usernameValid = true;
     }
@@ -159,21 +159,26 @@ export class LoginSignupComponent {
     if (!this.email) {
       this.emailError = 'Por favor, rellene este campo.';
     } else if (/[A-Z]/.test(this.email)) {
-      this.emailError = 'El correo electrónico no debe contener mayúsculas.';
-    } else if (!this.email.includes('@') || !this.email.includes('.')) {
-      this.emailError = 'El correo electrónico debe contener al menos un "@" y un "."';
+      this.emailError = 'No se permiten mayúsculas.';
+    } else if (/\s/.test(this.email)) {
+      this.emailError = 'El correo no puede tener espacios.';
+    } else if (!this.email.includes('@')) {
+      this.emailError = 'El correo debe tener al menos un "@"';
+    } else if (!this.email.includes('.')) {
+      this.emailError = 'El correo debe tener al menos un "."';
     } else {
       this.emailValid = true;
     }
+    
 
     if (!this.password) {
       this.passwordError = 'Por favor, rellene este campo.';
     } else if (this.password.length < 8) {
-      this.passwordError = 'La contraseña debe tener al menos 8 caracteres.';
+      this.passwordError = 'Contraseña muy corta.';
     } else if (!/[0-9]/.test(this.password)) {
-      this.passwordError = 'La contraseña debe incluir al menos un número.';
+      this.passwordError = 'Debes incluir al menos un número.';
     } else if (!/[A-Z]/.test(this.password)) {
-      this.passwordError = 'La contraseña debe incluir al menos una letra mayúscula.';
+      this.passwordError = 'Debes tener al menos una mayúscula.';
     } else {
       this.passwordValid = true;
     }
