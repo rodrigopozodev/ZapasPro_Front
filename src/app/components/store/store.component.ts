@@ -6,9 +6,9 @@ import { Stock } from '../../interfaces/stock.interfaces';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FavoritesService } from '../../services/favorites.service';
-import { UserService } from '../../services/user.service';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-store',
@@ -34,13 +34,18 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   uniqueGenders: string[] = [];
   uniqueMarcas: string[] = [];
   uniqueTallas: string[] = [];
-  productsPerRow: number = 4;
+  productsPerRow: number = 4; // Valor predeterminado
 
   // Variables de paginación
   currentPage: number = 1;
   itemsPerPage: number = 8;
   totalPages: number = 1;
   paginatedProducts: Product[] = [];
+
+  // Variables para los botones de cantidad de productos por fila
+  showButton4: boolean = true;
+  showButton6: boolean = true;
+ 
 
   // Carousel
   currentSlideIndex: number = 0;
@@ -58,12 +63,13 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
     private stockService: StockService,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: object,
-    private favoritesService: FavoritesService  ) {}
-
+    private favoritesService: FavoritesService  
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
     this.loadStock();
+    this.updateLayout();  // Aseguramos que el layout esté correcto al iniciar
   }
 
   ngAfterViewInit() {
@@ -71,6 +77,34 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.startCarousel();
     }
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.updateLayout();
+  }
+
+   // Función que ajusta la cantidad de productos por fila y los botones visibles
+   updateLayout() {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth < 800) {
+      this.productsPerRow = 2; // 2 productos por fila en pantallas menores a 800px
+      this.showButton4 = false;
+      this.showButton6 = false;
+    } else if (windowWidth < 1100) {
+      this.productsPerRow = 4; // 4 productos por fila en pantallas menores a 1100px
+      this.showButton4 = true;
+      this.showButton6 = false; // Ocultar el botón de 6 si el ancho es menor a 1100px
+    } else {
+      this.productsPerRow = 6; // 6 productos por fila en pantallas mayores a 1100px
+      this.showButton4 = true;
+      this.showButton6 = true; // Mostrar ambos botones si el ancho es mayor a 1100px
+    }
+
+    this.itemsPerPage = this.productsPerRow * 2; // Ajustar según el número de productos por fila
+    this.calculatePagination();
+  }
+ 
 
   loadProducts() {
     this.productService.getProducts().subscribe({
@@ -130,6 +164,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedSort = '';
     this.applyFilters();  // Volver a aplicar los filtros para ver todos los productos
   }
+
   calculatePagination() {
     this.totalPages = Math.ceil(this.filteredProducts.length / this.itemsPerPage);
     this.currentPage = 1;

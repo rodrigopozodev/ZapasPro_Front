@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{html,ts}", // Asegúrate de que está apuntando a los archivos correctos
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xl-small': '1100px', // Media query personalizada para 1100px
+      },
+    },
   },
   plugins: [],
-}
+};

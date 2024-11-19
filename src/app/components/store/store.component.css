@@ -43,16 +43,33 @@
   height: 100px; /* Altura del contenedor de texto y botón */
 }
 
-/* Estilo personalizado para la animación de zoom */
-@keyframes zoom {
-  0%, 100% {
-      transform: scale(1);
+/* Estilos para pantallas más pequeñas */
+@media screen and (max-width: 550px) {
+  /* Cambiar la dirección de flex y centrar los elementos */
+  .store .flex.mx-4.mt-8 {
+    display: flex;
+    flex-direction: column; /* Cambiar la dirección de los elementos a columna */
+    align-items: center; /* Centrar los elementos en el contenedor */
+    z-index: 10; /* Asegura que este div esté por encima de otros elementos */
+    margin-top: 1rem; /* Subir más el contenedor, ajusta este valor según sea necesario */
   }
-  50% {
-      transform: scale(0.2); /* Reduce más el tamaño */
-  }
-}
 
-.animate-zoom {
-  animation: zoom 1.5s ease-in-out infinite;
+  /* Posicionar y centrar la barra de filtros debajo de la barra de navegación y encima de productos */
+  .filters {
+    position: relative; /* Mantiene los filtros en una posición estática dentro del contenedor */
+    z-index: 10; /* Asegura que los filtros estén por encima de otros elementos si es necesario */
+    width: 90%; /* Ajusta el ancho para que los filtros no toquen los bordes */
+    max-height: 50vh; /* Ajusta la altura de los filtros */
+    overflow-y: auto; /* Permite el desplazamiento interno si el contenido de los filtros es más grande */
+    background-color: white; /* Fondo blanco para los filtros */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombras opcionales */
+    margin-bottom: 10px; /* Añade un margen inferior para separación */
+    top: -5px; /* Ajuste de la posición hacia arriba, para mover los filtros más cerca de la parte superior */
+    left: 4%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+  }
+
+  /* Ajustar la grilla de productos */
+  .product-grid {
+    width: 100%; /* Asegura que el grid ocupe todo el ancho disponible */
+  }
 }
