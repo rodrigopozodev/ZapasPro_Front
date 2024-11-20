@@ -7,7 +7,7 @@ import { Stock } from '../interfaces/stock.interfaces'; // Importa la interfaz S
   providedIn: 'root' // Hace que el servicio esté disponible en toda la aplicación
 })
 export class StockService {
-  private apiUrl = 'http://localhost:3000/api/stock'; // Define la URL de la API para obtener las entradas de stock
+  private apiUrl = 'https://zapaspro-back.onrender.com/api/stock'; // Define la URL de la API para obtener las entradas de stock
 
   constructor(private http: HttpClient) { } // Inyecta HttpClient en el constructor del servicio
 

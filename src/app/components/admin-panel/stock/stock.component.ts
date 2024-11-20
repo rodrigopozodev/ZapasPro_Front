@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./stock.component.css']
 })
 export class StockComponent {
-  private apiUrlStock = 'http://localhost:3000/api/stock';
+  private apiUrlStock = 'https://zapaspro-back.onrender.com/api/stock';
 
   showStock = false; 
   stockItems: Stock[] = []; 

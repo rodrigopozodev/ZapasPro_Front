@@ -7,8 +7,8 @@ import { Product } from '../interfaces/product.interface';
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/products'; // URL base para productos
-  private stockApiUrl = 'http://localhost:3000/api/stock/producto'; // URL base para stock
+  private apiUrl = 'https://zapaspro-back.onrender.com/api/products'; // URL base para productos
+  private stockApiUrl = 'https://zapaspro-back.onrender.com/api/stock/producto'; // URL base para stock
 
   constructor(private http: HttpClient) {}
 

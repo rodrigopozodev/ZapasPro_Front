@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/users';
+  private apiUrl = 'https://zapaspro-back.onrender.com/api/users';
   private authenticated = false;
   public userRole: string | null = null;
   private currentUser: any;

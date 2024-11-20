@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent {
-  private apiUrlUsers = 'http://localhost:3000/api/users';
+  private apiUrlUsers = 'https://zapaspro-back.onrender.com/api/users';
 
   users: User[] = [];
   paginatedUsers: User[] = [];

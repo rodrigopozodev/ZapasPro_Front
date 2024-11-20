@@ -20,7 +20,7 @@ interface GroupedImages {
   styleUrls: ['./image-selection.component.css'],
 })
 export class ImageSelectionComponent implements OnInit {
-  private apiUrlProducts = 'http://localhost:3000/api/products';
+  private apiUrlProducts = 'https://zapaspro-back.onrender.com/api/products';
   images: GroupedImages[] = [];
   filteredImages: GroupedImages[] = [];
   showButtons: boolean = true;

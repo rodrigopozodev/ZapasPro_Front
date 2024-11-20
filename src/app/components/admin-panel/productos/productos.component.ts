@@ -15,7 +15,7 @@ import { FormStateService } from '../../../services/form-state.service';
   styleUrls: ['./productos.component.css'],
 })
 export class ProductosComponent implements OnInit {
-  private apiUrlProducts = 'http://localhost:3000/api/products';
+  private apiUrlProducts = 'https://zapaspro-back.onrender.com/api/products';
 
   showProducts = false;
   products: Product[] = [];
