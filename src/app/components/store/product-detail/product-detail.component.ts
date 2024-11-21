@@ -116,14 +116,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 6.jpg' },
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 7.png' }
       ],
-      '/img/Nike Air Max Plus Drift blanco(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco(1) 7.png' }
+      '/img/Nike Air Max Plus Drift blanco 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift blanco 1 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift blanco 1 7.png' }
       ],
       '/img/Nike Air Max Plus Drift gris.png': [
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1.png' },
@@ -134,14 +134,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 6.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 6.png' },
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 7.png' }
       ],
-      '/img/Nike Air Max Plus Drift gris(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris(1) 7.png' }
+      '/img/Nike Air Max Plus Drift gris 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift gris 1 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift gris 1 7.png' }
       ],
       '/img/Nike Air Max Plus Drift marron.png': [
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift marron 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift marron 1.png' },
@@ -170,14 +170,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 6.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 6.png' },
         { thumbnail: '/img/galeria/Nike Air Max Plus Drift rojo 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift rojo 7.png' }
       ],
-      '/img/Nike Air Max Plus Drift negro(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro(1) 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro(1) 7.png' }
+      '/img/Nike Air Max Plus Drift negro 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 1.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 2.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 3.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 4.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 5.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 6.jpg', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Max Plus Drift negro 1 7.png', fullImage: '/img/galeria/Nike Air Max Plus Drift negro 1 7.png' }
       ],
       '/img/Nike Air Force 1 07 WB.png': [
         { thumbnail: '/img/galeria/Nike Air Force 1 07 WB 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 WB 1.png' },
@@ -215,14 +215,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 6.jpg' },
         { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 7.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 7.jpg' }
       ],
-      '/img/Nike Air Force 1 07 LV8 blanco(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 3.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 7.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco(1) 7.jpg' }
+      '/img/Nike Air Force 1 07 LV8 blanco 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 3.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 7.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 LV8 blanco 1 7.jpg' }
       ],
       '/img/Nike Air Force 1 07 negro.png': [
         { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1.png' },
@@ -233,14 +233,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro 6.jpg' },
         { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 7.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro 7.jpg' }
       ],
-      '/img/Nike Air Force 1 07 negro(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 3.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 3.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro(1) 7.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro(1) 7.png' }
+      '/img/Nike Air Force 1 07 negro 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 3.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 3.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 6.jpg', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 negro 1 7.png', fullImage: '/img/galeria/Nike Air Force 1 07 negro 1 7.png' }
       ],
       '/img/Nike Air Force 1 07 blanco.png': [
         { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1.png' },
@@ -250,14 +250,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 5.png' },
         { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 6.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 6.png' },
       ],
-      '/img/Nike Air Force 1 07 blanco(1).png': [
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 3.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 6.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 6.png' },
-        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco(1) 7.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco(1) 7.png' }
+      '/img/Nike Air Force 1 07 blanco 1 .png': [
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 1.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 2.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 3.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 4.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 5.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 6.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 6.png' },
+        { thumbnail: '/img/galeria/Nike Air Force 1 07 blanco 1 7.png', fullImage: '/img/galeria/Nike Air Force 1 07 blanco 1 7.png' }
       ],
       '/img/Nike Dunk Low Retro SE Leather-Suede gris.png': [
         { thumbnail: '/img/galeria/Nike Dunk Low Retro SE Leather-Suede gris 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro SE Leather-Suede gris 1.png' },
@@ -335,32 +335,32 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Dunk Low Retro rosa 6.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro rosa 6.jpg' },
         { thumbnail: '/img/galeria/Nike Dunk Low Retro rosa 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro rosa 7.png' }
       ],
-      '/img/Nike Dunk Low Retro azul(1).png': [
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 3.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 3.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 6.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 6.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(1) 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(1) 7.png' }
+      '/img/Nike Dunk Low Retro azul 1 .png': [
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 3.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 3.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 6.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 6.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 1 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 1 7.png' }
       ],
-      '/img/Nike Dunk Low Retro azul(2).png': [
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 1.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 2.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 3.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 3.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 4.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 5.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 6.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 6.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(2) 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(2) 7.png' },
+      '/img/Nike Dunk Low Retro azul 2 .png': [
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 1.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 2.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 3.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 3.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 4.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 5.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 6.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 6.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 2 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 2 7.png' },
        ],
-      '/img/Nike Dunk Low Retro azul(3).png': [
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 1.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 2.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 3.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 3.jpg' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 4.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 5.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 6.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul(3) 7.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul(3) 7.jpg' },
+      '/img/Nike Dunk Low Retro azul 3 .png': [
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 1.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 2.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 3.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 3.jpg' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 4.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 5.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 6.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro azul 3 7.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro azul 3 7.jpg' },
       ],
       '/img/Nike Dunk Low Retro multicolor.jpg': [
         { thumbnail: '/img/galeria/Nike Dunk Low Retro multicolor 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro multicolor 1.png' },
@@ -380,14 +380,14 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/Nike Dunk Low Retro rojo 6.png', fullImage: '/img/galeria/Nike Dunk Low Retro rojo 6.png' },
         { thumbnail: '/img/galeria/Nike Dunk Low Retro rojo 7.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro rojo 7.jpg' }
      ],
-      '/img/Nike Dunk Low Retro verde(1).png': [
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 1.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 2.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 3.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 3.jpg' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 4.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 5.png' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 6.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 6.jpg' },
-        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde(1) 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde(1) 7.png' }
+      '/img/Nike Dunk Low Retro verde 1 .png': [
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 1.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 2.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 2.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 3.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 3.jpg' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 4.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 4.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 5.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 5.png' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 6.jpg', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 6.jpg' },
+        { thumbnail: '/img/galeria/Nike Dunk Low Retro verde 1 7.png', fullImage: '/img/galeria/Nike Dunk Low Retro verde 1 7.png' }
      ],
       '/img/Nike Dunk Low Retro morado.png': [
         { thumbnail: '/img/galeria/Nike Dunk Low Retro morado 1.png', fullImage: '/img/galeria/Nike Dunk Low Retro morado 1.png' },
@@ -422,12 +422,12 @@ export class ProductDetailComponent implements OnInit {
     if (productName === "Nike Air Max Plus Drift") {
       return [
         { imageUrl: 'img/Nike Air Max Plus Drift rojo.png', productId: 1 },
-        { imageUrl: 'img/Nike Air Max Plus Drift negro(1).png', productId: 2 },
+        { imageUrl: 'img/Nike Air Max Plus Drift negro 1 .png', productId: 2 },
         { imageUrl: 'img/Nike Air Max Plus Drift negro.png', productId: 3 },
         { imageUrl: 'img/Nike Air Max Plus Drift marron.png', productId: 4 },
-        { imageUrl: 'img/Nike Air Max Plus Drift gris(1).png', productId: 5 },
+        { imageUrl: 'img/Nike Air Max Plus Drift gris 1 .png', productId: 5 },
         { imageUrl: 'img/Nike Air Max Plus Drift gris.png', productId: 6 },
-        { imageUrl: 'img/Nike Air Max Plus Drift blanco(1).png', productId: 7 },
+        { imageUrl: 'img/Nike Air Max Plus Drift blanco 1 .png', productId: 7 },
         { imageUrl: 'img/Nike Air Max Plus Drift blanco.png', productId: 8 },
         { imageUrl: 'img/Nike Air Max Plus Drift azul.png', productId: 9 }
       ];
@@ -437,15 +437,15 @@ export class ProductDetailComponent implements OnInit {
         { imageUrl: 'img/Nike Air Force 1 07 LV8 verde.jpg', productId: 11 },
         { imageUrl: 'img/Nike Air Force 1 07 LV8 negro.png', productId: 12 },
         { imageUrl: 'img/Nike Air Force 1 07 LV8 blanco.png', productId: 13 },
-        { imageUrl: 'img/Nike Air Force 1 07 LV8 blanco(1).png', productId: 14 },
+        { imageUrl: 'img/Nike Air Force 1 07 LV8 blanco 1 .png', productId: 14 },
       ];
     }
     if (productName === "Nike Air Force 1 07") {
       return [
         { imageUrl: 'img/Nike Air Force 1 07 negro.png', productId: 15 },
-        { imageUrl: 'img/Nike Air Force 1 07 negro(1).png', productId: 16 },
+        { imageUrl: 'img/Nike Air Force 1 07 negro 1 .png', productId: 16 },
         { imageUrl: 'img/Nike Air Force 1 07 blanco.png', productId: 17 },
-        { imageUrl: 'img/Nike Air Force 1 07 blanco(1).png', productId: 18 },
+        { imageUrl: 'img/Nike Air Force 1 07 blanco 1 .png', productId: 18 },
       ];
     }
     if (productName === "Nike Dunk Low Retro SE Leather-Suede") {
@@ -462,12 +462,12 @@ export class ProductDetailComponent implements OnInit {
         { imageUrl: 'img/Nike Dunk Low Retro azul.png', productId: 24 },
         { imageUrl: 'img/Nike Dunk Low Retro verde.png', productId: 25 },
         { imageUrl: 'img/Nike Dunk Low Retro rosa.png', productId: 26 },
-        { imageUrl: 'img/Nike Dunk Low Retro azul(1).png', productId: 27 },
-        { imageUrl: 'img/Nike Dunk Low Retro azul(2).png', productId: 28 },
-        { imageUrl: 'img/Nike Dunk Low Retro azul(3).png', productId: 29 },
+        { imageUrl: 'img/Nike Dunk Low Retro azul 1 .png', productId: 27 },
+        { imageUrl: 'img/Nike Dunk Low Retro azul 2 .png', productId: 28 },
+        { imageUrl: 'img/Nike Dunk Low Retro azul 3 .png', productId: 29 },
         { imageUrl: 'img/Nike Dunk Low Retro multicolor.jpg', productId: 30 },
         { imageUrl: 'img/Nike Dunk Low Retro rojo.png', productId: 31 },
-        { imageUrl: 'img/Nike Dunk Low Retro verde(1).png', productId: 32 },
+        { imageUrl: 'img/Nike Dunk Low Retro verde 1 .png', productId: 32 },
         { imageUrl: 'img/Nike Dunk Low Retro morado.png', productId: 33 },
         
       ];
