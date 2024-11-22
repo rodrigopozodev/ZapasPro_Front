@@ -44,7 +44,7 @@
 }
 
 /* Estilos para pantallas más pequeñas */
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 750px) {
   /* Cambiar la dirección de flex y centrar los elementos */
   .store .flex.mx-4.mt-8 {
     display: flex;
@@ -65,11 +65,329 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombras opcionales */
     margin-bottom: 10px; /* Añade un margen inferior para separación */
     top: -5px; /* Ajuste de la posición hacia arriba, para mover los filtros más cerca de la parte superior */
-    left: 4%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+    left: 3%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
   }
 
   /* Ajustar la grilla de productos */
   .product-grid {
     width: 100%; /* Asegura que el grid ocupe todo el ancho disponible */
+  }
+}
+
+/* Ajustes para pantallas de 450px */
+@media (max-width: 450px) {
+  body {
+    font-size: 90%;
+  }
+
+  .store {
+    padding: 5px;
+  }
+
+  .carrusel {
+    margin: 0 5px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 5px 10px;
+  }
+
+  svg, i {
+    width: 20px;
+    height: 20px;
+    font-size: 1.2rem; /* Ajuste para íconos */
+  }
+
+  span {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #f59e0b; /* Amarillo cálido */
+  }
+
+  .carousel-item img {
+    height: auto;
+  }
+
+  .product-grid {
+    gap: 8px;
+  }
+
+  .product-card {
+    padding: 10px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 10px;
+  }
+}
+
+/* Ajustes para pantallas de 400px */
+@media (max-width: 400px) {
+  body {
+    font-size: 85%;
+  }
+
+  .store {
+    padding: 5px;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+  }
+
+  button {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 4px 8px;
+  }
+
+  svg, i {
+    width: 18px;
+    height: 18px;
+    font-size: 1.1rem;
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+
+  .product-grid {
+    gap: 6px;
+  }
+
+  .product-card {
+    padding: 8px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 8px;
+  }
+}
+
+/* Ajustes para pantallas de 350px */
+@media (max-width: 350px) {
+  body {
+    font-size: 80%;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.8rem;
+  }
+
+  button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 3px 7px;
+  }
+
+  svg, i {
+    width: 16px;
+    height: 16px;
+    font-size: 1rem;
+  }
+
+  span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+
+  .product-grid {
+    gap: 4px;
+  }
+
+  .product-card {
+    padding: 6px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 6px;
+    left: 4%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+
+  }
+}
+
+/* Ajustes para pantallas de 300px */
+@media (max-width: 300px) {
+  body {
+    font-size: 75%;
+  }
+
+  h2 {
+    font-size: 0.95rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+  }
+
+  button {
+    padding: 3px 7px;
+    font-size: 0.75rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 2px 6px;
+  }
+
+  svg, i {
+    width: 14px;
+    height: 14px;
+    font-size: 0.9rem;
+  }
+
+  span {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+
+  .product-grid {
+    gap: 3px;
+  }
+
+  .product-card {
+    padding: 5px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 5px;
+    left: 6%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+
+  }
+}
+
+/* Ajustes para pantallas de 250px */
+@media (max-width: 250px) {
+  body {
+    font-size: 70%;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+  }
+
+  p {
+    font-size: 0.7rem;
+  }
+
+  button {
+    padding: 2px 5px;
+    font-size: 0.7rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 2px 4px;
+  }
+
+  svg, i {
+    width: 12px;
+    height: 12px;
+    font-size: 0.8rem;
+  }
+
+  span {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+
+  .product-grid {
+    gap: 2px;
+  }
+
+  .product-card {
+    padding: 4px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 4px;
+    left: 8%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+
+  }
+}
+
+/* Ajustes para pantallas de 200px */
+@media (max-width: 210px) {
+  body {
+    font-size: 65%;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+  }
+
+  p {
+    font-size: 0.65rem;
+  }
+
+  button {
+    padding: 1px 4px;
+    font-size: 0.65rem;
+  }
+
+  .bg-yellow-300 {
+    padding: 1px 3px;
+  }
+
+  svg, i {
+    width: 10px;
+    height: 10px;
+    font-size: 0.7rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+
+  .product-grid {
+    gap: 1px;
+  }
+
+  .product-card {
+    padding: 3px;
+  }
+
+  .filters {
+    width: 90%;
+    padding: 3px;
+    left: 10%; /* Desplaza los filtros hacia la derecha (ajusta este valor según lo necesites) */
+
   }
 }

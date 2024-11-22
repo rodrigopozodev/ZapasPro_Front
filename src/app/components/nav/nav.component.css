@@ -43,3 +43,165 @@ nav {
 .submenu li:hover {
   color: #F97316;
 }
+
+@media (max-width: 450px) {
+  nav {
+    padding: 5px;
+  }
+
+  nav img {
+    height: 40px; /* Reduce el tamaño del logo */
+  }
+
+  .container {
+    flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
+    padding: 5px;
+  }
+
+  .user-greeting {
+    display: none; /* Oculta el saludo en pantallas pequeñas */
+  }
+
+  .dropdown {
+    width: 90%; /* Ajusta el ancho del menú desplegable */
+  }
+
+  .section-dropdown h5 {
+    font-size: 1rem;
+  }
+
+  .section-dropdown ul {
+    font-size: 0.9rem;
+  }
+
+  .bi {
+    font-size: 1.25rem; /* Reduce los iconos */
+  }
+}
+
+@media (max-width: 400px) {
+  nav {
+    padding: 4px;
+  }
+
+  nav img {
+    height: 35px; /* Logo más pequeño */
+  }
+
+  .container {
+    justify-content: center; /* Centra los elementos */
+  }
+
+  .dropdown {
+    width: 85%; /* Menú desplegable más compacto */
+  }
+
+  .bi {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 350px) {
+  nav {
+    padding: 3px;
+  }
+
+  nav img {
+    height: 30px; /* Reduce el tamaño del logo */
+  }
+
+  .bi {
+    font-size: 1rem; /* Iconos aún más pequeños */
+  }
+
+  .dropdown {
+    width: 80%; /* Menú desplegable más estrecho */
+  }
+
+  .section-dropdown h5 {
+    font-size: 0.95rem; /* Reduce los títulos del menú */
+  }
+
+  .section-dropdown ul {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 300px) {
+  nav img {
+    height: 25px; /* Logo más pequeño */
+  }
+
+  nav {
+    padding: 2px;
+  }
+
+  .bi {
+    font-size: 0.9rem; /* Iconos más pequeños */
+  }
+
+  .dropdown {
+    width: 75%; /* Menú desplegable compacto */
+  }
+
+  .section-dropdown h5 {
+    font-size: 0.9rem;
+  }
+
+  .section-dropdown ul {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 250px) {
+  nav img {
+    display: none; /* Oculta la imagen */
+  }
+
+
+  nav {
+    padding: 2px;
+  }
+
+  .bi {
+    font-size: 0.8rem; /* Iconos más pequeños */
+  }
+
+  .dropdown {
+    width: 70%; /* Menú desplegable estrecho */
+  }
+
+  .section-dropdown h5 {
+    font-size: 0.85rem;
+  }
+
+  .section-dropdown ul {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 200px) {
+  nav img {
+    display: none; /* Oculta la imagen */
+  }
+
+  nav {
+    padding: 1px;
+  }
+
+  .bi {
+    font-size: 0.7rem; /* Iconos pequeños */
+  }
+
+  .dropdown {
+    width: 65%; /* Menú desplegable estrecho */
+  }
+
+  .section-dropdown h5 {
+    font-size: 0.8rem;
+  }
+
+  .section-dropdown ul {
+    font-size: 0.7rem;
+  }
+}
