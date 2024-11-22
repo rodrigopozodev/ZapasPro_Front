@@ -339,7 +339,7 @@ img {
 }
 
 /* Ajuste para pantallas en horizontal con altura menor a 450px */
-@media (max-height: 450px) and (orientation: landscape) {
+@media (max-height: 480px) and (orientation: landscape) {
 
   
   .wrapper {
@@ -348,25 +348,25 @@ img {
 
  /* Cambiar tamaño del ícono de usuario */
 .input-box i.fa-user {
-  font-size: 15px; /* Tamaño personalizado */
+  font-size: 18px; /* Tamaño personalizado */
 }
 
 /* Cambiar tamaño del ícono de la cerradura */
 .input-box i.fa-lock {
-  font-size: 15px; /* Tamaño personalizado */
+  font-size: 18px; /* Tamaño personalizado */
 }
 
 /* Cambiar tamaño del ícono del correo */
 .input-box i.fa-envelope {
-  font-size: 15px; /* Tamaño personalizado */
+  font-size: 18px; /* Tamaño personalizado */
 }
 
 .eye-icon i {
-  font-size: 15px; /* Ajusta el tamaño según lo necesites */
+  font-size: 18px; /* Ajusta el tamaño según lo necesites */
 }
 
   .input-box {
-    margin: 15px 0;
+    margin: 18px 0;
   }
   
   
@@ -377,33 +377,29 @@ img {
 
   /* Reducir el tamaño del título */
   .title {
-    font-size: 18px; /* Reducir tamaño del título */
+    font-size: 26px; /* Reducir tamaño del título */
   }
 
   .input-box label {
-    font-size: 15px;
+    font-size: 18px;
   }
 
   /* Reducir tamaño de los inputs */
   .input-box input {
-    font-size: 15px; /* Reducir tamaño de texto en los inputs */
+    font-size: 18px; /* Reducir tamaño de texto en los inputs */
   }
 
   /* Reducir tamaño del botón */
   .btn {
-    font-size: 15px; /* Reducir tamaño del botón */
+    font-size: 18px; /* Reducir tamaño del botón */
   }
 
   /* Reducir tamaño de los enlaces */
   .link {
-    font-size: 12px; /* Reducir tamaño de los enlaces */
+    font-size: 16px; /* Reducir tamaño de los enlaces */
   }
 
-  /* Ocultar la sección .info-wrapper */
-  .wrapper .info-wrapper {
-    display: none; /* Ocultar la sección de info para ahorrar espacio */
-  }
-
+  
   .email-input-login {
     margin-bottom: 30px; /* Espacio adicional para el campo de email */
   }
@@ -422,7 +418,7 @@ img {
   }
 
   .wrapper {
-    height: 350px;
+    height: 380px;
   }
   
   /* Ajuste de la altura de .form-wrapper */
@@ -432,49 +428,47 @@ img {
 
    /* Cambiar tamaño del ícono de usuario */
 .input-box i.fa-user {
-  font-size: 10px; /* Tamaño personalizado */
+  font-size: 15px; /* Tamaño personalizado */
 }
 
 /* Cambiar tamaño del ícono de la cerradura */
 .input-box i.fa-lock {
-  font-size: 10px; /* Tamaño personalizado */
+  font-size: 15px; /* Tamaño personalizado */
 }
 
 /* Cambiar tamaño del ícono del correo */
 .input-box i.fa-envelope {
-  font-size: 10px; /* Tamaño personalizado */
+  font-size: 15px; /* Tamaño personalizado */
 }
 
 .eye-icon i {
-  font-size: 10px; /* Ajusta el tamaño según lo necesites */
+  font-size: 15px; /* Ajusta el tamaño según lo necesites */
 }
   /* Reducir aún más el tamaño del título */
   .title {
-    font-size: 10px; /* Reducir tamaño del título */
+    font-size: 25px; /* Reducir tamaño del título */
+    margin-top: 50px; /* Añadir margen superior */
+
   }
 
   .input-box label {
-    font-size: 10px;
+    font-size: 15px;
   }
 
   /* Reducir tamaño de los inputs */
   .input-box input {
-    font-size: 10px; /* Reducir tamaño de texto en los inputs */
+    font-size: 15px; /* Reducir tamaño de texto en los inputs */
   }
 
   /* Reducir tamaño del botón */
   .btn {
-    font-size: 10px; /* Reducir tamaño del botón */
+    font-size: 15px; /* Reducir tamaño del botón */
   }
 
   /* Reducir tamaño de los enlaces */
   .link {
-    font-size: 8px; /* Reducir tamaño de los enlaces */
-  }
-
-  /* Ocultar la sección .info-wrapper */
-  .wrapper .info-wrapper {
-    display: none; /* Ocultar la sección de info para ahorrar espacio */
+    font-size: 16px; /* Reducir tamaño de los enlaces */
+    margin-bottom: 45px; /* Añadir margen inferior */
   }
 }
 
