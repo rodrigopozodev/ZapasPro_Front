@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { FavoritesService } from '../../services/favorites.service';
 import { HostListener } from '@angular/core';
 
+
 @Component({
   selector: 'app-store',
   templateUrl: './store.component.html',
@@ -51,6 +52,10 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   currentSlideIndex: number = 0;
   private carouselInterval?: any;
   private isReversed: boolean = false;
+  private isDragging = false; // Estado de arrastre
+  private startX = 0; // Posición inicial del arrastre
+  private threshold = 50; // Distancia mínima para cambiar de slide
+
   carouselImages: string[] = [
     "/img/nike sin fondo.png",
     "",
@@ -67,73 +72,99 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
-    this.loadStock();
-    this.updateLayout();  // Aseguramos que el layout esté correcto al iniciar
+    Promise.all([this.loadProducts(), this.loadStock()]).then(() => {
+      this.updateLayout();
+    });
   }
-
+  
   ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId)) {  // Asegurarse de que estamos en el navegador
       this.startCarousel();
+  
+      // Referencia al contenedor del carrusel
+      const carouselContainer = document.querySelector('.carousel') as HTMLElement;
+  
+      // Escuchar eventos de mouse
+      carouselContainer.addEventListener('mousedown', (e: MouseEvent) => this.startDragging(e));
+      carouselContainer.addEventListener('mousemove', (e: MouseEvent) => this.onDrag(e));
+      carouselContainer.addEventListener('mouseup', () => this.stopDragging());
+      carouselContainer.addEventListener('mouseleave', () => this.stopDragging());
+  
+      // Escuchar eventos táctiles
+      carouselContainer.addEventListener('touchstart', (e: TouchEvent) => this.startDragging(e));
+      carouselContainer.addEventListener('touchmove', (e: TouchEvent) => this.onDrag(e));
+      carouselContainer.addEventListener('touchend', () => this.stopDragging());
     }
   }
+  
+  
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.updateLayout();
   }
 
-   // Función que ajusta la cantidad de productos por fila y los botones visibles
-   updateLayout() {
-    const windowWidth = window.innerWidth;
-
-    if (windowWidth < 800) {
-      this.productsPerRow = 2; // 2 productos por fila en pantallas menores a 800px
-      this.showButton4 = false;
-      this.showButton6 = false;
-    } else if (windowWidth < 1100) {
-      this.productsPerRow = 4; // 4 productos por fila en pantallas menores a 1100px
-      this.showButton4 = true;
-      this.showButton6 = false; // Ocultar el botón de 6 si el ancho es menor a 1100px
-    } else {
-      this.productsPerRow = 6; // 6 productos por fila en pantallas mayores a 1100px
-      this.showButton4 = true;
-      this.showButton6 = true; // Mostrar ambos botones si el ancho es mayor a 1100px
+  updateLayout() {
+    if (isPlatformBrowser(this.platformId)) { // Verificar que estamos en el navegador
+      const windowWidth = window.innerWidth;
+  
+      if (windowWidth < 800) {
+        this.productsPerRow = 2; // 2 productos por fila en pantallas menores a 800px
+        this.showButton4 = false;
+        this.showButton6 = false;
+      } else if (windowWidth < 1100) {
+        this.productsPerRow = 4; // 4 productos por fila en pantallas menores a 1100px
+        this.showButton4 = true;
+        this.showButton6 = false; // Ocultar el botón de 6 si el ancho es menor a 1100px
+      } else {
+        this.productsPerRow = 6; // 6 productos por fila en pantallas mayores a 1100px
+        this.showButton4 = true;
+        this.showButton6 = true; // Mostrar ambos botones si el ancho es mayor a 1100px
+      }
+  
+      this.itemsPerPage = this.productsPerRow * 2; // Ajustar según el número de productos por fila
+      this.calculatePagination();
     }
-
-    this.itemsPerPage = this.productsPerRow * 2; // Ajustar según el número de productos por fila
-    this.calculatePagination();
   }
+  
  
 
-  loadProducts() {
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => {
-        this.products = products;
-        this.filteredProducts = products;
-        this.uniqueColors = this.getUniqueColors(this.products);
-        this.uniqueGenders = this.getUniqueGenders(this.products);
-        this.uniqueMarcas = this.getUniqueMarcas(this.products);
-        this.applyFilters();
-      },
-      error: (error) => {
-        console.error('Error al cargar productos', error);
-      }
+  loadProducts(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.productService.getProducts().subscribe({
+        next: (products: Product[]) => {
+          this.products = products;
+          this.filteredProducts = products;
+          this.uniqueColors = this.getUniqueColors(this.products);
+          this.uniqueGenders = this.getUniqueGenders(this.products);
+          this.uniqueMarcas = this.getUniqueMarcas(this.products);
+          this.applyFilters();
+          resolve();
+        },
+        error: (error) => {
+          console.error('Error al cargar productos', error);
+          reject(error);
+        },
+      });
     });
   }
-
-  loadStock() {
-    this.stockService.getStocks().subscribe({
-      next: (stockData: Stock[]) => {
-        this.stock = stockData;
-        this.uniqueTallas = this.getUniqueTallas(this.stock);
-      },
-      error: (error) => {
-        console.error('Error al cargar el stock', error);
-      },
+  
+  loadStock(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.stockService.getStocks().subscribe({
+        next: (stockData: Stock[]) => {
+          this.stock = stockData;
+          this.uniqueTallas = this.getUniqueTallas(this.stock);
+          resolve();
+        },
+        error: (error) => {
+          console.error('Error al cargar el stock', error);
+          reject(error);
+        },
+      });
     });
   }
-
+  
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
       const productStock = this.stock.find(stockItem => stockItem.productoId === product.id && stockItem.talla === this.selectedTalla);
@@ -145,7 +176,7 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
         (this.selectedMarca ? product.marca === this.selectedMarca : true)
       );
     });
-
+  
     // Lógica de ordenación
     if (this.selectedSort === 'priceHighLow') {
       this.filteredProducts.sort((a, b) => b.price - a.price); // Orden descendente
@@ -153,8 +184,10 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.filteredProducts.sort((a, b) => a.price - b.price); // Orden ascendente
     }
     
+    // Solo recalcular la paginación si los productos filtrados cambian
     this.calculatePagination(); // Recalcular la paginación después de aplicar filtros y ordenación
   }
+  
 
   resetFilters() {
     this.selectedColor = '';
@@ -166,36 +199,43 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   calculatePagination() {
+    // Solo recalcular la paginación si los productos filtrados han cambiado
     this.totalPages = Math.ceil(this.filteredProducts.length / this.itemsPerPage);
-    this.currentPage = 1;
+    this.currentPage = Math.min(this.currentPage, this.totalPages); // Asegura que no estemos en una página fuera de rango
     this.paginateProducts();
   }
+  
 
   paginateProducts() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
+    
+    // Cargar solo los productos necesarios para la página actual
     this.paginatedProducts = this.filteredProducts.slice(startIndex, endIndex);
   }
+  
 
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.paginateProducts();
+      this.paginateProducts(); // Solo recargamos los productos visibles
     }
   }
-
+  
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.paginateProducts();
+      this.paginateProducts(); // Solo recargamos los productos visibles
     }
   }
+  
 
   setProductsPerRow(n: number) {
     this.productsPerRow = n;
     this.itemsPerPage = n * 2;
-    this.calculatePagination();
+    this.calculatePagination(); // Recalcular la paginación solo cuando el número de productos por fila cambia
   }
+  
 
   // Toggle de favoritos
   toggleFavorite(product: Product) {
@@ -283,6 +323,64 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.carouselInterval); // Detener el carrusel al destruir el componente
+    clearInterval(this.carouselInterval); // Detener el carrusel
+  
+    if (isPlatformBrowser(this.platformId)) {
+      const carouselContainer = document.querySelector('.carousel') as HTMLElement;
+  
+      if (carouselContainer) {
+        // Remover eventos de mouse
+        carouselContainer.removeEventListener('mousedown', this.startDragging as any);
+        carouselContainer.removeEventListener('mousemove', this.onDrag as any);
+        carouselContainer.removeEventListener('mouseup', this.stopDragging as any);
+        carouselContainer.removeEventListener('mouseleave', this.stopDragging as any);
+  
+        // Remover eventos táctiles
+        carouselContainer.removeEventListener('touchstart', this.startDragging as any);
+        carouselContainer.removeEventListener('touchmove', this.onDrag as any);
+        carouselContainer.removeEventListener('touchend', this.stopDragging as any);
+      }
+    }
   }
+  
+  
+
+  startDragging(event: MouseEvent | TouchEvent) {
+    this.isDragging = true;
+    if (event instanceof MouseEvent) {
+      this.startX = event.pageX;
+    } else {
+      this.startX = event.touches[0].pageX; // `touches` pertenece al evento `TouchEvent`
+    }
+  }
+  
+  
+  
+  onDrag(event: MouseEvent | TouchEvent) {
+    if (!this.isDragging) return;
+  
+    let currentX: number;
+    if (event instanceof MouseEvent) {
+      currentX = event.pageX;
+    } else {
+      currentX = event.touches[0].pageX; // `touches` pertenece al evento `TouchEvent`
+    }
+  
+    const deltaX = currentX - this.startX;
+  
+    if (deltaX > this.threshold) {
+      this.previousSlide();
+      this.stopDragging();
+    } else if (deltaX < -this.threshold) {
+      this.nextSlide();
+      this.stopDragging();
+    }
+  }
+  
+  
+  stopDragging() {
+    this.isDragging = false;
+  }
+  
+  
 }

@@ -391,3 +391,10 @@
 
   }
 }
+
+/* styles.css o en los estilos del componente */
+@media (max-width: 850px) {
+  .navigation-arrows {
+    display: none;
+  }
+}

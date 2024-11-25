@@ -1,25 +1,25 @@
 <!-- Contenedor principal de la tienda -->
 <div class="store bg-[#f3e8d5] py-10 min-h-screen">
   <!-- Carrusel de imágenes -->
-  <div class="relative mx-8 mb-4">
-    <div class="bg-white rounded-3xl overflow-hidden shadow-lg carrusel">
-      <div class="carousel custom-carousel h-full">
-        <div class="carousel-inner flex transition-transform duration-700 ease-in-out h-full"
-            [ngStyle]="{'transform': 'translateX(-' + (currentSlideIndex * 100) + '%)'}">
+<div class="relative mx-8 mb-4">
+  <div class="bg-white rounded-3xl overflow-hidden shadow-lg carrusel">
+    <div class="carousel custom-carousel h-full" #carouselContainer>
+      <div class="carousel-inner flex transition-transform duration-700 ease-in-out h-full"
+           [ngStyle]="{'transform': 'translateX(-' + (currentSlideIndex * 100) + '%)'}">
         <!-- Primera Viñeta -->
-<div class="carousel-item flex-shrink-0 relative h-full">
-  <div class="image-container">
-    <img [src]="carouselImages[0]" class="object-cover w-full h-full">
-  </div>
-  <div *ngIf="currentSlideIndex === 0" class="absolute bottom-0 w-full bg-opacity-60  text-center py-6 px-4">
-    <h2 class="text-3xl font-bold text-yellow-600 mb-4">Nuestra zapatilla más vendida</h2>
-  </div>
-</div>
+        <div class="carousel-item flex-shrink-0 relative h-full">
+          <div class="image-container">
+            <img [src]="carouselImages[0]" class="object-cover w-full h-full">
+          </div>
+          <div *ngIf="currentSlideIndex === 0" class="absolute bottom-0 w-full bg-opacity-60 text-center py-6 px-4">
+            <h2 class="text-3xl font-bold text-yellow-600 mb-4">Nuestra zapatilla más vendida</h2>
+          </div>
+        </div>
 
         <!-- Segunda Viñeta -->
         <div class="carousel-item flex-shrink-0 relative h-full bg-yellow-500">
           <div class="image-container">
-            <img [src]="carouselImages[1]" alt="Carrusel" class="object-cover w-full h-full">
+            <img [src]="carouselImages[1]" class="object-cover w-full h-full">
           </div>
           <div *ngIf="currentSlideIndex === 1" class="absolute inset-0 flex justify-center items-center text-center">
             <div class="text-white">
@@ -28,24 +28,25 @@
             </div>
           </div>
         </div>
+
         <!-- Tercera Viñeta -->
         <div class="carousel-item flex-shrink-0 relative h-full">
           <div class="image-container">
-            <img [src]="carouselImages[2]" alt="Carrusel" class="object-cover w-full h-full">
-           </div>
-           <div *ngIf="currentSlideIndex === 2" class="absolute bottom-0 w-full bg-opacity-70 bg-black text-center py-4">
+            <img [src]="carouselImages[2]" class="object-cover w-full h-full">
+          </div>
+          <div *ngIf="currentSlideIndex === 2" class="absolute bottom-0 w-full bg-opacity-70 bg-black text-center py-4">
             <p class="text-2xl font-semibold text-white">Futuro lanzamiento Air Jordan 4 Retro "Fear" solo 100 pares</p>
           </div>
         </div>
-        </div>
       </div>
+    </div>
     <!-- Flechas de navegación -->
-    <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full ml-4" (click)="previousSlide()">
+    <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full ml-4 navigation-arrows" (click)="previousSlide()">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path d="M15 19l-7-7 7-7" />
       </svg>
     </button>
-    <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full mr-4" (click)="nextSlide()">
+    <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 text-white bg-yellow-600 rounded-full mr-4 navigation-arrows" (click)="nextSlide()">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
         <path d="M9 5l7 7-7 7" />
       </svg>

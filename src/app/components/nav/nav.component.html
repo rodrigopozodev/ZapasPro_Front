@@ -25,57 +25,14 @@
 
       <!-- Dropdown -->
       <div *ngIf="dropdownVisible" class="dropdown" [ngClass]="{'show': dropdownVisible}">
-        <div class="flex justify-between items-center p-2">
-          <button class="close-btn p-2 text-orange-500 hover:text-orange-700 ml-auto" (click)="toggleDropdown()">
-            <i class="bi bi-x fs-4"></i>
-          </button>
-        </div>
-        
         <div class="p-2">
           <!-- Menú de Compras -->
           <div class="section-dropdown">
-            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('compras')">Compras</h5>
+            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('compras')">Cuenta</h5>
             <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/purchase-history')">Mi historial de compras</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/orders')">Mis pedidos</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/favorites')">Favoritos</li>
-            </ul>
-          </div>
-
-          <!-- Menú de Cuenta -->
-          <div class="section-dropdown">
-            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('cuenta')">Cuenta</h5>
-            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'cuenta'}" *ngIf="currentSubmenu === 'cuenta'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Configuración de cuenta</li>              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/sizes')">Mis tallas</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/brands')">Mis marcas</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/gift-cards')">Tarjetas regalo</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/contact-preferences')">Preferencias de contacto</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/recommendation-preferences')">Preferencias de recomendación</li>
-            </ul>
-          </div>
-
-          <!-- Menú de Calificaciones y Opiniones -->
-          <div class="section-dropdown">
-            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('calificaciones')">Calificaciones y Opiniones</h5>
-            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'calificaciones'}" *ngIf="currentSubmenu === 'calificaciones'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/write-review')">Escribir una opinión</li>
-            </ul>
-          </div>
-
-          <!-- Menú de Recompensas -->
-          <div class="section-dropdown">
-            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('recompensas')">Recompensas</h5>
-            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'recompensas'}" *ngIf="currentSubmenu === 'recompensas'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/my-rewards')">Mis recompensas</li>
-            </ul>
-          </div>
-
-          <!-- Menú de Soporte -->
-          <div class="section-dropdown">
-            <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('soporte')">Soporte</h5>
-            <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'soporte'}" *ngIf="currentSubmenu === 'soporte'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/contact-us')">Contáctanos</li>
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/faq')">Preguntas frecuentes</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Perfil</li>   
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/purchase-history')">Recibos</li>
+              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/favorites')">Favoritos</li>    
             </ul>
           </div>
         </div>

@@ -6,9 +6,11 @@ nav {
 /* Dropdown Styles */
 .dropdown {
   position: absolute;
-  left: 9.5rem; /* Ajusta el dropdown para pegarlo más al borde derecho */
+  left: 50%; /* Centra el dropdown en el botón */
+  transform: translateX(-50%); /* Ajusta el centro del dropdown al centro del botón */
   top: calc(100% + 1.35rem); /* Baja el dropdown un poco más para dejar más espacio */
-  width: 250px;
+  width: auto; /* El ancho del dropdown se ajusta automáticamente */
+  max-width: 250px; /* Evita que el dropdown se haga demasiado ancho */
   background-color: white;
   border: 2px solid #F97316; /* Borde naranja */
   border-radius: 0.5rem;
@@ -64,6 +66,8 @@ nav {
 
   .dropdown {
     width: 90%; /* Ajusta el ancho del menú desplegable */
+    left: 5%; /* Alinea el dropdown al borde izquierdo */
+    transform: translateX(0); /* Desactiva el centrado */
   }
 
   .section-dropdown h5 {
@@ -85,7 +89,7 @@ nav {
   }
 
   nav img {
-    height: 35px; /* Logo más pequeño */
+    margin-right: 16px;
   }
 
   .container {
@@ -94,6 +98,7 @@ nav {
 
   .dropdown {
     width: 85%; /* Menú desplegable más compacto */
+    left: 7.5%; /* Alinea el dropdown al centro */
   }
 
   .bi {
@@ -106,16 +111,13 @@ nav {
     padding: 3px;
   }
 
-  nav img {
-    height: 30px; /* Reduce el tamaño del logo */
-  }
-
   .bi {
     font-size: 1rem; /* Iconos aún más pequeños */
   }
 
   .dropdown {
     width: 80%; /* Menú desplegable más estrecho */
+    left: 10%; /* Alinea el dropdown al centro */
   }
 
   .section-dropdown h5 {
@@ -129,7 +131,7 @@ nav {
 
 @media (max-width: 300px) {
   nav img {
-    height: 25px; /* Logo más pequeño */
+    display: none; /* Oculta la imagen */
   }
 
   nav {
@@ -142,6 +144,7 @@ nav {
 
   .dropdown {
     width: 75%; /* Menú desplegable compacto */
+    left: 12.5%; /* Ajuste para que se vea bien en pantallas muy pequeñas */
   }
 
   .section-dropdown h5 {
@@ -158,7 +161,6 @@ nav {
     display: none; /* Oculta la imagen */
   }
 
-
   nav {
     padding: 2px;
   }
@@ -169,6 +171,7 @@ nav {
 
   .dropdown {
     width: 70%; /* Menú desplegable estrecho */
+    left: 15%; /* Ajusta para que se vea bien en pantallas ultra pequeñas */
   }
 
   .section-dropdown h5 {
@@ -195,6 +198,7 @@ nav {
 
   .dropdown {
     width: 65%; /* Menú desplegable estrecho */
+    left: 17.5%; /* Ajusta para pantallas muy pequeñas */
   }
 
   .section-dropdown h5 {
