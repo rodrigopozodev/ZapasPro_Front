@@ -114,7 +114,6 @@
   span {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #f59e0b; /* Amarillo cálido */
   }
 
   .carousel-item img {
@@ -171,7 +170,7 @@
   span {
     font-size: 1rem;
     font-weight: bold;
-    color: #f59e0b;
+
   }
 
   .product-grid {

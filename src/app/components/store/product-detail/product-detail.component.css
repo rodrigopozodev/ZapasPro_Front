@@ -93,5 +93,133 @@
   transform: translateX(-50%) translateY(50%); /* Centra la línea horizontalmente y ajusta verticalmente */
 }
 
+/* Mantén la disposición original en pantallas grandes */
+#colorway-picker-container {
+  flex: 1;
+}
 
+/* Estilo para las tallas disponibles, manteniendo su disposición en cuadrícula */
+.mb-4 {
+  flex: 1;
+}
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Cuadrícula con 4 columnas */
+}
+
+@media (max-width: 1400px) {
+  .ancho-imagen {
+    max-width: 100%;  /* Se ajusta al 100% del contenedor sin recortarse */
+    height: auto;     /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 1300px) { 
+  .ancho-imagen-1 {
+    max-width: 100%;  /* Se ajusta al 95% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 1200px) {
+  .ancho-imagen-2 {
+    max-width: 100%; /* Se ajusta al 75% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 1100px) {
+  .ancho-imagen-3 {
+    max-width: 100%;  /* Se ajusta al 65% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 1000px) {
+  .ancho-imagen-4 {
+    max-width: 100%;  /* Se ajusta al 58% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 900px) {
+  .ancho-imagen-5 {
+    max-width: 100%; /* Se ajusta al 48% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 800px) {
+  .ancho-imagen-6 {
+    max-width: 100%;  /* Se ajusta al 40% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 700px) {
+  .ancho-imagen-7 {
+    max-width: 100%;  /* Se ajusta al 35% del contenedor sin recortarse */
+    height: auto;    /* Mantiene la proporción de la imagen */
+  }
+}
+
+@media (max-width: 639px) {
+  .flex {
+    flex-direction: column; /* Cambia la dirección del flex para que las columnas se apilen */
+  }
+
+  .ancho-imagen {
+    max-width: 100%; /* Asegura que las imágenes no excedan el ancho disponible */
+  }
+
+  .flex-1 {
+    width: 100%; /* Asegura que las columnas 1 y 2 ocupen todo el ancho disponible */
+  }
+
+  .p-4 {
+    padding: 1rem; /* Ajusta el espaciado de las columnas */
+  }
+
+  .gallery {
+    display: flex;
+    justify-content: center; /* Centra las miniaturas dentro de la columna */
+    flex-wrap: wrap; /* Permite que las miniaturas se ajusten en varias filas si es necesario */
+  }
+
+  .thumbnail-container {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cart-container {
+    width: 90%; /* Ajusta el tamaño del carrito para pantallas pequeñas */
+    max-width: 100%;
+  }
+
+  #colorway-picker-container {
+    display: flex;
+    flex-direction: row; /* Dirección de las filas (horizontales) */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+  }
+
+  /* Cambiar el orden de las columnas en pantallas pequeñas */
+  .flex > .p-4:nth-child(1) {
+    order: 2; /* Coloca la galería de imágenes (columna 1) después de la imagen principal */
+  }
+
+  .flex > .p-4:nth-child(2) {
+    order: 1; /* Coloca la imagen principal (columna 2) primero */
+  }
+
+  .flex > .p-4:nth-child(3) {
+    order: 3; /* Coloca la información del producto (columna 3) después de la galería de imágenes */
+  }
+
+  /* Agregar el contenido HTML encima de la columna 1 */
+  .flex > .p-4:nth-child(2)::before {
+    display: block;
+    padding-bottom: 1rem; /* Espaciado entre el contenido insertado y la galería de imágenes */
+  }
+}

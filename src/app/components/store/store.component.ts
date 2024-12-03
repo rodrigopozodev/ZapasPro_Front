@@ -218,16 +218,34 @@ export class StoreComponent implements OnInit, OnDestroy, AfterViewInit {
   previousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.paginateProducts(); // Solo recargamos los productos visibles
+      this.paginateProducts();
+      this.scrollToTop(); // Llama al método aquí
+    }
+  }
+
+  scrollToTop() {
+    const container = document.getElementById('products-container');
+    if (container) {
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
   
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.paginateProducts(); // Solo recargamos los productos visibles
-    }
+  // Modifica los métodos de paginación para incluir `scrollToTop`:
+nextPage() {
+  if (this.currentPage < this.totalPages) {
+    this.currentPage++;
+    this.paginateProducts();
+    this.scrollToTop(); // Llama al método aquí
   }
+}
+
+setPage(pageNumber: number) {
+  if (pageNumber >= 1 && pageNumber <= this.totalPages) {
+    this.currentPage = pageNumber;
+    this.paginateProducts();
+    this.scrollToTop(); // Llama al método aquí
+  }
+}
   
 
   setProductsPerRow(n: number) {

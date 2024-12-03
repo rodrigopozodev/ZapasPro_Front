@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from '../../../services/cart.service';
@@ -13,6 +13,7 @@ import { FavoritesService } from '../../../services/favorites.service';
 import { UserService } from '../../../services/user.service';
 import { PurchaseService } from '../../../services/purchase.service';
 import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-product-detail',
@@ -35,6 +36,7 @@ export class ProductDetailComponent implements OnInit {
   mainImage: string = '';
   discountApplied: boolean = false;
   galleryImages: GalleryImage[] = [];
+  isSmallScreen = window.innerWidth <= 650;
 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
@@ -54,6 +56,8 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.checkScreenSize();
+
     // Cargar producto, stock, y carrito al iniciar
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -70,6 +74,15 @@ export class ProductDetailComponent implements OnInit {
     this.cartSubscription = this.cartService.getCartUpdates().subscribe((updatedCart: CartItem[]) => {
       this.cartProducts = updatedCart;  // Actualizamos el carrito con los nuevos datos
     });
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.isSmallScreen = window.innerWidth <= 650;
+  }
+
+  private checkScreenSize(): void {
+    this.isSmallScreen = window.innerWidth < 650;
   }
 
   ngOnDestroy(): void {
