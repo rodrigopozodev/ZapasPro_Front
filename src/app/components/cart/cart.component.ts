@@ -189,7 +189,7 @@ getReceiptsForCurrentUser(): void {
   }
 
   getVisibleProducts(): any[] {
-    return this.showAllProducts ? this.cartProducts : this.cartProducts.slice(0, 3);
+    return this.showAllProducts ? this.cartProducts : this.cartProducts.slice(0, 4);
   }
 
   toggleDiscountCode(): void {

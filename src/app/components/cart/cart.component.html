@@ -1,19 +1,19 @@
-<div class="cart-container w-full h-screen bg-[#f3e8d5] flex items-center justify-center">
-  <div class="cart w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8"> <!-- Ajuste de margenes -->
+<div class="cart-container w-full bg-[#f3e8d5] flex items-center justify-center min-h-screen "> 
+  <div class="cart w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg flex flex-col gap-6 mt-12 mb-12 ml-12 mr-12"> <!-- Ajuste de márgenes -->
 
-    <!-- Columna 1: Productos favoritos con scroll -->
-    <div class="favorites w-full h-[calc(100vh-200px)] overflow-y-auto overflow-x-hidden">
+    <!-- Fila 1: Productos favoritos con scroll horizontal -->
+    <div class="favorites w-full h-auto overflow-y-hidden"> <!-- Ajusté la altura a 16rem (64) -->
       <!-- Encabezado fijo para la sección de favoritos -->
-      <div class="sticky top-0 bg-white z-10 py-2">
+      <div class="sticky top-0 left-0 bg-white z-10 py-2">
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">Favoritos</h2>
       </div>
-      
+
       <div *ngIf="favorites.length === 0" class="text-center mt-4 text-gray-600">
         <p>No tienes productos favoritos.</p>
       </div>
 
-      <div *ngIf="favorites.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8 mt-4">
-        <div *ngFor="let product of favorites" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex flex-col">
+      <div *ngIf="favorites.length > 0" class="flex space-x-6 mt-4"> <!-- Cambié a flex y espacio entre productos -->
+        <div *ngFor="let product of favorites" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex-shrink-0 w-64">
           <a [routerLink]="['/product', product.id]" class="w-full">
             <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full h-48 object-cover rounded-t-3xl" />
           </a>
@@ -34,56 +34,54 @@
       </div>
     </div>
 
-    <!-- Columna 2: Cesta con scroll -->
-    <div class="cesta w-full h-[calc(100vh-200px)] overflow-y-auto">
-      <!-- Contenedor fijo para el título con posición sticky -->
-      <div class="sticky top-0 bg-white z-10 py-2">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cesta</h2>
-      </div>
+   <!-- Fila 2: Cesta con scroll horizontal -->
+<div class="cesta h-auto overflow-x-auto"> <!-- Cambié el overflow-y-hidden a overflow-x-auto para desplazamiento horizontal -->
+  <!-- Contenedor fijo para el título con posición sticky -->
+  <div class="sticky top-0 left-0 bg-white z-10 py-2">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cesta</h2>
+  </div>
 
-      <!-- Contenedor desplazable para la lista de productos -->
-      <div class="scrollable-products w-full">
-        
-        <!-- Mensaje cuando el carrito está vacío -->
-        <div *ngIf="cartProducts.length === 0" class="empty-cart text-center py-10">
-          <p class="text-lg text-gray-500">El carrito está vacío</p>
-        </div>
+  <div *ngIf="cartProducts.length === 0" class="empty-cart text-center py-10">
+    <p class="text-lg text-gray-500">El carrito está vacío</p>
+  </div>
 
-        <!-- Lista de productos en el carrito -->
-        <div *ngFor="let cartProduct of getVisibleProducts()" class="cart-product flex items-center border-b border-gray-200 py-4">
-          <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
-          <div class="product-info ml-6">
-            <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
-            <p *ngIf="cartProduct.selectedSize" class="text-sm text-gray-700">Talla {{ cartProduct.selectedSize }}</p>
-            <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
-            <p class="product-price text-xl font-semibold text-yellow-500">{{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €</p>
+  <!-- Lista de productos en el carrito con desplazamiento horizontal y disposición en fila -->
+  <div class="flex space-x-6"> <!-- Usé flex row y espacio entre productos -->
+    <div *ngFor="let cartProduct of getVisibleProducts()" class="cart-product flex items-center border-b border-gray-200 py-4 flex-shrink-0 w-64">
+      <img [src]="cartProduct.product.imageUrl" alt="{{ cartProduct.product.name }}" class="cart-image w-24 h-24 object-cover rounded-lg shadow-sm" />
+      <div class="product-info ml-6">
+        <h2 class="text-lg font-semibold text-yellow-600">{{ cartProduct.product.name }}</h2>
+        <p *ngIf="cartProduct.selectedSize" class="text-sm text-gray-700">Talla {{ cartProduct.selectedSize }}</p>
+        <p *ngIf="discountRate > 0" class="text-gray-500 line-through">{{ cartProduct.product.price.toFixed(2) }} €</p>
+        <p class="product-price text-xl font-semibold text-yellow-500">{{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €</p>
 
-            <div class="quantity-control mt-2 flex items-center">
-              <button *ngIf="cartProduct.quantity > 1" (click)="decrementQuantity(cartProduct)"
-                class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200">
-                -
-              </button>
-              <button *ngIf="cartProduct.quantity === 1" (click)="removeFromCart(cartProduct)"
-                      class="px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
-                🗑️
-              </button>
-              <span class="mx-4 text-lg font-semibold">{{ cartProduct.quantity }}</span>
-              <button (click)="incrementQuantity(cartProduct)" class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200" [disabled]="cartProduct.quantity >= cartProduct.stock.cantidad">+</button>
-            </div>
-            <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
-          </div>
-        </div>
-
-        <!-- Botón para ver más productos -->
-        <div *ngIf="cartProducts.length > 5 && !showAllProducts" class="text-center py-4">
-          <button (click)="viewMore()" class="w-full py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">
-            Ver más productos
+        <div class="quantity-control mt-2 flex items-center">
+          <button *ngIf="cartProduct.quantity > 1" (click)="decrementQuantity(cartProduct)"
+            class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200">
+            -
           </button>
+          <button *ngIf="cartProduct.quantity === 1" (click)="removeFromCart(cartProduct)"
+                  class="px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+            🗑️
+          </button>
+          <span class="mx-4 text-lg font-semibold">{{ cartProduct.quantity }}</span>
+          <button (click)="incrementQuantity(cartProduct)" class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200" [disabled]="cartProduct.quantity >= cartProduct.stock.cantidad">+</button>
         </div>
+        <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
       </div>
     </div>
+  </div>
 
-    <!-- Columna 3: Resumen -->
+  <!-- Botón para ver más productos -->
+  <div *ngIf="cartProducts.length > 4 && !showAllProducts" class="text-center py-4">
+    <button (click)="viewMore()" class="w-full py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300">
+      Ver más productos
+    </button>
+  </div>
+</div>
+
+
+    <!-- Fila 3: Resumen -->
     <div class="resumen w-full">
       <h2 class="text-2xl font-semibold text-gray-700 mb-6">Resumen</h2>
 
