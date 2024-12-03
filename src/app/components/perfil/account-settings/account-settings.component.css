@@ -1,13 +1,4 @@
-/* Estilo personalizado para la animación de zoom */
-@keyframes zoom {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(0.2); /* Reduce más el tamaño */
-    }
-}
-
-.animate-zoom {
-    animation: zoom 1.5s ease-in-out infinite;
-}
+.text-green-600 {
+    color: #16a34a;
+  }
+  
