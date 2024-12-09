@@ -1,27 +1,113 @@
-# ZapasProFrontend
+# Scripts de Ejecución/Instalación de ZapasPro
+### Requisitos Previos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.8.
+1. **Node.js**: Asegúrate de tener instalado [Node.js](https://nodejs.org/) (versión LTS recomendada).
+2. **Angular CLI**: Instala Angular CLI de manera global si no lo tienes:
+   ```bash
+   npm install -g @angular/cli
+   ```
+3. **Git**: Para clonar los repositorios, asegúrate de tener [Git](https://git-scm.com/) instalado.
+4. **SQLite3**: Verifica que tienes SQLite3 instalado o usa un archivo `.db` incluido en el proyecto.
 
-## Development server
+Repositorios
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Front-End**: [ZapasPro_Front](https://github.com/rodrigopozodev/ZapasPro_Front)
+- **Back-End**: [ZapasPro_Back](https://github.com/rodrigopozodev/ZapasPro_Back)
 
-## Code scaffolding
+1. Configuración del Repositorio Back-End (ZapasPro_Back)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Clonación del Repositorio
+Clona el repositorio:
+```bash
+git clone https://github.com/rodrigopozodev/ZapasPro_Back
+cd ZapasPro_Back
+```
 
-## Build
+### Instalación de Dependencias
+Ejecuta:
+```bash
+npm install
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Configuración
+1. Revisa el archivo `.env` o crea uno si no existe. Define las variables necesarias, como la ruta de la base de datos, puerto, etc. Un ejemplo:
+   ```
+   PORT=3000
+   DATABASE=./database/zapaspro.db
+   ```
 
-## Running unit tests
+2. Si necesitas migrar la base de datos, utiliza un script incluido:
+   ```bash
+   npm run migrate
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Ejecución
+Para iniciar el servidor:
+```bash
+npm run start
+```
+Esto levantará el servidor en el puerto especificado en `.env` (por defecto, `http://localhost:3000`).
 
-## Running end-to-end tests
+2. Configuración del Repositorio Front-End (ZapasPro_Front)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Clonación del Repositorio
+Clona el repositorio:
+```bash
+git clone https://github.com/rodrigopozodev/ZapasPro_Front
+cd ZapasPro_Front
+```
 
-## Further help
+### Instalación de Dependencias
+Ejecuta:
+```bash
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Configuración
+Asegúrate de configurar la URL del servidor Back-End en el archivo de entorno de Angular (`src/environments/environment.ts`). Ejemplo:
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000'
+};
+```
+
+### Ejecución
+Para iniciar la aplicación en modo de desarrollo:
+```bash
+ng serve
+```
+Por defecto, Angular servirá la aplicación en `http://localhost:4200`.
+
+3. Conexión entre Front-End y Back-End
+
+1. Asegúrate de que ambos servicios están corriendo:
+   - Back-End en `http://localhost:3000`
+   - Front-End en `http://localhost:4200`
+2. Navega al Front-End y prueba las funcionalidades, asegurándote de que puede comunicarse con el servidor Back-End.
+
+4. Scripts Adicionales
+
+### Back-End
+- **Linting y corrección de código**:
+  ```bash
+  npm run lint
+  ```
+- **Ejecución en modo desarrollo (con nodemon)**:
+  ```bash
+  npm run dev
+  ```
+- **Pruebas unitarias**:
+  ```bash
+  npm test
+  ```
+
+### Front-End
+- **Build para producción**:
+  ```bash
+  ng build --prod
+  ```
+- **Linting**:
+  ```bash
+  ng lint
+  ```
