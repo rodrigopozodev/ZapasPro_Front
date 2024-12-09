@@ -1,6 +1,6 @@
 <div class="flex justify-between p-6 rounded-lg max-h-[90vh] ancho-imagen">
   <!-- Columna 1 - Galería de imágenes (Miniaturas) -->
-<div class="p-4 flex justify-center md:justify-end inline-flex">
+<div class="p-4 flex justify-center md:justify-end">
   <div *ngIf="galleryImages.length > 1" class="gallery">
     <div class="thumbnail-container mb-2" *ngFor="let image of galleryImages" 
          (mouseenter)="onThumbnailHover(image.fullImage)">
@@ -52,28 +52,27 @@
   
 
 
-    <!-- Tallas disponibles -->
-    <div class="mb-4">
-      <p class="text-lg font-semibold text-yellow-600">Selecciona tu talla</p>
-      <div class="grid grid-cols-4 gap-1 mt-2">
-        <div 
-        *ngFor="let talla of ['32', '35','36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49','50']" 
-        class="py-2 px-4 text-center border rounded-lg cursor-pointer"
-        [ngClass]="{
-          'text-white bg-gray-500 cursor-not-allowed custom-line-through': !isTallaDisponible(talla), 
-          'border-orange-500 border-2': talla === selectedSize && isTallaDisponible(talla), 
-          'bg-white hover:bg-yellow-400-600': isTallaDisponible(talla) && talla !== selectedSize,                                      
-        }"
-        (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
-      >
+<!-- Tallas disponibles -->
+<div class="mb-4">
+  <p class="text-lg font-semibold text-yellow-600">Selecciona tu talla</p>
+  <div class="grid grid-cols-4 gap-1 mt-2">
+    <div 
+      *ngFor="let talla of getAvailableTallas()" 
+      class="py-2 px-4 text-center border rounded-lg cursor-pointer"
+      [ngClass]="{
+        'text-white bg-gray-500 cursor-not-allowed custom-line-through': !isTallaDisponible(talla), 
+        'border-orange-500 border-2': talla === selectedTalla && isTallaDisponible(talla), 
+        'bg-white hover:bg-yellow-400-600': isTallaDisponible(talla) && talla !== selectedTalla,                                       }"
+      (click)="isTallaDisponible(talla) ? seleccionarTalla(talla) : null"
+    >
       {{ talla }}
+    </div>
+  </div>
+          
+  <!-- Mostrar la talla seleccionada debajo del nombre -->
+  <p *ngIf="selectedSize" class="mt-2 text-lg font-medium text-yellow-600">Talla seleccionada: EU {{ selectedSize }}</p>
 </div>
 
-      </div>
-      
-      <!-- Mostrar la talla seleccionada debajo del nombre -->
-      <p *ngIf="selectedSize" class="mt-2 text-lg font-medium text-yellow-600">Talla seleccionada: EU {{ selectedSize }}</p>
-    </div>
 
     <!-- Botón para añadir al carrito -->
     <button 
@@ -86,7 +85,7 @@
      <button 
      (click)="toggleFavorite(product)" 
      [ngClass]="{'text-orange-500': isFavorite(product), 'hover:text-yellow-500': !isFavorite(product)}" 
-     class="favorite-btn mt-2 text-xl"
+     class="favorite-btn mt-2 text-xl block mx-auto"
      aria-label="Añadir a favoritos"
    >
      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6" 
@@ -121,22 +120,26 @@
             {{ (cartProduct.product.price * (1 - discountRate)).toFixed(2) }} €
           </p>
     
-          <!-- Control de cantidad con papelera si quantity <= 1 -->
-          <div class="quantity-control mt-2 flex items-center">
-            <button *ngIf="cartProduct.quantity > 1" (click)="decrementQuantity(cartProduct)"
+         <!-- Control de cantidad con papelera si quantity <= 1 -->
+          <div class="quantity-control mt-2 flex items-center flex-row">
+            <button *ngIf="cartProduct.quantity > 1" 
+                    (click)="decrementQuantity(cartProduct)"
                     class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200">
               - 
             </button>
-            <button *ngIf="cartProduct.quantity === 1" (click)="removeFromCart(cartProduct)"
+            <button *ngIf="cartProduct.quantity === 1" 
+                    (click)="removeFromCart(cartProduct)"
                     class="px-2 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
               🗑️
             </button>
             <span class="mx-4 text-lg font-semibold">{{ cartProduct.quantity }}</span>
             <button (click)="incrementQuantity(cartProduct)"
                     class="px-2 py-1 bg-gray-300 text-black rounded-full hover:bg-gray-400 transition duration-200"
-                    [disabled]="cartProduct.quantity >= cartProduct.stock.cantidad">+ 
+                    [disabled]="cartProduct.quantity >= cartProduct.stock.cantidad">
+              + 
             </button>
           </div>
+
           <p class="quantity text-sm text-gray-700">Cantidad: {{ cartProduct.quantity }}</p>
         </div>
       </div>

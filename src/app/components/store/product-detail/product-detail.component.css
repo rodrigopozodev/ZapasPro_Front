@@ -108,6 +108,14 @@
   grid-template-columns: repeat(4, 1fr); /* Cuadrícula con 4 columnas */
 }
 
+.quantity-control {
+  display: flex !important; /* Asegura que sea flexbox */
+  flex-direction: row !important; /* Siempre en fila */
+  align-items: center !important; /* Alinea verticalmente los elementos */
+}
+
+
+
 @media (max-width: 1400px) {
   .ancho-imagen {
     max-width: 100%;  /* Se ajusta al 100% del contenedor sin recortarse */
@@ -190,11 +198,6 @@
   .thumbnail-container {
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
-  }
-
-  .cart-container {
-    width: 90%; /* Ajusta el tamaño del carrito para pantallas pequeñas */
-    max-width: 100%;
   }
 
   #colorway-picker-container {

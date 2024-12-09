@@ -51,20 +51,21 @@ export class UserService {
           this.setUserRole(user.role);
           this.setUserName(user.username);
           this.saveUserToLocalStorage(user.role, user.username);
-
+  
           // Emitir cambio de usuario
-          this.userChangedSubject.next(); // Aquí emitimos el cambio
-
+          this.userChangedSubject.next();
+  
           // Redirigir según el rol
           if (this.userRole === 'admin') {
             this.router.navigate(['/admin']);
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['/store']);  // Redirigir a /store si no es admin
           }
         }
       })
     );
   }
+  
 
   // Verifica si el usuario actual es administrador
   isAdmin(): boolean {

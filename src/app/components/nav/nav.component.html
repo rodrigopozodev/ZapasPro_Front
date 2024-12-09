@@ -31,7 +31,6 @@
           <div class="section-dropdown">
             <h5 class="section-title text-gray-600 font-semibold cursor-pointer hover:text-orange-500" (click)="toggleSubmenu('compras')">Cuenta</h5>
             <ul class="submenu mt-2 space-y-1" [ngClass]="{'show': currentSubmenu === 'compras'}" *ngIf="currentSubmenu === 'compras'">
-              <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/account-settings')">Perfil</li>   
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/purchase-history')">Recibos</li>
               <li class="cursor-pointer text-gray-600 hover:text-orange-500" (click)="navigateTo('/perfil/favorites')">Favoritos</li>    
             </ul>

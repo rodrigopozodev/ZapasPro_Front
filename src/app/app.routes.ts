@@ -6,7 +6,6 @@ import { CartComponent } from './components/cart/cart.component';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component'; 
 import { PurchaseHistoryComponent } from './components/perfil/purchase-history/purchase-history.component';
 import { FavoritesComponent } from './components/perfil/favorites/favorites.component';
-import { AccountSettingsComponent } from './components/perfil/account-settings/account-settings.component';
 
 // Importa los componentes del panel de administración
 import { UsuariosComponent } from './components/admin-panel/usuarios/usuarios.component';
@@ -18,6 +17,7 @@ import { StockComponent } from './components/admin-panel/stock/stock.component';
 import { ProductDetailComponent } from './components/store/product-detail/product-detail.component'; // Asegúrate de que la ruta sea correcta
 import { ImageSelectionComponent } from './components/admin-panel/productos/image-selection/image-selection.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
+import { AdminGuard } from './auth/admin.guard';
 
 // Define las rutas de la aplicación
 export const routes: Routes = [
@@ -31,19 +31,19 @@ export const routes: Routes = [
       { 
         path: 'admin', 
         component: AdminPanelComponent, 
+        canActivate: [AdminGuard],  // Protegemos la ruta con el guard
         children: [
-          { path: '', redirectTo: 'usuarios', pathMatch: 'full' }, // Redirigir a 'usuarios' por defecto
+          { path: '', redirectTo: 'usuarios', pathMatch: 'full' }, // Redirige a 'usuarios' por defecto
           { path: 'usuarios', component: UsuariosComponent },
           { path: 'productos', component: ProductosComponent },
-          { path: 'productos/image-selection', component: ImageSelectionComponent }, // Nueva ruta para la selección de imágenes
+          { path: 'productos/image-selection', component: ImageSelectionComponent },
           { path: 'recibos', component: RecibosComponent },
-          { path: 'stock', component: StockComponent }, // Ruta para StockComponent
+          { path: 'stock', component: StockComponent }
         ]
       },
       { path: 'cart', component: CartComponent },
       { path: 'perfil/purchase-history', component: PurchaseHistoryComponent },
       { path: 'perfil/favorites', component: FavoritesComponent },
-      { path: 'perfil/account-settings', component: AccountSettingsComponent },
       { path: 'product/:id', component: ProductDetailComponent }, // Ruta para el detalle del producto
     ],
   },

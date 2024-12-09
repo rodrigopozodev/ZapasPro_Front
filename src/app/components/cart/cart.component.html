@@ -1,10 +1,10 @@
 <div class="cart-container w-full bg-[#f3e8d5] flex items-center justify-center min-h-screen "> 
-  <div class="cart w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg flex flex-col gap-6 mt-12 mb-12 ml-12 mr-12"> <!-- Ajuste de márgenes -->
+  <div class="cart w-full max-w-6xl p-6 bg-white rounded-lg shadow-lg flex flex-col gap-4 mt-12 mb-12 ml-12 mr-12">
 
     <!-- Fila 1: Productos favoritos con scroll horizontal -->
     <div class="favorites w-full h-auto overflow-y-hidden"> <!-- Ajusté la altura a 16rem (64) -->
       <!-- Encabezado fijo para la sección de favoritos -->
-      <div class="sticky top-0 left-0 bg-white z-10 py-2">
+      <div class="sticky top-0 left-0 z-10 py-2">
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">Favoritos</h2>
       </div>
 
@@ -12,7 +12,7 @@
         <p>No tienes productos favoritos.</p>
       </div>
 
-      <div *ngIf="favorites.length > 0" class="flex space-x-6 mt-4"> <!-- Cambié a flex y espacio entre productos -->
+      <div *ngIf="favorites.length > 0" class="flex space-x-6 mt-4 mb-4 ml-4"> <!-- Ajusté la altura -->
         <div *ngFor="let product of favorites" class="product-card bg-white rounded-3xl shadow-lg p-4 transform hover:scale-105 transition duration-300 ease-in-out hover:shadow-2xl flex-shrink-0 w-64">
           <a [routerLink]="['/product', product.id]" class="w-full">
             <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image w-full h-48 object-cover rounded-t-3xl" />
@@ -37,7 +37,7 @@
    <!-- Fila 2: Cesta con scroll horizontal -->
 <div class="cesta h-auto overflow-x-auto"> <!-- Cambié el overflow-y-hidden a overflow-x-auto para desplazamiento horizontal -->
   <!-- Contenedor fijo para el título con posición sticky -->
-  <div class="sticky top-0 left-0 bg-white z-10 py-2">
+  <div class="sticky top-0 left-0 z-10 py-2">
     <h2 class="text-2xl font-semibold text-gray-700 mb-4">Cesta</h2>
   </div>
 

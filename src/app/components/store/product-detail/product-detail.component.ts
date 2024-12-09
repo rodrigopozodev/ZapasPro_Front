@@ -13,6 +13,9 @@ import { FavoritesService } from '../../../services/favorites.service';
 import { UserService } from '../../../services/user.service';
 import { PurchaseService } from '../../../services/purchase.service';
 import { Subscription } from 'rxjs';
+import { Stock } from '../../../interfaces/stock.interfaces';
+import { StockService } from '../../../services/stock.service';
+
 
 
 @Component({
@@ -24,25 +27,26 @@ import { Subscription } from 'rxjs';
 })
 export class ProductDetailComponent implements OnInit {
   product: Product = {} as Product;
-  stock: any[] = [];
   cartProducts: CartItem[] = [];
   cartVisible: boolean = false;
   subtotal: number = 0;
   discount: number = 0;
   total: number = 0;
-  selectedSize: string = '';
   discountCode: string = '';
   discountRate: number = 0;
   mainImage: string = '';
   discountApplied: boolean = false;
   galleryImages: GalleryImage[] = [];
-  isSmallScreen = window.innerWidth <= 650;
+  isSmallScreen: boolean = false; // Inicializa la variable sin usar window
+  uniqueTallas: string[] = [];
+  stock: Stock[] = [];
+  selectedSize: string = '';  // Para la talla seleccionada
+  selectedTalla: string = '';  // Para la talla seleccionada desde el stock
 
   private readonly validDiscountCode: string = 'ZapasProMola';
   private readonly discountPercentage: number = 0.15;
   private readonly userKeyPrefix: string = 'user_';
-  // Definir cartSubscription como una propiedad de la clase
-  private cartSubscription: Subscription = new Subscription();  // Aquí se declara correctamente
+  private cartSubscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -52,37 +56,43 @@ export class ProductDetailComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private favoritesService: FavoritesService,
+    private stockService: StockService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.checkScreenSize();
-
-    // Cargar producto, stock, y carrito al iniciar
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.getProduct(id);  // Obtener los detalles del producto
-      this.getStock(id);     // Obtener el stock del producto
+      this.getProduct(id);  // Obtener detalles del producto
+      this.loadStock(id);    // Obtener stock del producto
     }
-    
-    this.loadDiscountCode();  // Cargar el código de descuento
-  
-    // Cargar el carrito
-    this.loadCart();
-  
-    // Suscribirse a los cambios en el carrito
-    this.cartSubscription = this.cartService.getCartUpdates().subscribe((updatedCart: CartItem[]) => {
-      this.cartProducts = updatedCart;  // Actualizamos el carrito con los nuevos datos
+  }
+
+  loadStock(productId: string): void {
+    this.productService.getStockByProductoId(productId).subscribe(response => {
+      if (response) {
+        this.stock = response;
+      }
     });
+  }
+
+  // Método para obtener las tallas disponibles, eliminando duplicados
+  getAvailableTallas(): string[] {
+    const tallasDisponibles = this.stock
+      .filter(stockItem => stockItem.cantidad > 0) // Filtra solo las tallas con stock
+      .map(stockItem => stockItem.talla); // Obtiene las tallas
+    return [...new Set(tallasDisponibles)];  // Elimina duplicados
   }
 
   @HostListener('window:resize')
   onResize() {
-    this.isSmallScreen = window.innerWidth <= 650;
+    this.checkScreenSize();
   }
 
   private checkScreenSize(): void {
-    this.isSmallScreen = window.innerWidth < 650;
+    if (isPlatformBrowser(this.platformId)) {  // Verifica si estamos en el navegador
+      this.isSmallScreen = window.innerWidth <= 650;
+    }
   }
 
   ngOnDestroy(): void {
@@ -106,6 +116,12 @@ export class ProductDetailComponent implements OnInit {
       }
     });
   }
+
+
+  getUniqueTallas(stock: Stock[]): string[] {
+    return [...new Set(stock.map(stockItem => stockItem.talla))];
+  }
+  
 
   loadGalleryImages(productImageUrl: string) {
     // Suponemos que la galería se genera a partir de un array de productos
@@ -515,7 +531,7 @@ export class ProductDetailComponent implements OnInit {
     this.selectedSize = talla;
     console.log(`Talla seleccionada: ${talla}`);
   }
-
+  
   addToCart(): void {
     if (this.product && this.selectedSize) {
       const selectedStock = this.stock.find(item => item.talla === this.selectedSize);
