@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FormStateService } from '../../../../services/form-state.service';  // Asegúrate de ajustar la ruta si es necesario
+import { FormStateService } from '../../../../services/form-state.service'; // Ajusta la ruta si es necesario
+import { FormsModule } from '@angular/forms';
 
 // Define un nuevo tipo para las imágenes agrupadas
 interface GroupedImages {
@@ -15,7 +16,7 @@ interface GroupedImages {
 @Component({
   selector: 'app-image-selection',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './image-selection.component.html',
   styleUrls: ['./image-selection.component.css'],
 })
@@ -25,8 +26,14 @@ export class ImageSelectionComponent implements OnInit {
   filteredImages: GroupedImages[] = [];
   showButtons: boolean = true;
   selectedFirstWord: string | null = null;
-  previewImageUrl: string | null = null;  // Para almacenar la URL de la imagen que se mostrará al pasar el ratón
+  previewImageUrl: string | null = null; // Para almacenar la URL de la imagen que se mostrará al pasar el ratón
   hoveringProduct: any | null = null; // Para rastrear el producto que está siendo destacado
+
+  searchQuery: string = ''; // Filtro de búsqueda
+  currentPage: number = 1; // Página actual de productos
+  itemsPerPage: number = 5; // Productos por página
+  totalPages: number = 0; // Total de páginas
+  currentPageProducts: any[] = []; // Productos de la página actual
 
   constructor(
     private router: Router,              // Inyecta el router aquí
@@ -55,6 +62,7 @@ export class ImageSelectionComponent implements OnInit {
           firstWord: key,
           products: value,
         }));
+        this.filterBySearch(); // Filtra por nombre al cargar
       },
       (error) => {
         console.error('Error loading images:', error);
@@ -66,11 +74,16 @@ export class ImageSelectionComponent implements OnInit {
     this.selectedFirstWord = firstWord;
     this.filteredImages = this.images.filter(group => group.firstWord === firstWord);
     this.showButtons = false;
+    this.currentPage = 1; // Resetea la página al filtrar por marca
+    this.filterBySearch(); // Aplica el filtro de búsqueda después de filtrar por palabra inicial
   }
 
   showAllImages(): void {
     this.showButtons = true;
     this.filteredImages = [];
+    this.searchQuery = ''; // Limpiar filtro de búsqueda
+    this.currentPage = 1; // Resetea la página
+    this.filterBySearch(); // Aplica el filtro de búsqueda para mostrar todas las imágenes
   }
 
   confirmImageSelection(imageUrl: string): void {
@@ -78,7 +91,6 @@ export class ImageSelectionComponent implements OnInit {
     this.formStateService.setShowProductForm(true); // Asegúrate de que el formulario se muestre
     this.router.navigate(['/admin/productos']); // Navega al formulario
   }
-
 
   volverAlFormulario(): void {
     this.formStateService.setShowProductForm(true);  // Establece que el formulario debe ser visible
@@ -108,5 +120,56 @@ export class ImageSelectionComponent implements OnInit {
   // Verifica si el producto está siendo resaltado
   isHoveringProduct(product: any): boolean {
     return this.hoveringProduct === product;
+  }
+
+  // Filtro por nombre
+  filterBySearch(): void {
+    let filteredProducts = [];
+    if (this.selectedFirstWord) {
+      filteredProducts = this.filteredImages.filter(group => group.firstWord === this.selectedFirstWord);
+    } else {
+      filteredProducts = this.images;
+    }
+  
+    const allProducts = filteredProducts.flatMap(group => group.products);
+    const lowerCaseQuery = this.searchQuery.toLowerCase();
+    const filteredByName = allProducts.filter(product => product.name.toLowerCase().includes(lowerCaseQuery));
+  
+    // Verifica si la página actual tiene productos, si no, ajusta a la primera página con resultados
+    this.totalPages = Math.ceil(filteredByName.length / this.itemsPerPage);
+  
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages > 0 ? this.totalPages : 1; // Ajusta a la última página si la actual es mayor que el total
+    }
+  
+    // Asegúrate de que se muestre la primera página con productos si no hay productos en la página actual
+    if (filteredByName.length === 0 || (this.currentPage - 1) * this.itemsPerPage >= filteredByName.length) {
+      this.currentPage = 1;
+    }
+  
+    // Obtén los productos de la página actual
+    this.currentPageProducts = this.paginate(filteredByName, this.currentPage);
+  }
+  
+
+  // Paginación
+  paginate(products: any[], page: number): any[] {
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = page * this.itemsPerPage;
+    return products.slice(startIndex, endIndex);
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.filterBySearch();
+    }
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.filterBySearch();
+    }
   }
 }
