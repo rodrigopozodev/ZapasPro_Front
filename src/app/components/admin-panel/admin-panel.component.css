@@ -1,0 +1,15 @@
+/* Estilos generales */
+#myDiv {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  /* Media Query para pantallas con altura menor a 750px */
+  @media (max-height: 750px) {
+    #myDiv {
+      top: 75%;
+      transform: translateY(-75%);
+    }
+  }
+  
