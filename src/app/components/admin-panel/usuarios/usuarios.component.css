@@ -16,3 +16,220 @@
     animation: fadeOut 0.5s ease-in forwards;
   }
   
+
+/* Media query para pantallas menores a 1000px */
+@media (max-width: 1000px) {
+  .table-container {
+    padding: 0; /* Eliminar padding en el contenedor */
+  }
+
+  table {
+    font-size: 0.8rem; /* Reducir el tamaño de la tabla */
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.9rem; /* Reducir tamaño de la fuente */
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 800px */
+@media (max-width: 800px) {
+  table {
+    font-size: 0.75rem;
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.85rem;
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 700px */
+@media (max-width: 700px) {
+  table {
+    font-size: 0.6rem;
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.75rem;
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 600px */
+@media (max-width: 600px) {
+  .table-container {
+    padding: 0; /* Eliminar padding en el contenedor */
+  }
+
+  table {
+    font-size: 0.65rem; /* Ajustar tamaño de la tabla */
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.7rem; /* Reducir fuente */
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 500px */
+@media (max-width: 500px) {
+  .table-container {
+    padding: 0; /* Eliminar padding en el contenedor */
+  }
+
+  h2 {
+    font-size: 0.9rem; /* Reducir títulos */
+  }
+
+  h3 {
+    font-size: 0.8rem; /* Reducir subtítulos */
+  }
+
+  table {
+    font-size: 0.45rem; /* Reducir el tamaño de la tabla */
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.55rem; /* Reducir más la fuente */
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 400px */
+@media (max-width: 410px) {
+  .table-container {
+    padding: 0; /* Eliminar padding en el contenedor */
+  }
+
+  h2 {
+    font-size: 0.8rem; /* Reducir aún más el tamaño de los títulos */
+  }
+
+  h3 {
+    font-size: 0.7rem; /* Reducir tamaño de subtítulos */
+  }
+
+  table {
+    font-size: 0.35rem; /* Reducir el tamaño de la tabla */
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.45rem; /* Reducir tamaño de la fuente de los formularios */
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+}
+
+/* Media query para pantallas menores a 300px */
+@media (max-width: 300px) {
+  .table-container {
+    padding: 0; /* Eliminar padding en el contenedor */
+  }
+
+  h2 {
+    font-size: 0.7rem; /* Reducir más el tamaño de los títulos */
+  }
+
+  h3 {
+    font-size: 0.6rem; /* Reducir tamaño de subtítulos */
+  }
+
+  table {
+    font-size: 0.25rem; /* Reducir al mínimo el tamaño de la tabla */
+  }
+
+  th, td {
+    padding: 0; /* Eliminar padding en celdas */
+  }
+
+  .bg-yellow-500, .bg-red-500 {
+    padding: 0; /* Eliminar padding en botones */
+  }
+
+  .border-yellow-300 {
+    font-size: 0.3rem; /* Reducir tamaño de la fuente de los formularios */
+  }
+
+  .flex.items-center input, .flex.items-center select {
+    padding: 0; /* Eliminar padding en los filtros */
+  }
+
+  .text-sm {
+    font-size: 0.2rem; /* Reducir más el tamaño de los textos pequeños */
+  }
+
+  .text-2xl {
+    font-size: 0.8rem; /* Reducir tamaños de títulos grandes */
+  }
+
+  .text-xl {
+    font-size: 0.7rem; /* Reducir tamaños de subtítulos */
+  }
+}

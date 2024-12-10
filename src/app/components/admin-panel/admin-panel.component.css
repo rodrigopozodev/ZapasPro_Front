@@ -12,4 +12,36 @@
       transform: translateY(-75%);
     }
   }
-  
+
+
+/* Media queries para pantallas de menos de 1000px */
+@media (max-width: 1000px) {
+  .flex-1 {
+    margin-left: 8rem; /* ml-44 */
+    margin-right: 1rem;
+  }
+  #myDiv {
+    font-size: 0.9rem; /* Reducir tamaño del texto a 90% */
+  }
+}
+
+/* Media queries para pantallas de menos de 750px */
+@media (max-width: 750px) {
+  .flex-1 {
+    margin-left: 6rem; /* ml-34 */
+  }
+  #myDiv {
+    font-size: 0.8rem; /* Reducir tamaño del texto a 65% */
+  }
+}
+
+/* Media queries para pantallas de menos de 500px */
+@media (max-width: 500px) {
+  .flex-1 {
+    margin-left: 6rem; /* ml-24 */
+  }
+  #myDiv {
+    font-size: 0.65rem; /* Reducir tamaño del texto a 40% */
+  }
+}
+

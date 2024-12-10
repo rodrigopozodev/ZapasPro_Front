@@ -3,25 +3,25 @@
   <div class="w-1/11 bg-white p-4 rounded-lg shadow-lg border border-yellow-300 fixed h-fit top-1/2 transform -translate-y-1/2" id="myDiv">
     <ul class="space-y-6">
       <li>
-        <a routerLink="/admin/usuarios" class="w-full text-left text-yellow-700 hover:bg-yellow-100 p-3 rounded-lg transition duration-200">Usuarios</a>
+        <a routerLink="/admin/usuarios" class="w-full text-left text-yellow-700 hover:bg-yellow-100 rounded-lg transition duration-200">Usuarios</a>
       </li>
       <li>
-        <a routerLink="/admin/productos" class="w-full text-left text-yellow-700 hover:bg-yellow-100 p-3 rounded-lg transition duration-200">Productos</a>
+        <a routerLink="/admin/productos" class="w-full text-left text-yellow-700 hover:bg-yellow-100 rounded-lg transition duration-200">Productos</a>
       </li>
       <li>
-        <a routerLink="/admin/recibos" class="w-full text-left text-yellow-700 hover:bg-yellow-100 p-3 rounded-lg transition duration-200">Recibos</a>
+        <a routerLink="/admin/recibos" class="w-full text-left text-yellow-700 hover:bg-yellow-100 rounded-lg transition duration-200">Recibos</a>
       </li>
       <li>
-        <a routerLink="/admin/stock" class="w-full text-left text-yellow-700 hover:bg-yellow-100 p-3 rounded-lg transition duration-200">Stock</a>
+        <a routerLink="/admin/stock" class="w-full text-left text-yellow-700 hover:bg-yellow-100 rounded-lg transition duration-200">Stock</a>
       </li>
     </ul>
   </div>
 
   <!-- Contenido Principal -->
-  <div class="flex-1 ml-28 p-12">
+  <div class="flex-1 ml-32 mt-8 mb-8 mr-4">
     <h1 class="text-3xl font-extrabold text-yellow-600 mb-6 animate-fadeIn text-center">Administración</h1>
-
+  
     <!-- Sección de Stock -->
     <router-outlet></router-outlet> <!-- Aquí se cargará el componente de stock -->
-  </div>
+  </div>  
 </div>
