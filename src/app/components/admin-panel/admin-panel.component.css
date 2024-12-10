@@ -1,47 +1,56 @@
-/* Estilos generales */
-#myDiv {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  
-  /* Media Query para pantallas con altura menor a 750px */
-  @media (max-height: 750px) {
-    #myDiv {
-      top: 75%;
-      transform: translateY(-75%);
-    }
-  }
+.custom-space > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1.5rem; /* Espaciado entre los elementos (equivalente a 24px) */
+}
 
+/* Esto asegura que el espaciado no se aplique al primer hijo */
+.custom-space > :first-child {
+  margin-top: 0;
+}
 
-/* Media queries para pantallas de menos de 1000px */
+/* Media query para pantallas menores a 1000px */
 @media (max-width: 1000px) {
-  .flex-1 {
-    margin-left: 8rem; /* ml-44 */
-    margin-right: 1rem;
+  /* Eliminamos el uso de flexbox y overflow-x-hidden */
+  .flex {
+    display: block !important; /* Negamos el uso de flexbox en el contenedor principal */
   }
-  #myDiv {
-    font-size: 0.9rem; /* Reducir tamaño del texto a 90% */
-  }
-}
 
-/* Media queries para pantallas de menos de 750px */
-@media (max-width: 750px) {
-  .flex-1 {
-    margin-left: 6rem; /* ml-34 */
-  }
+  /* Modificación del sidebar (myDiv) */
   #myDiv {
-    font-size: 0.8rem; /* Reducir tamaño del texto a 65% */
+    position: relative;
+    top: 4rem; /* Establecemos 4 rem de margen superior */
+    padding: 1rem; /* Añadimos un pequeño padding interno */
+    display: flex; /* Usamos flex para organizar los enlaces en fila */
+    justify-content: center; /* Centramos los elementos horizontalmente */
+    width: auto; /* Ajustamos el ancho al contenido del texto */
+    
   }
-}
 
-/* Media queries para pantallas de menos de 500px */
-@media (max-width: 500px) {
+  #myDiv ul {
+    display: flex !important; /* Mantenemos los elementos en fila */
+    justify-content: center; /* Centramos horizontalmente el contenido */
+    align-items: center; /* Alineamos los elementos verticalmente */
+    gap: 1rem; /* Espaciado entre los elementos */
+    width: auto; /* Ajustamos el ancho al contenido del texto */
+  }
+
+  #myDiv ul li {
+    text-align: center; /* Centramos el texto dentro de cada elemento */
+    width: auto; /* El ancho se adapta al contenido */
+  }
+
+  /* Negar el espaciado vertical de .custom-space */
+  .custom-space > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0; /* Anula el espaciado entre elementos */
+  }
+
+  .custom-space > :first-child {
+    margin-top: 0; /* Aseguramos que el primer hijo tampoco tenga margen */
+  }
+
+  /* Modificación del contenido principal */
   .flex-1 {
-    margin-left: 6rem; /* ml-24 */
-  }
-  #myDiv {
-    font-size: 0.65rem; /* Reducir tamaño del texto a 40% */
-  }
+    margin-left: 1rem !important;  /* 2 rem de margen izquierdo */
+    margin-right: 1rem !important; /* 2 rem de margen derecho */
+    margin-top: 4rem !important;   /* 4 rem de margen superior */
+    margin-bottom: 2rem !important; /* 2 rem de margen inferior */  }
 }
-

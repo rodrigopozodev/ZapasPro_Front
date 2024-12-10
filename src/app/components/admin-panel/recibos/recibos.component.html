@@ -1,5 +1,5 @@
 <div *ngIf="purchasedReceipts.length > 0" class="p-6 space-y-6">
-    <h2 class="text-3xl font-semibold text-center text-gray-800">Recibos de compras</h2>
+    <h2 class="text-3xl font-semibold text-center text-yellow-800">Recibos de compras</h2>
     <ul class="space-y-4">
       <li *ngFor="let receipt of purchasedReceipts" class="bg-white p-4 rounded-lg shadow-md">
         <!-- Detalles del recibo -->
@@ -20,7 +20,7 @@
             <div class="flex-1">
               <p class="text-lg font-medium text-gray-800">{{ product.product.name }}</p>
               <p class="text-sm text-gray-600">Talla: <span class="font-medium text-gray-800">{{ product.selectedSize }}</span></p>
-              <p class="text-sm text-gray-600">Precio: <span class="font-medium text-gray-800">{{ product.product.price | currency }}</span></p>
+              <p class="text-sm text-gray-600">Precio: <span class="font-medium text-gray-800">{{ product.product.price}}€</span></p>
               <p class="text-sm text-gray-600">Cantidad: <span class="font-medium text-gray-800">{{ product.quantity }}</span></p>
             </div>
           </li>
@@ -28,7 +28,7 @@
         
         <!-- Total de la compra -->
         <div class="mt-4 text-right">
-          <p class="text-xl font-semibold text-gray-900">Total: <span class="font-bold text-gray-800">{{ calculateReceiptTotal(receipt) | currency }}</span></p>
+          <p class="text-xl font-semibold text-gray-900">Total: <span class="font-bold text-gray-800">{{ calculateReceiptTotal(receipt)}}€</span></p>
         </div>
       </li>
     </ul>

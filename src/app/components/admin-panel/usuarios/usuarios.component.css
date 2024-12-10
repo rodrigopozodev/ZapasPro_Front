@@ -1,235 +1,281 @@
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  
-  @keyframes fadeOut {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(20px); }
-  }
-  
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-  
-  .animate-fadeOut {
-    animation: fadeOut 0.5s ease-in forwards;
-  }
-  
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(20px); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.5s ease-in forwards;
+}
 
 /* Media query para pantallas menores a 1000px */
 @media (max-width: 1000px) {
-  .table-container {
-    padding: 0; /* Eliminar padding en el contenedor */
-  }
+.table-container {
+  padding: 10px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  table {
-    font-size: 0.8rem; /* Reducir el tamaño de la tabla */
-  }
+table {
+  font-size: 1rem; /* Aumento de tamaño de fuente */
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
 
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
+th, td {
+  padding: 5px !important; /* Reducción de padding entre las celdas */
+}
 
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 1rem; /* Aumento en el tamaño de la barra de búsqueda */
+}
+}
 
-  .border-yellow-300 {
-    font-size: 0.9rem; /* Reducir tamaño de la fuente */
-  }
+/* Media query para pantallas menores a 950px */
+@media (max-width: 950px) {
+.table-container {
+  padding: 10px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+table {
+  font-size: 1rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 4px !important; /* Reducción de padding entre las celdas */
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 1rem; 
+}
 }
 
 /* Media query para pantallas menores a 800px */
 @media (max-width: 800px) {
-  table {
-    font-size: 0.75rem;
-  }
-
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
-
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
-
-  .border-yellow-300 {
-    font-size: 0.85rem;
-  }
-
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+.table-container {
+  padding: 8px;
+  margin: 0 !important; /* Elimina los márgenes */
 }
 
-/* Media query para pantallas menores a 700px */
-@media (max-width: 700px) {
-  table {
-    font-size: 0.6rem;
-  }
+table {
+  font-size: 0.875rem; /* Aumento en tamaño */
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
 
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
+th, td {
+  padding: 3px !important;
+}
 
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.875rem;
+}
+}
 
-  .border-yellow-300 {
-    font-size: 0.75rem;
-  }
+/* Media query para pantallas menores a 750px */
+@media (max-width: 750px) {
+.table-container {
+  padding: 8px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+table {
+  font-size: 0.85rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 3px !important;
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.875rem;
+}
 }
 
 /* Media query para pantallas menores a 600px */
 @media (max-width: 600px) {
-  .table-container {
-    padding: 0; /* Eliminar padding en el contenedor */
-  }
-
-  table {
-    font-size: 0.65rem; /* Ajustar tamaño de la tabla */
-  }
-
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
-
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
-
-  .border-yellow-300 {
-    font-size: 0.7rem; /* Reducir fuente */
-  }
-
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+.table-container {
+  padding: 5px;
+  margin: 0 !important; /* Elimina los márgenes */
 }
 
-/* Media query para pantallas menores a 500px */
-@media (max-width: 500px) {
-  .table-container {
-    padding: 0; /* Eliminar padding en el contenedor */
-  }
-
-  h2 {
-    font-size: 0.9rem; /* Reducir títulos */
-  }
-
-  h3 {
-    font-size: 0.8rem; /* Reducir subtítulos */
-  }
-
-  table {
-    font-size: 0.45rem; /* Reducir el tamaño de la tabla */
-  }
-
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
-
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
-
-  .border-yellow-300 {
-    font-size: 0.55rem; /* Reducir más la fuente */
-  }
-
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+table {
+  font-size: 0.75rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
 }
 
-/* Media query para pantallas menores a 400px */
-@media (max-width: 410px) {
-  .table-container {
-    padding: 0; /* Eliminar padding en el contenedor */
-  }
-
-  h2 {
-    font-size: 0.8rem; /* Reducir aún más el tamaño de los títulos */
-  }
-
-  h3 {
-    font-size: 0.7rem; /* Reducir tamaño de subtítulos */
-  }
-
-  table {
-    font-size: 0.35rem; /* Reducir el tamaño de la tabla */
-  }
-
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
-
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
-
-  .border-yellow-300 {
-    font-size: 0.45rem; /* Reducir tamaño de la fuente de los formularios */
-  }
-
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+th, td {
+  padding: 2px !important;
 }
 
-/* Media query para pantallas menores a 300px */
-@media (max-width: 300px) {
-  .table-container {
-    padding: 0; /* Eliminar padding en el contenedor */
-  }
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.75rem;
+}
+}
 
-  h2 {
-    font-size: 0.7rem; /* Reducir más el tamaño de los títulos */
-  }
+/* Media query para pantallas menores a 550px */
+@media (max-width: 550px) {
+.table-container {
+  padding: 5px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  h3 {
-    font-size: 0.6rem; /* Reducir tamaño de subtítulos */
-  }
+table {
+  font-size: 0.7rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
 
-  table {
-    font-size: 0.25rem; /* Reducir al mínimo el tamaño de la tabla */
-  }
+th, td {
+  padding: 2px !important;
+}
 
-  th, td {
-    padding: 0; /* Eliminar padding en celdas */
-  }
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.7rem;
+}
+}
 
-  .bg-yellow-500, .bg-red-500 {
-    padding: 0; /* Eliminar padding en botones */
-  }
+/* Media query para pantallas entre 470px y 500px */
+@media (max-width: 500px) and (min-width: 471px) {
+.table-container {
+  padding: 5px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  .border-yellow-300 {
-    font-size: 0.3rem; /* Reducir tamaño de la fuente de los formularios */
-  }
+table {
+  font-size: 0.6rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
 
-  .flex.items-center input, .flex.items-center select {
-    padding: 0; /* Eliminar padding en los filtros */
-  }
+th, td {
+  padding: 2px !important;
+}
 
-  .text-sm {
-    font-size: 0.2rem; /* Reducir más el tamaño de los textos pequeños */
-  }
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.6rem;
+}
+}
 
-  .text-2xl {
-    font-size: 0.8rem; /* Reducir tamaños de títulos grandes */
-  }
+/* Media query para pantallas entre 440px y 470px */
+@media (max-width: 470px) and (min-width: 441px) {
+.table-container {
+  padding: 4.5px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
 
-  .text-xl {
-    font-size: 0.7rem; /* Reducir tamaños de subtítulos */
-  }
+table {
+  font-size: 0.55rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 1.8px !important;
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.55rem;
+}
+}
+
+/* Media query para pantallas entre 410px y 440px */
+@media (max-width: 440px) and (min-width: 411px) {
+.table-container {
+  padding: 4px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
+
+table {
+  font-size: 0.55rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 1.6px !important;
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.55rem;
+}
+}
+
+/* Media query para pantallas entre 380px y 410px */
+@media (max-width: 410px) and (min-width: 381px) {
+.table-container {
+  padding: 3.5px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
+
+table {
+  font-size: 0.5rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 1.4px !important;
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.5rem;
+}
+}
+
+/* Media query para pantallas entre 350px y 380px */
+@media (max-width: 380px) {
+.table-container {
+  padding: 2px;
+  margin: 0 !important; /* Elimina los márgenes */
+}
+
+table {
+  font-size: 0.45rem;
+  width: 100% !important; /* Asegura que la tabla ocupe todo el ancho disponible */
+  margin: 0 !important; /* Elimina los márgenes de la tabla */
+}
+
+th, td {
+  padding: 0.8px !important;
+}
+
+/* Estilos de la barra de búsqueda y filtros */
+.flex input,
+.flex select {
+  font-size: 0.45rem;
+}
 }
