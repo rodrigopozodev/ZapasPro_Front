@@ -435,6 +435,32 @@ export class ProductDetailComponent implements OnInit {
         { thumbnail: '/img/galeria/PUMA x ONE PIECE Suede Luffy Sombrero de paja 5.png', fullImage: '/img/galeria/PUMA x ONE PIECE Suede Luffy Sombrero de paja 5.png' },
         { thumbnail: '/img/galeria/PUMA x ONE PIECE Suede Luffy Sombrero de paja 6.png', fullImage: '/img/galeria/PUMA x ONE PIECE Suede Luffy Sombrero de paja 6.png' }
       ],
+      '/img/Adidas Handball Spezial.png': [
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 1.png', fullImage: '/img/galeria/Adidas Handball Spezial 1.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 2.png', fullImage: '/img/galeria/Adidas Handball Spezial 2.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 3.png', fullImage: '/img/galeria/Adidas Handball Spezial 3.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 4.png', fullImage: '/img/galeria/Adidas Handball Spezial 4.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 5.png', fullImage: '/img/galeria/Adidas Handball Spezial 5.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 6.png', fullImage: '/img/galeria/Adidas Handball Spezial 6.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 7.png', fullImage: '/img/galeria/Adidas Handball Spezial 7.png' },
+        { thumbnail: '/img/galeria/Adidas Handball Spezial 8.png', fullImage: '/img/galeria/Adidas Handball Spezial 8.png' }
+      ],
+      '/img/Reebok Club C 85.png': [
+        { thumbnail: '/img/galeria/Reebok Club C 85 1.png', fullImage: '/img/galeria/Reebok Club C 85 1.png' },
+        { thumbnail: '/img/galeria/Reebok Club C 85 2.png', fullImage: '/img/galeria/Reebok Club C 85 2.png' },
+        { thumbnail: '/img/galeria/Reebok Club C 85 3.png', fullImage: '/img/galeria/Reebok Club C 85 3.png' },
+        { thumbnail: '/img/galeria/Reebok Club C 85 4.png', fullImage: '/img/galeria/Reebok Club C 85 4.png' },
+        { thumbnail: '/img/galeria/Reebok Club C 85 5.png', fullImage: '/img/galeria/Reebok Club C 85 5.png' },
+        { thumbnail: '/img/galeria/Reebok Club C 85 6.png', fullImage: '/img/galeria/Reebok Club C 85 6.png' }
+      ],
+      '/img/Converse Chuck Taylor All Star.png': [
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 1.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 1.png' },
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 2.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 2.png' },
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 3.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 3.png' },
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 4.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 4.png' },
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 5.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 5.png' },
+        { thumbnail: '/img/galeria/Converse Chuck Taylor All Star 6.png', fullImage: '/img/galeria/Converse Chuck Taylor All Star 6.png' }
+      ],
     };
     
     if (galleryImagesMap[productImageUrl]) {
